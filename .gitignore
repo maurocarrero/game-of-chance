@@ -2,3 +2,6 @@
 /Bingo/build.xml
 /Bingo/manifest.mf
 /Bingo/build/
+/nbproject/
+build.xml
+manifest.mf
