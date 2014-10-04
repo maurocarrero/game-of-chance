@@ -2,6 +2,7 @@ package bingo;
 
 import bingo.admins.InterfazAdmin;
 import bingo.modelo.Administrador;
+import bingo.modelo.Jugador;
 import bingo.modelo.Usuario;
 import java.util.ArrayList;
 import java.util.List;
