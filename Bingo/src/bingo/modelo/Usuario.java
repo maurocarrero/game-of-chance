@@ -21,4 +21,8 @@ public abstract class Usuario {
         return usuario;
     }
     
+    public boolean validate(char[] password) {
+        String passStr = String.valueOf(password);
+        return this.password.equals(passStr);
+    }
 }
