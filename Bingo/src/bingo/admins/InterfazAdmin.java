@@ -9,7 +9,7 @@ package bingo.admins;
  * @author maurocarrero
  */
 public class InterfazAdmin extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form InterfazAdmin
      */

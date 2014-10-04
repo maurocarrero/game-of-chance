@@ -11,6 +11,7 @@ public class Sistema {
      */
     public static void main(String[] args) {
         SistemaFacade facade = SistemaFacade.getInstance();  
-        facade.runAdmins();
+        facade.run();
+        
     }
 }
