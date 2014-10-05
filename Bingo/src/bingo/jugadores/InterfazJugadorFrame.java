@@ -1,7 +1,7 @@
 package bingo.jugadores;
 
-import bingo.jugadores.JugadorFacade;
 import bingo.modelo.exceptions.AccesoDenegadoException;
+import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
@@ -23,26 +23,50 @@ public class InterfazJugadorFrame extends javax.swing.JFrame {
         initComponents();
         jugadores = instance;
         this.setTitle("Bingo - Administrador");
+        ocultarPaneles();
+        panelLoginJugador.setVisible(true);
         setTitle("Interfaz de Jugador");
         setVisible(true);
+        pack();
     }
 
     private void esperarComienzoJuego() {
-        
+        panelLoginJugador.setVisible(false);
+        panelEspera.setVisible(true);
+    }
+    
+    private void ocultarPaneles() {
+        panelEspera.setVisible(false);
+        panelLoginJugador.setVisible(false);
     }
     
     private void ingresar() {
         String usuario = txtUsuario.getText();
         char[] password = txtPassword.getPassword();
-        int cantCartones = Integer.parseInt(txtCantCartones.getText());
         try {
+            
+            if (usuario.length() == 0 || password.length == 0) {
+                throw new AccesoDenegadoException();
+            }
+
+            int cantCartones = -1;
+            try {
+              cantCartones = Integer.parseInt(txtCantCartones.getText());
+            } catch (NumberFormatException ex) {
+                throw new CantidadCartonesInvalidaException();
+            }
+            
             jugadores.login(usuario, password, cantCartones);
             esperarComienzoJuego();
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", 
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (AccesoDenegadoException | DemasiadosCartonesException | 
-                JuegoEnCursoException | SaldoInsuficienteException  ex) {
+            
+        } catch (AccesoDenegadoException | JuegoEnCursoException | 
+                SaldoInsuficienteException | CantidadCartonesInvalidaException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DemasiadosCartonesException ex) {
+            String msg = "No puede participar con más de " + jugadores.getCantMaxCartones() + " cartones";
+            JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
         } catch (HeadlessException ex) {
             JOptionPane.showMessageDialog(null, "This is headless!", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -58,7 +82,6 @@ public class InterfazJugadorFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTitle = new javax.swing.JLabel();
         panelLoginJugador = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -67,10 +90,10 @@ public class InterfazJugadorFrame extends javax.swing.JFrame {
         btnIngresar = new javax.swing.JButton();
         lblCantCartones = new javax.swing.JLabel();
         txtCantCartones = new javax.swing.JTextField();
+        panelEspera = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        lblTitle.setText("Interfaz Jugador");
 
         jLabel1.setText("Usuario");
 
@@ -121,7 +144,7 @@ public class InterfazJugadorFrame extends javax.swing.JFrame {
                             .addComponent(txtUsuario)
                             .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCantCartones, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         panelLoginJugadorLayout.setVerticalGroup(
             panelLoginJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,28 +163,42 @@ public class InterfazJugadorFrame extends javax.swing.JFrame {
                     .addComponent(lblCantCartones))
                 .addGap(23, 23, 23)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addGap(29, 29, 29))
+        );
+
+        jLabel3.setText("Esperando inicio del juego...");
+
+        javax.swing.GroupLayout panelEsperaLayout = new javax.swing.GroupLayout(panelEspera);
+        panelEspera.setLayout(panelEsperaLayout);
+        panelEsperaLayout.setHorizontalGroup(
+            panelEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEsperaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addContainerGap(279, Short.MAX_VALUE))
+        );
+        panelEsperaLayout.setVerticalGroup(
+            panelEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEsperaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addContainerGap(292, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle)
-                .addContainerGap(318, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelLoginJugador, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panelEspera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle)
-                .addContainerGap(272, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelLoginJugador, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelEspera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -187,8 +224,9 @@ public class InterfazJugadorFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblCantCartones;
-    private javax.swing.JLabel lblTitle;
+    private javax.swing.JPanel panelEspera;
     private javax.swing.JPanel panelLoginJugador;
     private javax.swing.JTextField txtCantCartones;
     private javax.swing.JPasswordField txtPassword;

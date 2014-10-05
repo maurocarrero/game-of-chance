@@ -2,6 +2,7 @@ package bingo.jugadores;
 
 import bingo.SistemaFacade;
 import bingo.modelo.exceptions.AccesoDenegadoException;
+import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
@@ -35,7 +36,12 @@ public class JugadorFacade {
     
     public void login(String usuario, char[] password, int cantCartones) 
             throws JuegoEnCursoException, AccesoDenegadoException,
-                DemasiadosCartonesException, SaldoInsuficienteException {
+                CantidadCartonesInvalidaException, DemasiadosCartonesException, 
+                SaldoInsuficienteException {
         sistema.loginJugador(usuario, password, cantCartones);
+    }
+    
+    public int getCantMaxCartones() {
+        return SistemaFacade.getCantMaxCartones();
     }
 }

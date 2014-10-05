@@ -6,11 +6,11 @@ import bingo.modelo.Administrador;
 import bingo.modelo.Jugador;
 import bingo.modelo.Usuario;
 import bingo.modelo.exceptions.AccesoDenegadoException;
+import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
-import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class SistemaFacade {
     
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
-    private static int cantCartones = 2;
+    private static int cantMaxCartones = 2;
     private static int cantJugadores = 3;
     private static double valorCarton = 10;
     private static boolean juegoActivo = false;
@@ -79,7 +79,7 @@ public class SistemaFacade {
         
         cantFilas = cF;
         cantColumnas = cCols;
-        cantCartones = cCart;
+        cantMaxCartones = cCart;
         cantJugadores = cJ;
         valorCarton = vC;
     }
@@ -110,7 +110,7 @@ public class SistemaFacade {
     
     
     private boolean demasiadosCartones(int cC) {
-        return cC < cantCartones;
+        return cC > cantMaxCartones;
     }
     
     
@@ -144,8 +144,9 @@ public class SistemaFacade {
     
     
     public void loginJugador(String usuario, char[] password, int cantCartones) 
-            throws AccesoDenegadoException, JuegoEnCursoException, 
-                DemasiadosCartonesException, SaldoInsuficienteException {
+            throws AccesoDenegadoException, JuegoEnCursoException,
+                CantidadCartonesInvalidaException, DemasiadosCartonesException, 
+                SaldoInsuficienteException {
         
         Jugador jugador = (Jugador) login(usuario);
 
@@ -163,6 +164,9 @@ public class SistemaFacade {
         }
 
         // CARTONES
+        if (cantCartones <= 0) {
+            throw new CantidadCartonesInvalidaException();
+        }
         if (demasiadosCartones(cantCartones)) {
             throw new DemasiadosCartonesException();
         }             
@@ -205,8 +209,8 @@ public class SistemaFacade {
 
     
     
-    public static int getCantCartones() {
-        return cantCartones;
+    public static int getCantMaxCartones() {
+        return cantMaxCartones;
     }
 
     

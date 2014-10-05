@@ -49,7 +49,7 @@ public class InterfazAdminFrame extends javax.swing.JFrame {
     private void poblarCamposConfiguracion() {
         txtCantFilas.setText("" + admin.getCantFilas());
         txtCantColumnas.setText("" + admin.getCantColumnas());
-        txtCantMaxCartones.setText("" + admin.getCantCartones());
+        txtCantMaxCartones.setText("" + admin.getCantMaxCartones());
         txtCantJugadores.setText("" + admin.getCantJugadores());
         txtValorCarton.setText("" + admin.getValorCarton());
     }

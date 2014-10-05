@@ -1,7 +1,6 @@
 package bingo.admins;
 
 import bingo.SistemaFacade;
-import bingo.jugadores.InterfazJugadorFrame;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import java.util.Observable;
 import java.util.Observer;
@@ -48,8 +47,8 @@ public class AdminFacade extends Observable implements Observer {
         return SistemaFacade.getCantColumnas();
     }
 
-    public int getCantCartones() {
-       return SistemaFacade.getCantCartones();
+    public int getCantMaxCartones() {
+       return SistemaFacade.getCantMaxCartones();
     }
 
     public int getCantJugadores() {

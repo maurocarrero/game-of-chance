@@ -7,7 +7,7 @@ package bingo.modelo.exceptions;
 public class DemasiadosCartonesException extends Exception {
     
     public DemasiadosCartonesException() {
-        super("");
+        super("No puede participar con más de %s cartones");
     }
     
 }
