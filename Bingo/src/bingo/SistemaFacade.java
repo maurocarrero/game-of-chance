@@ -3,6 +3,7 @@ package bingo;
 import bingo.admins.InterfazAdmin;
 import bingo.modelo.AccesoDenegadoException;
 import bingo.modelo.Administrador;
+import bingo.modelo.ConfiguracionNoValidaException;
 import bingo.modelo.Jugador;
 import bingo.modelo.Usuario;
 import java.awt.HeadlessException;
@@ -70,7 +71,7 @@ public class SistemaFacade {
              this.admin = aux;
              return true;
              
-        } catch (AccesoDenegadoException | HeadlessException | ClassCastException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return false;
         }    
@@ -95,4 +96,40 @@ public class SistemaFacade {
         }    
     }
 
+    public static int getCantFilas() {
+        return cantFilas;
+    }
+
+    public static int getCantColumnas() {
+        return cantColumnas;
+    }
+
+    public static int getCantCartones() {
+        return cantCartones;
+    }
+
+    public static int getCantJugadores() {
+        return cantJugadores;
+    }
+
+    public static double getValorCarton() {
+        return valorCarton;
+    }
+    
+    public static void guardarConfiguracion(int cF, int cCols, int cCart, 
+            int cJ, double vC) throws ConfiguracionNoValidaException {
+        
+        // VALIDACIONES
+        if (cF < 1 || cF > 10 || cCols < 2 || cCols > 10 || cCart < 2 || 
+                cJ < 2 || vC < 1) {
+            throw new ConfiguracionNoValidaException();
+        }
+        
+        cantFilas = cF;
+        cantColumnas = cCols;
+        cantCartones = cCart;
+        cantJugadores = cJ;
+        valorCarton = vC;
+    }
+    
 }

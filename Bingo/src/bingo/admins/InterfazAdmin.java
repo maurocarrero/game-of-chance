@@ -1,41 +1,44 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.admins;
 
 import bingo.SistemaFacade;
+import bingo.modelo.ConfiguracionNoValidaException;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Interfaz para Administradores
  * @author maurocarrero
  */
 public class InterfazAdmin extends javax.swing.JFrame {
+    
+    private SistemaFacade sistema;
+    private boolean juegoActivo = false;
     
     /**
      * Creates new form InterfazAdmin
      */
     public InterfazAdmin() {
         initComponents();
+        sistema = SistemaFacade.getInstance();
         this.setTitle("Bingo - Administrador");
         ocultarPaneles();
         panelLogin.setVisible(true);
         menuBar.setVisible(false);
-        this.pack();
+        setLocationRelativeTo(null);
+        pack();
     }
     
     private void ocultarPaneles() {
         panelCrearInterfaces.setVisible(false);
         panelConfigurar.setVisible(false);
+        panelLogin.setVisible(false);
     }
 
     private void ingresar() {
-        SistemaFacade sistema = SistemaFacade.getInstance();
         String usuario = txtUsuario.getText();
         char[] password = txtPassword.getPassword();
         if (sistema.loginAdmin(usuario, password)) {
-            panelLogin.setVisible(false);
+            ocultarPaneles();
             menuBar.setVisible(true);
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", "Exito", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -43,14 +46,46 @@ public class InterfazAdmin extends javax.swing.JFrame {
         }
     }
     
+    private void poblarCamposConfiguracion() {
+        txtCantFilas.setText("" + SistemaFacade.getCantFilas());
+        txtCantColumnas.setText("" + SistemaFacade.getCantColumnas());
+        txtCantMaxCartones.setText("" + SistemaFacade.getCantCartones());
+        txtCantJugadores.setText("" + SistemaFacade.getCantJugadores());
+        txtValorCarton.setText("" + SistemaFacade.getValorCarton());
+    }
+    
     private void configurar() {
-        ocultarPaneles();
-        panelConfigurar.setVisible(true);
-    }    
+        if (!juegoActivo) {
+            ocultarPaneles();
+            panelConfigurar.setVisible(true);
+            poblarCamposConfiguracion();
+            pack();
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay un juego activo, no se puede modificar la configuración.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
     
     private void crearInterfaces() {
         ocultarPaneles();
         panelCrearInterfaces.setVisible(true);
+    }
+    
+    private void guardarConfiguracion() {
+        try {
+            int cantFilas = Integer.parseInt(txtCantFilas.getText());
+            int cantColumnas = Integer.parseInt(txtCantColumnas.getText());
+            int cantMaxCartones = Integer.parseInt(txtCantMaxCartones.getText());
+            int cantJugadores = Integer.parseInt(txtCantJugadores.getText());
+            double valorCarton = Double.parseDouble(txtValorCarton.getText());
+            
+            SistemaFacade.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, cantJugadores, valorCarton);
+            
+            JOptionPane.showMessageDialog(null, "Configuración guardada", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (NumberFormatException | ConfiguracionNoValidaException | HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, "Configuración no válida", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**
@@ -71,6 +106,17 @@ public class InterfazAdmin extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         panelConfigurar = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        lblCantFilas = new javax.swing.JLabel();
+        txtCantFilas = new javax.swing.JTextField();
+        lblCantColumnas = new javax.swing.JLabel();
+        txtCantColumnas = new javax.swing.JTextField();
+        lblCantCartones = new javax.swing.JLabel();
+        txtCantMaxCartones = new javax.swing.JTextField();
+        lblCantJugadores = new javax.swing.JLabel();
+        txtCantJugadores = new javax.swing.JTextField();
+        lblValorCarton = new javax.swing.JLabel();
+        txtValorCarton = new javax.swing.JTextField();
+        btnAceptar = new javax.swing.JButton();
         panelCrearInterfaces = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -139,7 +185,35 @@ public class InterfazAdmin extends javax.swing.JFrame {
                 .addGap(33, 33, 33))
         );
 
+        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel3.setText("Configurar");
+
+        lblCantFilas.setText("Cantidad de filas:");
+
+        txtCantFilas.setPreferredSize(new java.awt.Dimension(10, 25));
+
+        lblCantColumnas.setText("Cantidad de columnas:");
+
+        txtCantColumnas.setPreferredSize(new java.awt.Dimension(10, 25));
+
+        lblCantCartones.setText("Cantidad máxima de cartones:");
+
+        txtCantMaxCartones.setPreferredSize(new java.awt.Dimension(10, 25));
+
+        lblCantJugadores.setText("Cantidad de jugadores:");
+
+        txtCantJugadores.setPreferredSize(new java.awt.Dimension(10, 25));
+
+        lblValorCarton.setText("Valor del cartón:");
+
+        txtValorCarton.setPreferredSize(new java.awt.Dimension(10, 25));
+
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelConfigurarLayout = new javax.swing.GroupLayout(panelConfigurar);
         panelConfigurar.setLayout(panelConfigurarLayout);
@@ -147,15 +221,55 @@ public class InterfazAdmin extends javax.swing.JFrame {
             panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigurarLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addComponent(jLabel3)
-                .addContainerGap(406, Short.MAX_VALUE))
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnAceptar)
+                        .addGroup(panelConfigurarLayout.createSequentialGroup()
+                            .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblCantFilas)
+                                .addComponent(lblCantColumnas)
+                                .addComponent(lblCantCartones)
+                                .addComponent(lblCantJugadores)
+                                .addComponent(lblValorCarton))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(txtCantColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCantFilas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(233, Short.MAX_VALUE))
         );
         panelConfigurarLayout.setVerticalGroup(
             panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigurarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCantFilas)
+                    .addComponent(txtCantFilas, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCantColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCantColumnas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCantCartones))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCantJugadores)
+                    .addComponent(txtCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnAceptar)
+                .addContainerGap(303, Short.MAX_VALUE))
         );
 
         jLabel4.setText("Crear Interfaces de usuario");
@@ -204,9 +318,9 @@ public class InterfazAdmin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -244,48 +358,23 @@ public class InterfazAdmin extends javax.swing.JFrame {
         crearInterfaces();
     }//GEN-LAST:event_menuCrearInterfacesActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        guardarConfiguracion();        
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
-        
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InterfazAdmin().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel lblCantCartones;
+    private javax.swing.JLabel lblCantColumnas;
+    private javax.swing.JLabel lblCantFilas;
+    private javax.swing.JLabel lblCantJugadores;
+    private javax.swing.JLabel lblValorCarton;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuConfigurar;
     private javax.swing.JMenuItem menuCrearInterfaces;
@@ -293,7 +382,12 @@ public class InterfazAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel panelConfigurar;
     private javax.swing.JPanel panelCrearInterfaces;
     private javax.swing.JPanel panelLogin;
+    private javax.swing.JTextField txtCantColumnas;
+    private javax.swing.JTextField txtCantFilas;
+    private javax.swing.JTextField txtCantJugadores;
+    private javax.swing.JTextField txtCantMaxCartones;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtValorCarton;
     // End of variables declaration//GEN-END:variables
 }

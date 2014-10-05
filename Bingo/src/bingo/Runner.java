@@ -4,7 +4,7 @@ package bingo;
  * Bingo
  * @author maurocarrero
  */
-public class Sistema {
+public class Runner {
 
     /**
      * @param args the command line arguments
