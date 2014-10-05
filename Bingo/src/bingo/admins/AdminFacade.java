@@ -1,6 +1,7 @@
 package bingo.admins;
 
 import bingo.SistemaFacade;
+import bingo.modelo.Bolilla;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import java.util.Observable;
 import java.util.Observer;
@@ -69,7 +70,8 @@ public class AdminFacade extends Observable implements Observer {
     
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("[Administración] El juego empezó: " + Integer.parseInt(arg.toString()));
+        Bolilla bolilla = (Bolilla) arg;
+        System.out.println("[Administración] El juego empezó: " + bolilla.getValor());
     }
     
 }

@@ -1,6 +1,7 @@
 package bingo.jugadores;
 
 import bingo.SistemaFacade;
+import bingo.modelo.Bolilla;
 import bingo.modelo.Carton;
 import bingo.modelo.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
@@ -56,6 +57,9 @@ public class InterfazJugador extends Observable implements Observer {
     
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("[Jugadores] El juego empezó: " + Integer.parseInt(arg.toString()));
+        Bolilla bolilla = (Bolilla) arg;
+        
+        System.out.println(sistema);
+        System.out.println("[Jugador " + this.getJugador().getUsuario() + "] " + bolilla.getValor());
     }
 }

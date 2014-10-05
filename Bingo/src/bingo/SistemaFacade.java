@@ -145,8 +145,9 @@ public class SistemaFacade extends Observable implements Observer {
     
     private void iniciarJuego() {
         distribuirCartones();
+        Bolilla bolilla = this.bolillero.sacarBolilla();
         this.setChanged();
-        notifyObservers(7);
+        notifyObservers(bolilla);
     }
     
     
@@ -222,6 +223,7 @@ public class SistemaFacade extends Observable implements Observer {
         jugador.setCantCartones(cantCartones);
         interfazJugador.setJugador(jugador);
         this.jugadores.add(interfazJugador);
+        addObserver(interfazJugador);
         this.cantCartonesRequeridos += jugador.getCantCartones();
         
         if (listoParaEmpezar()) {
