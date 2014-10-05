@@ -69,7 +69,7 @@ public class AdminFacade extends Observable implements Observer {
     
     @Override
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("[Administración] El juego empezó: " + Integer.parseInt(arg.toString()));
     }
     
 }

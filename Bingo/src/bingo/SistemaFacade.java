@@ -1,8 +1,11 @@
 package bingo;
 
 import bingo.admins.AdminFacade;
-import bingo.jugadores.JugadorFacade;
+import bingo.jugadores.InterfazJugador;
 import bingo.modelo.Administrador;
+import bingo.modelo.Bolilla;
+import bingo.modelo.Bolillero;
+import bingo.modelo.Carton;
 import bingo.modelo.Jugador;
 import bingo.modelo.Usuario;
 import bingo.modelo.exceptions.AccesoDenegadoException;
@@ -12,17 +15,18 @@ import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  *
  * @author maurocarrero
  */
-public class SistemaFacade {
+public class SistemaFacade extends Observable implements Observer {
 
     private static SistemaFacade instance;
-    private static AdminFacade adminsFacade;
-    private static JugadorFacade jugadoresFacade;
     
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
@@ -31,23 +35,26 @@ public class SistemaFacade {
     private static double valorCarton = 10;
     private static boolean juegoActivo = false;
     
+    private AdminFacade adminsFacade;
+
     private List<Usuario> usuariosTest = null;
-    
-    private List<Jugador> jugadores = null;
+    private List<InterfazJugador> jugadores = null;
     private Administrador admin;
     
-    
-    
+    // QUITAR TODO ESTO PARA UNA CLASE PARTIDA!!!
+    private int cantCartonesRequeridos;
+    private Bolillero bolillero;
+    private List<Carton> cartones;
+
     private SistemaFacade() {
         usuariosTest = new ArrayList();
         usuariosTest.add(new Administrador("mcarrero", "mcarrero"));
         usuariosTest.add(new Administrador("fgonzalez", "fgonzalez"));
-        usuariosTest.add(new Jugador("jugador1", "jugador1", 0, 1200));
-        usuariosTest.add(new Jugador("jugador2", "jugador2", 0, 2700));
-        usuariosTest.add(new Jugador("jugador3", "jugador3", 0, 4200));
+        usuariosTest.add(new Jugador("j1", "j1", 0, 1200));
+        usuariosTest.add(new Jugador("j2", "j2", 0, 2700));
+        usuariosTest.add(new Jugador("j3", "j3", 0, 4200));
         
         jugadores = new ArrayList();
-        
     }
     
     
@@ -61,9 +68,9 @@ public class SistemaFacade {
     
     
     
-    public static void run() {
-        adminsFacade = AdminFacade.getInstance(instance);
-        jugadoresFacade = JugadorFacade.getInstance(instance);
+    public void run() {
+        this.adminsFacade = AdminFacade.getInstance(instance);
+        this.addObserver(this.adminsFacade);
     }
     
     
@@ -103,8 +110,43 @@ public class SistemaFacade {
     
     
     
+    private void construirBolillero() {
+        int cantNumerosPorCarton = cantFilas * cantColumnas;
+        int cantTotalNumeros = cantNumerosPorCarton * cantCartonesRequeridos;
+        this.bolillero = new Bolillero(cantTotalNumeros);
+    }
+    
+    
+    
+    private void construirCartones() {
+        this.cartones = new ArrayList();
+        List<Bolilla> bolillas = bolillero.getListaBolillas();
+
+        for (int i = 0; i < cantCartonesRequeridos; i++) {
+            Collections.shuffle(bolillas);
+            Carton carton = new Carton(getCantFilas(), getCantColumnas());
+            carton.poblar(bolillas);
+            this.cartones.add(carton);
+        }
+        
+    }
+    
+    private void distribuirCartones() {
+        construirBolillero();
+        construirCartones();
+        for (InterfazJugador interfaz : this.jugadores) {
+            for (int i = 0; i < interfaz.getJugador().getCantCartones(); i++) {
+                Carton carton = this.cartones.remove(0);
+                interfaz.addCarton(carton);
+            }
+        }
+    }
+    
+    
     private void iniciarJuego() {
-        System.out.println("Inicia el juego.");
+        distribuirCartones();
+        this.setChanged();
+        notifyObservers(7);
     }
     
     
@@ -143,7 +185,7 @@ public class SistemaFacade {
     
     
     
-    public void loginJugador(String usuario, char[] password, int cantCartones) 
+    public void loginJugador(String usuario, char[] password, int cantCartones, InterfazJugador interfazJugador) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException {
@@ -176,8 +218,12 @@ public class SistemaFacade {
         if (!jugador.puedeCostear(precioCartones)) {
             throw new SaldoInsuficienteException();
         }
-
-        this.jugadores.add(jugador);
+        
+        jugador.setCantCartones(cantCartones);
+        interfazJugador.setJugador(jugador);
+        this.jugadores.add(interfazJugador);
+        this.cantCartonesRequeridos += jugador.getCantCartones();
+        
         if (listoParaEmpezar()) {
             iniciarJuego();
         }
@@ -186,7 +232,8 @@ public class SistemaFacade {
     
     
     public void lanzarNuevaInterfazJugador() {
-        jugadoresFacade.lanzarInterfazJugador();
+        InterfazJugador nuevaInterfaz = new InterfazJugador(this);
+        nuevaInterfaz.lanzar();
     }
     
     
@@ -223,6 +270,11 @@ public class SistemaFacade {
     
     public static double getValorCarton() {
         return valorCarton;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

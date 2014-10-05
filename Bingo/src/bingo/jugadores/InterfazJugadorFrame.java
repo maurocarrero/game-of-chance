@@ -14,12 +14,12 @@ import javax.swing.JOptionPane;
  */
 public class InterfazJugadorFrame extends javax.swing.JFrame {
 
-    private JugadorFacade jugadores;
+    private InterfazJugador jugadores;
     
     /**
      * Creates new form InterfazJugador
      */
-    public InterfazJugadorFrame(JugadorFacade instance) {
+    public InterfazJugadorFrame(InterfazJugador instance) {
         initComponents();
         jugadores = instance;
         this.setTitle("Bingo - Administrador");
