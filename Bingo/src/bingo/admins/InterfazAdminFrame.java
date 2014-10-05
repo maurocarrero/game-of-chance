@@ -1,25 +1,25 @@
 package bingo.admins;
 
-import bingo.SistemaFacade;
-import bingo.modelo.ConfiguracionNoValidaException;
+import bingo.jugadores.InterfazJugadorFrame;
+import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import java.awt.HeadlessException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  * Interfaz para Administradores
  * @author maurocarrero
  */
-public class InterfazAdmin extends javax.swing.JFrame {
+public class InterfazAdminFrame extends javax.swing.JFrame {
     
-    private SistemaFacade sistema;
-    private boolean juegoActivo = false;
+    private AdminFacade admin;
     
     /**
      * Creates new form InterfazAdmin
      */
-    public InterfazAdmin() {
+    public InterfazAdminFrame(AdminFacade admin) {
         initComponents();
-        sistema = SistemaFacade.getInstance();
+        this.admin = admin;
         this.setTitle("Bingo - Administrador");
         ocultarPaneles();
         panelLogin.setVisible(true);
@@ -37,7 +37,7 @@ public class InterfazAdmin extends javax.swing.JFrame {
     private void ingresar() {
         String usuario = txtUsuario.getText();
         char[] password = txtPassword.getPassword();
-        if (sistema.loginAdmin(usuario, password)) {
+        if (admin.login(usuario, password)) {
             ocultarPaneles();
             menuBar.setVisible(true);
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", "Exito", JOptionPane.INFORMATION_MESSAGE);
@@ -47,15 +47,15 @@ public class InterfazAdmin extends javax.swing.JFrame {
     }
     
     private void poblarCamposConfiguracion() {
-        txtCantFilas.setText("" + SistemaFacade.getCantFilas());
-        txtCantColumnas.setText("" + SistemaFacade.getCantColumnas());
-        txtCantMaxCartones.setText("" + SistemaFacade.getCantCartones());
-        txtCantJugadores.setText("" + SistemaFacade.getCantJugadores());
-        txtValorCarton.setText("" + SistemaFacade.getValorCarton());
+        txtCantFilas.setText("" + admin.getCantFilas());
+        txtCantColumnas.setText("" + admin.getCantColumnas());
+        txtCantMaxCartones.setText("" + admin.getCantCartones());
+        txtCantJugadores.setText("" + admin.getCantJugadores());
+        txtValorCarton.setText("" + admin.getValorCarton());
     }
     
     private void configurar() {
-        if (!juegoActivo) {
+        if (!admin.hayJuegoActivo()) {
             ocultarPaneles();
             panelConfigurar.setVisible(true);
             poblarCamposConfiguracion();
@@ -66,9 +66,14 @@ public class InterfazAdmin extends javax.swing.JFrame {
         
     }
     
+    private void lanzarNuevaInterfazJugador() {
+        admin.lanzarNuevaInterfazJugador();
+    }
+    
     private void crearInterfaces() {
         ocultarPaneles();
         panelCrearInterfaces.setVisible(true);
+        lanzarNuevaInterfazJugador();
     }
     
     private void guardarConfiguracion() {
@@ -79,7 +84,7 @@ public class InterfazAdmin extends javax.swing.JFrame {
             int cantJugadores = Integer.parseInt(txtCantJugadores.getText());
             double valorCarton = Double.parseDouble(txtValorCarton.getText());
             
-            SistemaFacade.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, cantJugadores, valorCarton);
+            admin.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, cantJugadores, valorCarton);
             
             JOptionPane.showMessageDialog(null, "Configuración guardada", "Exito", JOptionPane.INFORMATION_MESSAGE);
             

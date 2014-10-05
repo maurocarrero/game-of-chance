@@ -1,11 +1,15 @@
 package bingo;
 
-import bingo.admins.InterfazAdmin;
-import bingo.modelo.AccesoDenegadoException;
+import bingo.admins.AdminFacade;
+import bingo.jugadores.JugadorFacade;
 import bingo.modelo.Administrador;
-import bingo.modelo.ConfiguracionNoValidaException;
 import bingo.modelo.Jugador;
 import bingo.modelo.Usuario;
+import bingo.modelo.exceptions.AccesoDenegadoException;
+import bingo.modelo.exceptions.ConfiguracionNoValidaException;
+import bingo.modelo.exceptions.DemasiadosCartonesException;
+import bingo.modelo.exceptions.JuegoEnCursoException;
+import bingo.modelo.exceptions.SaldoInsuficienteException;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +21,36 @@ import java.util.List;
 public class SistemaFacade {
 
     private static SistemaFacade instance;
+    private static AdminFacade adminsFacade;
+    private static JugadorFacade jugadoresFacade;
     
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
     private static int cantCartones = 2;
     private static int cantJugadores = 3;
     private static double valorCarton = 10;
-            
-    private List<Usuario> usuarios = null;
+    private static boolean juegoActivo = false;
+    
+    private List<Usuario> usuariosTest = null;
+    
+    private List<Jugador> jugadores = null;
     private Administrador admin;
     
+    
+    
     private SistemaFacade() {
-        usuarios = new ArrayList();
-        usuarios.add(new Administrador("mcarrero", "mcarrero"));
-        usuarios.add(new Administrador("fgonzalez", "fgonzalez"));
-        usuarios.add(new Jugador("jugador1", "jugador1"));
-        usuarios.add(new Jugador("jugador2", "jugador2"));
-        usuarios.add(new Jugador("jugador3", "jugador3"));
+        usuariosTest = new ArrayList();
+        usuariosTest.add(new Administrador("mcarrero", "mcarrero"));
+        usuariosTest.add(new Administrador("fgonzalez", "fgonzalez"));
+        usuariosTest.add(new Jugador("jugador1", "jugador1", 0, 1200));
+        usuariosTest.add(new Jugador("jugador2", "jugador2", 0, 2700));
+        usuariosTest.add(new Jugador("jugador3", "jugador3", 0, 4200));
+        
+        jugadores = new ArrayList();
+        
     }
+    
+    
     
     public static SistemaFacade getInstance() {
         if (instance == null) {
@@ -43,19 +59,67 @@ public class SistemaFacade {
         return instance;
     }
     
+    
+    
     public static void run() {
-        InterfazAdmin admins = new InterfazAdmin();
-        admins.setVisible(true);
+        adminsFacade = AdminFacade.getInstance(instance);
+        jugadoresFacade = JugadorFacade.getInstance(instance);
     }
     
+    
+    
+    public static void guardarConfiguracion(int cF, int cCols, int cCart, 
+            int cJ, double vC) throws ConfiguracionNoValidaException {
+        
+        // VALIDACIONES
+        if (cF < 1 || cF > 10 || cCols < 2 || cCols > 10 || cCart < 2 || 
+                cJ < 2 || vC < 1) {
+            throw new ConfiguracionNoValidaException();
+        }
+        
+        cantFilas = cF;
+        cantColumnas = cCols;
+        cantCartones = cCart;
+        cantJugadores = cJ;
+        valorCarton = vC;
+    }
+    
+    
+    
     private Usuario login(String usuario) {
-        for (Usuario u : this.usuarios) {
+        for (Usuario u : this.usuariosTest) {
             if (u.getUsuario().equals(usuario)) {
                 return u;
             }
         }
         return null;
     }
+
+    
+    
+    private boolean listoParaEmpezar() {
+        return this.jugadores.size() == cantJugadores;
+    }
+    
+    
+    
+    private void iniciarJuego() {
+        System.out.println("Inicia el juego.");
+    }
+    
+    
+    
+    private boolean demasiadosCartones(int cC) {
+        return cC < cantCartones;
+    }
+    
+    
+    
+    private double getPrecioCartones(int cantCartones) {
+        return cantCartones * valorCarton * 2;
+    }
+    
+    
     
     public boolean loginAdmin(String usuario, char[] password) {
         Administrador aux;
@@ -77,59 +141,84 @@ public class SistemaFacade {
         }    
     }
     
-    public boolean loginJugador(String usuario, char[] password) {
-        Jugador jugador;
-        try {
-             jugador = (Jugador) login(usuario);
-             if (jugador == null) {
-                 throw new AccesoDenegadoException();
-             }
-             if (!jugador.validate(password)) {
-                 throw new AccesoDenegadoException();
-             }
+    
+    
+    public void loginJugador(String usuario, char[] password, int cantCartones) 
+            throws AccesoDenegadoException, JuegoEnCursoException, 
+                DemasiadosCartonesException, SaldoInsuficienteException {
+        
+        Jugador jugador = (Jugador) login(usuario);
 
-             return true;
-             
-        } catch (AccesoDenegadoException | HeadlessException | ClassCastException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }    
+        // ACCESO DENEGADO
+        if (jugador == null) {
+            throw new AccesoDenegadoException();
+        }
+        if (!jugador.validate(password)) {
+            throw new AccesoDenegadoException();
+        }
+
+        // JUEGO ACTIVO
+        if (hayJuegoActivo()) {
+            throw new JuegoEnCursoException();
+        }
+
+        // CARTONES
+        if (demasiadosCartones(cantCartones)) {
+            throw new DemasiadosCartonesException();
+        }             
+        
+        // SALDO INSUFICIENTE
+        double precioCartones = getPrecioCartones(cantCartones);
+        if (!jugador.puedeCostear(precioCartones)) {
+            throw new SaldoInsuficienteException();
+        }
+
+        this.jugadores.add(jugador);
+        if (listoParaEmpezar()) {
+            iniciarJuego();
+        }
     }
-
+    
+    
+    
+    public void lanzarNuevaInterfazJugador() {
+        jugadoresFacade.lanzarInterfazJugador();
+    }
+    
+    
+    
+    public boolean hayJuegoActivo() {
+        return juegoActivo;
+    }
+    
+    
+    
     public static int getCantFilas() {
         return cantFilas;
     }
 
+    
+    
     public static int getCantColumnas() {
         return cantColumnas;
     }
 
+    
+    
     public static int getCantCartones() {
         return cantCartones;
     }
 
+    
+    
     public static int getCantJugadores() {
         return cantJugadores;
     }
 
+    
+    
     public static double getValorCarton() {
         return valorCarton;
     }
-    
-    public static void guardarConfiguracion(int cF, int cCols, int cCart, 
-            int cJ, double vC) throws ConfiguracionNoValidaException {
-        
-        // VALIDACIONES
-        if (cF < 1 || cF > 10 || cCols < 2 || cCols > 10 || cCart < 2 || 
-                cJ < 2 || vC < 1) {
-            throw new ConfiguracionNoValidaException();
-        }
-        
-        cantFilas = cF;
-        cantColumnas = cCols;
-        cantCartones = cCart;
-        cantJugadores = cJ;
-        valorCarton = vC;
-    }
-    
+
 }

@@ -1,4 +1,4 @@
-package bingo.modelo;
+package bingo.modelo.exceptions;
 
 /**
  *
