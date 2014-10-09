@@ -1,6 +1,7 @@
-package bingo.admins;
+package bingo.vistas;
 
-import bingo.jugadores.InterfazJugadorFrame;
+import bingo.controladores.AdminController;
+import bingo.vistas.JugadorView;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import java.awt.HeadlessException;
 import javax.swing.JFrame;
@@ -10,14 +11,14 @@ import javax.swing.JOptionPane;
  * Interfaz para Administradores
  * @author maurocarrero
  */
-public class InterfazAdminFrame extends javax.swing.JFrame {
+public class AdminView extends javax.swing.JFrame {
     
-    private AdminFacade admin;
+    private AdminController admin;
     
     /**
      * Creates new form InterfazAdmin
      */
-    public InterfazAdminFrame(AdminFacade admin) {
+    public AdminView(AdminController admin) {
         initComponents();
         this.admin = admin;
         this.setTitle("Bingo - Administrador");

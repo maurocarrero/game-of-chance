@@ -1,13 +1,10 @@
-package bingo;
+package bingo.modelo;
 
-import bingo.admins.AdminFacade;
-import bingo.jugadores.InterfazJugador;
-import bingo.modelo.Administrador;
-import bingo.modelo.Bolilla;
-import bingo.modelo.Bolillero;
-import bingo.modelo.Carton;
-import bingo.modelo.Jugador;
-import bingo.modelo.Usuario;
+import bingo.modelo.entidades.Jugador;
+import bingo.modelo.entidades.Administrador;
+import bingo.modelo.entidades.Usuario;
+import bingo.controladores.AdminController;
+import bingo.controladores.JugadorController;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
@@ -15,7 +12,6 @@ import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,9 +20,9 @@ import java.util.Observer;
  *
  * @author maurocarrero
  */
-public class SistemaFacade extends Observable implements Observer {
+public class Bingo extends Observable implements Observer {
 
-    private static SistemaFacade instance;
+    private static Bingo instance;
     
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
@@ -35,33 +31,27 @@ public class SistemaFacade extends Observable implements Observer {
     private static double valorCarton = 10;
     private static boolean juegoActivo = false;
     
-    private AdminFacade adminsFacade;
+    private AdminController adminsFacade;
 
     private List<Usuario> usuariosTest = null;
-    private List<InterfazJugador> jugadores = null;
     private Administrador admin;
-    
-    // QUITAR TODO ESTO PARA UNA CLASE PARTIDA!!!
-    private int cantCartonesRequeridos;
-    private Bolillero bolillero;
-    private List<Carton> cartones;
 
-    private SistemaFacade() {
+    private static Partida partida;
+    
+    private Bingo() {
         usuariosTest = new ArrayList();
         usuariosTest.add(new Administrador("mcarrero", "mcarrero"));
         usuariosTest.add(new Administrador("fgonzalez", "fgonzalez"));
         usuariosTest.add(new Jugador("j1", "j1", 0, 1200));
         usuariosTest.add(new Jugador("j2", "j2", 0, 2700));
         usuariosTest.add(new Jugador("j3", "j3", 0, 4200));
-        
-        jugadores = new ArrayList();
     }
     
     
     
-    public static SistemaFacade getInstance() {
+    public static Bingo getInstance() {
         if (instance == null) {
-            instance = new SistemaFacade();
+            instance = new Bingo();
         }
         return instance;
     }
@@ -69,8 +59,9 @@ public class SistemaFacade extends Observable implements Observer {
     
     
     public void run() {
-        this.adminsFacade = AdminFacade.getInstance(instance);
+        this.adminsFacade = AdminController.getInstance(instance);
         this.addObserver(this.adminsFacade);
+        partida.iniciarJuego();
     }
     
     
@@ -105,49 +96,14 @@ public class SistemaFacade extends Observable implements Observer {
     
     
     private boolean listoParaEmpezar() {
-        return this.jugadores.size() == cantJugadores;
+        return partida.getJugadores().size() == cantJugadores;
     }
     
-    
-    
-    private void construirBolillero() {
-        int cantNumerosPorCarton = cantFilas * cantColumnas;
-        int cantTotalNumeros = cantNumerosPorCarton * cantCartonesRequeridos;
-        this.bolillero = new Bolillero(cantTotalNumeros);
-    }
-    
-    
-    
-    private void construirCartones() {
-        this.cartones = new ArrayList();
-        List<Bolilla> bolillas = bolillero.getListaBolillas();
-
-        for (int i = 0; i < cantCartonesRequeridos; i++) {
-            Collections.shuffle(bolillas);
-            Carton carton = new Carton(getCantFilas(), getCantColumnas());
-            carton.poblar(bolillas);
-            this.cartones.add(carton);
-        }
-        
-    }
-    
-    private void distribuirCartones() {
-        construirBolillero();
-        construirCartones();
-        for (InterfazJugador interfaz : this.jugadores) {
-            for (int i = 0; i < interfaz.getJugador().getCantCartones(); i++) {
-                Carton carton = this.cartones.remove(0);
-                interfaz.addCarton(carton);
-            }
-        }
-    }
     
     
     private void iniciarJuego() {
-        distribuirCartones();
-        Bolilla bolilla = this.bolillero.sacarBolilla();
+        partida.iniciarJuego();
         this.setChanged();
-        notifyObservers(bolilla);
     }
     
     
@@ -186,7 +142,7 @@ public class SistemaFacade extends Observable implements Observer {
     
     
     
-    public void loginJugador(String usuario, char[] password, int cantCartones, InterfazJugador interfazJugador) 
+    public void loginJugador(String usuario, char[] password, int cantCartones, JugadorController interfazJugador) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException {
@@ -222,9 +178,9 @@ public class SistemaFacade extends Observable implements Observer {
         
         jugador.setCantCartones(cantCartones);
         interfazJugador.setJugador(jugador);
-        this.jugadores.add(interfazJugador);
+        partida.addJugador(interfazJugador);
         addObserver(interfazJugador);
-        this.cantCartonesRequeridos += jugador.getCantCartones();
+        partida.updateCantCartones(jugador.getCantCartones());
         
         if (listoParaEmpezar()) {
             iniciarJuego();
@@ -234,7 +190,7 @@ public class SistemaFacade extends Observable implements Observer {
     
     
     public void lanzarNuevaInterfazJugador() {
-        InterfazJugador nuevaInterfaz = new InterfazJugador(this);
+        JugadorController nuevaInterfaz = new JugadorController(this);
         nuevaInterfaz.lanzar();
     }
     

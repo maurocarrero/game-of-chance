@@ -1,7 +1,8 @@
-package bingo.admins;
+package bingo.controladores;
 
-import bingo.SistemaFacade;
-import bingo.modelo.Bolilla;
+import bingo.vistas.AdminView;
+import bingo.modelo.Bingo;
+import bingo.modelo.entidades.Bolilla;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import java.util.Observable;
 import java.util.Observer;
@@ -11,22 +12,22 @@ import javax.swing.JFrame;
  *
  * @author maurocarrero
  */
-public class AdminFacade extends Observable implements Observer {
+public class AdminController extends Observable implements Observer {
     
-    private static AdminFacade instance;
+    private static AdminController instance;
     private JFrame frame;
     
-    private SistemaFacade sistema;
+    private Bingo sistema;
     
-    private AdminFacade(SistemaFacade sistema) {
+    private AdminController(Bingo sistema) {
         this.sistema = sistema; 
-        frame = new InterfazAdminFrame(this);
+        frame = new AdminView(this);
         frame.setVisible(true);
     }
 
-    public static AdminFacade getInstance(SistemaFacade sistema) {
+    public static AdminController getInstance(Bingo sistema) {
         if (instance == null) {
-            instance = new AdminFacade(sistema);
+            instance = new AdminController(sistema);
         }
         return instance;
     }
@@ -37,27 +38,27 @@ public class AdminFacade extends Observable implements Observer {
     
     public void guardarConfiguracion(int cF, int cCols, int cCart, 
             int cJ, double vC) throws ConfiguracionNoValidaException {
-        SistemaFacade.guardarConfiguracion(cF, cCols, cCart, cJ, vC);
+        Bingo.guardarConfiguracion(cF, cCols, cCart, cJ, vC);
     }
     
     public int getCantFilas() {
-        return SistemaFacade.getCantFilas();
+        return Bingo.getCantFilas();
     }
 
     public int getCantColumnas() {
-        return SistemaFacade.getCantColumnas();
+        return Bingo.getCantColumnas();
     }
 
     public int getCantMaxCartones() {
-       return SistemaFacade.getCantMaxCartones();
+       return Bingo.getCantMaxCartones();
     }
 
     public int getCantJugadores() {
-        return SistemaFacade.getCantJugadores();
+        return Bingo.getCantJugadores();
     }
 
     public double getValorCarton() {
-        return SistemaFacade.getValorCarton();
+        return Bingo.getValorCarton();
     }
     
     public void lanzarNuevaInterfazJugador() {

@@ -1,9 +1,10 @@
-package bingo.jugadores;
+package bingo.controladores;
 
-import bingo.SistemaFacade;
-import bingo.modelo.Bolilla;
-import bingo.modelo.Carton;
-import bingo.modelo.Jugador;
+import bingo.vistas.JugadorView;
+import bingo.modelo.Bingo;
+import bingo.modelo.entidades.Bolilla;
+import bingo.modelo.entidades.Carton;
+import bingo.modelo.entidades.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
@@ -17,18 +18,18 @@ import javax.swing.JFrame;
  * Fachada para módulo de jugadores
  * @author maurocarrero
  */
-public class InterfazJugador extends Observable implements Observer {
+public class JugadorController extends Observable implements Observer {
 
     private JFrame frame;
-    private SistemaFacade sistema;
+    private Bingo sistema;
     private Jugador jugador;
     
-    public InterfazJugador(SistemaFacade sistema) {
+    public JugadorController(Bingo sistema) {
         this.sistema = sistema;
     }
     
     public void lanzar() {
-        frame = new InterfazJugadorFrame(this);
+        frame = new JugadorView(this);
         frame.setVisible(true);
     }
     
@@ -40,7 +41,7 @@ public class InterfazJugador extends Observable implements Observer {
     }
     
     public int getCantMaxCartones() {
-        return SistemaFacade.getCantMaxCartones();
+        return Bingo.getCantMaxCartones();
     }
 
     public void setJugador(Jugador jugador) {

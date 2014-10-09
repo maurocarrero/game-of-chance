@@ -1,4 +1,4 @@
-package bingo.modelo;
+package bingo.modelo.entidades;
 
 import java.util.ArrayList;
 import java.util.Collections;

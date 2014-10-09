@@ -1,5 +1,6 @@
-package bingo.jugadores;
+package bingo.vistas;
 
+import bingo.controladores.JugadorController;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
@@ -12,14 +13,14 @@ import javax.swing.JOptionPane;
  * Interfaz para Jugadores
  * @author maurocarrero
  */
-public class InterfazJugadorFrame extends javax.swing.JFrame {
+public class JugadorView extends javax.swing.JFrame {
 
-    private InterfazJugador jugadores;
+    private JugadorController jugadores;
     
     /**
      * Creates new form InterfazJugador
      */
-    public InterfazJugadorFrame(InterfazJugador instance) {
+    public JugadorView(JugadorController instance) {
         initComponents();
         jugadores = instance;
         this.setTitle("Bingo - Administrador");
