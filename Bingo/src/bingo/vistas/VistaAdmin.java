@@ -1,27 +1,30 @@
 package bingo.vistas;
 
-import bingo.controladores.AdminController;
-import bingo.vistas.JugadorView;
+import bingo.controladores.ControlAdmin;
+import bingo.controladores.Controlador;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import java.awt.HeadlessException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  * Interfaz para Administradores
  * @author maurocarrero
  */
-public class AdminView extends javax.swing.JFrame {
+public final class VistaAdmin extends javax.swing.JFrame implements InterfazVista {
     
-    private AdminController admin;
+    private ControlAdmin admin;
     
     /**
      * Creates new form InterfazAdmin
      */
-    public AdminView(AdminController admin) {
+    public VistaAdmin() {
         initComponents();
-        this.admin = admin;
         this.setTitle("Bingo - Administrador");
+        
+        btnIngresar.setActionCommand("INGRESAR");
+        
         ocultarPaneles();
         panelLogin.setVisible(true);
         menuBar.setVisible(false);
@@ -29,76 +32,100 @@ public class AdminView extends javax.swing.JFrame {
         pack();
     }
     
-    private void ocultarPaneles() {
+    public char[] getPassword() {
+        return txtPassword.getPassword();
+    }
+    
+    public String getUsuario() {
+        return txtUsuario.getText();
+    }
+    
+    public String getCantFilas() {
+        return txtCantFilas.getText();
+    }
+    
+    public String getCantColumnas() {
+        return txtCantColumnas.getText();
+    }
+    
+    public String getCantMaxCartones() {
+        return txtCantMaxCartones.getText();
+    }
+    
+    public String getCantJugadores() {
+        return txtCantJugadores.getText();
+    }
+    
+    public String getValorCarton() {
+        return txtValorCarton.getText();
+    }
+    
+    public void mostrarMenu() {
+        menuBar.setVisible(true);
+    }
+    
+    
+    
+    public void mostrarPanelConfiguracion() {
+        ocultarPaneles();
+        panelConfigurar.setVisible(true);
+    }
+    
+    public void mostrarCrearInterfaces() {
+        ocultarPaneles();
+        panelCrearInterfaces.setVisible(true);
+    }
+    
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
+    public void mostrarInfo(String mensaje, String title) {
+        JOptionPane.showMessageDialog(null, mensaje, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void ocultarPaneles() {
         panelCrearInterfaces.setVisible(false);
         panelConfigurar.setVisible(false);
         panelLogin.setVisible(false);
     }
+    
+    public void poblarCamposConfiguracion(int cantFilas, int cantColumnas, 
+            int cantMaxCartones, int cantJugadores, double valorCarton) {
+        txtCantFilas.setText("" + cantFilas);
+        txtCantColumnas.setText("" + cantColumnas);
+        txtCantMaxCartones.setText("" + cantMaxCartones);
+        txtCantJugadores.setText("" + cantJugadores);
+        txtValorCarton.setText("" + valorCarton);
+    }
+    
+    @Override
+    public void ejecutar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-    private void ingresar() {
-        String usuario = txtUsuario.getText();
-        char[] password = txtPassword.getPassword();
-        if (admin.login(usuario, password)) {
-            ocultarPaneles();
-            menuBar.setVisible(true);
-            JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", "Exito", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Acceso denegado", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    private void poblarCamposConfiguracion() {
-        txtCantFilas.setText("" + admin.getCantFilas());
-        txtCantColumnas.setText("" + admin.getCantColumnas());
-        txtCantMaxCartones.setText("" + admin.getCantMaxCartones());
-        txtCantJugadores.setText("" + admin.getCantJugadores());
-        txtValorCarton.setText("" + admin.getValorCarton());
-    }
-    
-    private void configurar() {
-        if (!admin.hayJuegoActivo()) {
-            ocultarPaneles();
-            panelConfigurar.setVisible(true);
-            poblarCamposConfiguracion();
-            pack();
-        } else {
-            JOptionPane.showMessageDialog(null, "Hay un juego activo, no se puede modificar la configuración.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    @Override
+    public void setControlador(Controlador c) {
+
+        // Login
+        btnIngresar.addActionListener(c);
+        txtUsuario.addActionListener(c);
+        txtPassword.addActionListener(c);
         
+        // Configuración
+        txtCantFilas.addActionListener(c);
+        txtCantColumnas.addActionListener(c);
+        txtCantJugadores.addActionListener(c);
+        txtCantMaxCartones.addActionListener(c);
+        txtValorCarton.addActionListener(c);
+        btnAceptar.addActionListener(c);
+        
+        // Menu
+        menuConfigurar.addActionListener(c);
+        menuCrearInterfaces.addActionListener(c);
     }
+
     
-    private void lanzarNuevaInterfazJugador() {
-        admin.lanzarNuevaInterfazJugador();
-    }
-    
-    private void crearInterfaces() {
-        ocultarPaneles();
-        panelCrearInterfaces.setVisible(true);
-        lanzarNuevaInterfazJugador();
-    }
-    
-    private void guardarConfiguracion() {
-        try {
-            int cantFilas = Integer.parseInt(txtCantFilas.getText());
-            int cantColumnas = Integer.parseInt(txtCantColumnas.getText());
-            int cantMaxCartones = Integer.parseInt(txtCantMaxCartones.getText());
-            int cantJugadores = Integer.parseInt(txtCantJugadores.getText());
-            double valorCarton = Double.parseDouble(txtValorCarton.getText());
-            
-            admin.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, cantJugadores, valorCarton);
-            
-            JOptionPane.showMessageDialog(null, "Configuración guardada", "Exito", JOptionPane.INFORMATION_MESSAGE);
-            
-        } catch (NumberFormatException | ConfiguracionNoValidaException | HeadlessException ex) {
-            JOptionPane.showMessageDialog(null, "Configuración no válida", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -139,23 +166,6 @@ public class AdminView extends javax.swing.JFrame {
         jLabel2.setText("Contraseña");
 
         btnIngresar.setText("Ingresar");
-        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIngresarActionPerformed(evt);
-            }
-        });
-
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
-            }
-        });
-
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
         panelLogin.setLayout(panelLoginLayout);
@@ -215,11 +225,6 @@ public class AdminView extends javax.swing.JFrame {
         txtValorCarton.setPreferredSize(new java.awt.Dimension(10, 25));
 
         btnAceptar.setText("Aceptar");
-        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAceptarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelConfigurarLayout = new javax.swing.GroupLayout(panelConfigurar);
         panelConfigurar.setLayout(panelConfigurarLayout);
@@ -300,19 +305,9 @@ public class AdminView extends javax.swing.JFrame {
         mnuAdministrar.setText("Administrar");
 
         menuConfigurar.setText("Configurar");
-        menuConfigurar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuConfigurarActionPerformed(evt);
-            }
-        });
         mnuAdministrar.add(menuConfigurar);
 
         menuCrearInterfaces.setText("Crear Interfaces");
-        menuCrearInterfaces.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCrearInterfacesActionPerformed(evt);
-            }
-        });
         mnuAdministrar.add(menuCrearInterfaces);
 
         menuBar.add(mnuAdministrar);
@@ -343,31 +338,7 @@ public class AdminView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        ingresar();
-    }//GEN-LAST:event_txtUsuarioActionPerformed
     
-    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        ingresar();             
-    }//GEN-LAST:event_btnIngresarActionPerformed
-
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        ingresar();
-    }//GEN-LAST:event_txtPasswordActionPerformed
-
-    private void menuConfigurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConfigurarActionPerformed
-        configurar();
-    }//GEN-LAST:event_menuConfigurarActionPerformed
-
-    private void menuCrearInterfacesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrearInterfacesActionPerformed
-        crearInterfaces();
-    }//GEN-LAST:event_menuCrearInterfacesActionPerformed
-
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        guardarConfiguracion();        
-    }//GEN-LAST:event_btnAceptarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnIngresar;
@@ -396,4 +367,5 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsuario;
     private javax.swing.JTextField txtValorCarton;
     // End of variables declaration//GEN-END:variables
+
 }

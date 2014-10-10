@@ -1,6 +1,6 @@
 package bingo.controladores;
 
-import bingo.vistas.JugadorView;
+import bingo.vistas.VistaJugador;
 import bingo.modelo.Bingo;
 import bingo.modelo.entidades.Bolilla;
 import bingo.modelo.entidades.Carton;
@@ -18,18 +18,18 @@ import javax.swing.JFrame;
  * Fachada para módulo de jugadores
  * @author maurocarrero
  */
-public class JugadorController extends Observable implements Observer {
+public class ControlJugador extends Observable implements Observer {
 
     private JFrame frame;
     private Bingo sistema;
     private Jugador jugador;
     
-    public JugadorController(Bingo sistema) {
+    public ControlJugador(Bingo sistema) {
         this.sistema = sistema;
     }
     
     public void lanzar() {
-        frame = new JugadorView(this);
+        frame = new VistaJugador(this);
         frame.setVisible(true);
     }
     

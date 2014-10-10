@@ -3,8 +3,8 @@ package bingo.modelo;
 import bingo.modelo.entidades.Jugador;
 import bingo.modelo.entidades.Administrador;
 import bingo.modelo.entidades.Usuario;
-import bingo.controladores.AdminController;
-import bingo.controladores.JugadorController;
+import bingo.controladores.ControlAdmin;
+import bingo.controladores.ControlJugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
@@ -31,7 +31,7 @@ public class Bingo extends Observable implements Observer {
     private static double valorCarton = 10;
     private static boolean juegoActivo = false;
     
-    private AdminController adminsFacade;
+    private ControlAdmin controlAdmin;
 
     private List<Usuario> usuariosTest = null;
     private Administrador admin;
@@ -59,8 +59,6 @@ public class Bingo extends Observable implements Observer {
     
     
     public void run() {
-        this.adminsFacade = AdminController.getInstance(instance);
-        this.addObserver(this.adminsFacade);
         partida.iniciarJuego();
     }
     
@@ -142,7 +140,7 @@ public class Bingo extends Observable implements Observer {
     
     
     
-    public void loginJugador(String usuario, char[] password, int cantCartones, JugadorController interfazJugador) 
+    public void loginJugador(String usuario, char[] password, int cantCartones, ControlJugador interfazJugador) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException {
@@ -190,7 +188,7 @@ public class Bingo extends Observable implements Observer {
     
     
     public void lanzarNuevaInterfazJugador() {
-        JugadorController nuevaInterfaz = new JugadorController(this);
+        ControlJugador nuevaInterfaz = new ControlJugador(this);
         nuevaInterfaz.lanzar();
     }
     

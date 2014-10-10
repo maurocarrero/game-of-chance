@@ -7,7 +7,7 @@ package bingo.modelo;
 import bingo.modelo.entidades.Bolillero;
 import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Bolilla;
-import bingo.controladores.JugadorController;
+import bingo.controladores.ControlJugador;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +27,7 @@ public class Partida {
     private int cantCartonesRequeridos;
     private Bolillero bolillero;
     private List<Carton> cartones;
-    private List<JugadorController> jugadores = null;
+    private List<ControlJugador> jugadores = null;
 
 
     public Partida(int cantFilas, int cantColumnas, int cantMaxCartones, int cantJugadores, double valorCarton) {
@@ -41,7 +41,7 @@ public class Partida {
 
     
     
-    public List<JugadorController> getJugadores() {
+    public List<ControlJugador> getJugadores() {
         return jugadores;
     }
 
@@ -52,7 +52,7 @@ public class Partida {
     }
     
     
-    public boolean addJugador(JugadorController e) {
+    public boolean addJugador(ControlJugador e) {
         return jugadores.add(e);
     }
     
@@ -86,7 +86,7 @@ public class Partida {
     private void distribuirCartones() {
         construirBolillero();
         construirCartones();
-        for (JugadorController interfaz : this.jugadores) {
+        for (ControlJugador interfaz : this.jugadores) {
             for (int i = 0; i < interfaz.getJugador().getCantCartones(); i++) {
                 Carton carton = this.cartones.remove(0);
                 interfaz.addCarton(carton);
