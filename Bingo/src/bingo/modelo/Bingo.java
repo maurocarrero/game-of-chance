@@ -188,8 +188,9 @@ public class Bingo extends Observable implements Observer {
     
     
     public void lanzarNuevaInterfazJugador() {
+        
         ControlJugador nuevaInterfaz = new ControlJugador(this);
-        nuevaInterfaz.lanzar();
+        //nuevaInterfaz.lanzar();
     }
     
     

@@ -1,6 +1,7 @@
 package bingo.vistas;
 
 import bingo.controladores.ControlJugador;
+import bingo.controladores.Controlador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
@@ -13,25 +14,38 @@ import javax.swing.JOptionPane;
  * Interfaz para Jugadores
  * @author maurocarrero
  */
-public class VistaJugador extends javax.swing.JFrame {
+public final class VistaJugador extends javax.swing.JFrame implements InterfazVista {
 
-    private ControlJugador jugadores;
+    private ControlJugador jugador;
     
     /**
      * Creates new form InterfazJugador
      */
-    public VistaJugador(ControlJugador instance) {
+    public VistaJugador() {
         initComponents();
-        jugadores = instance;
+        //jugador = instance;
         this.setTitle("Bingo - Administrador");
+        btnIngresar.setActionCommand("INGRESAR");
         ocultarPaneles();
         panelLoginJugador.setVisible(true);
         setTitle("Interfaz de Jugador");
         setVisible(true);
         pack();
     }
-
-    private void esperarComienzoJuego() {
+    
+    public String getUsuario(){
+        return this.txtUsuario.getText();
+    }
+    
+    public char[] getPassword(){
+        return this.txtPassword.getPassword();
+    }
+    
+    public String getCantCartones(){
+        return this.txtCantCartones.getText();
+    }
+    
+    public void esperarComienzoJuego() {
         panelLoginJugador.setVisible(false);
         panelEspera.setVisible(true);
     }
@@ -41,7 +55,7 @@ public class VistaJugador extends javax.swing.JFrame {
         panelLoginJugador.setVisible(false);
     }
     
-    private void ingresar() {
+    /*private void ingresar() {
         String usuario = txtUsuario.getText();
         char[] password = txtPassword.getPassword();
         try {
@@ -72,7 +86,7 @@ public class VistaJugador extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "This is headless!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
-    }
+    }*/
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,32 +114,9 @@ public class VistaJugador extends javax.swing.JFrame {
 
         jLabel2.setText("Contraseña");
 
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
-            }
-        });
-
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
-            }
-        });
-
         btnIngresar.setText("Ingresar");
-        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIngresarActionPerformed(evt);
-            }
-        });
 
         lblCantCartones.setText("Cantidad de cartones");
-
-        txtCantCartones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantCartonesActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelLoginJugadorLayout = new javax.swing.GroupLayout(panelLoginJugador);
         panelLoginJugador.setLayout(panelLoginJugadorLayout);
@@ -205,22 +196,6 @@ public class VistaJugador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        ingresar();
-    }//GEN-LAST:event_btnIngresarActionPerformed
-
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        ingresar();
-    }//GEN-LAST:event_txtUsuarioActionPerformed
-
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        ingresar();
-    }//GEN-LAST:event_txtPasswordActionPerformed
-
-    private void txtCantCartonesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantCartonesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantCartonesActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
@@ -233,4 +208,18 @@ public class VistaJugador extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setControlador(Controlador c) {
+        // Login
+        btnIngresar.addActionListener(c);
+        txtUsuario.addActionListener(c);
+        txtPassword.addActionListener(c);
+        txtCantCartones.addActionListener(c);
+    }
+
+    @Override
+    public void ejecutar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

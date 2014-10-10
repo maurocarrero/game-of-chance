@@ -24,6 +24,7 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
         this.setTitle("Bingo - Administrador");
         
         btnIngresar.setActionCommand("INGRESAR");
+        btnAceptar.setActionCommand("GUARDAR");
         
         ocultarPaneles();
         panelLogin.setVisible(true);
