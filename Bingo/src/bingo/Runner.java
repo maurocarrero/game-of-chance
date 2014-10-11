@@ -18,6 +18,6 @@ public class Runner {
         VistaAdmin vistaAdmin = new VistaAdmin();
         ControlAdmin controlAdmin = ControlAdmin.getInstance(vistaAdmin, modelo);
         vistaAdmin.setControlador(controlAdmin);
-        vistaAdmin.ejecutar();
+        //vistaAdmin.ejecutar();
     }
 }

@@ -6,6 +6,7 @@ import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import bingo.vistas.VistaAdmin;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JFrame;
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author maurocarrero
  */
-public class ControlAdmin extends Controlador implements Observer {
+public class ControlAdmin extends Controlador implements ActionListener {
     
     private static ControlAdmin instance;
     private JFrame frame;
@@ -58,11 +59,11 @@ public class ControlAdmin extends Controlador implements Observer {
     }
     
     
-    @Override
+    /*@Override
     public void update(Observable o, Object arg) {
         Bolilla bolilla = (Bolilla) arg;
         System.out.println("[Administración] El juego empezó: " + bolilla.getValor());
-    }
+    }*/
     
 
     private void ingresar() {
@@ -126,10 +127,10 @@ public class ControlAdmin extends Controlador implements Observer {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "INGRESAR") {
+        if (e.getActionCommand().equals("INGRESAR")) {
             ingresar();
         }
-        if (e.getActionCommand() == "CONFIGURAR") {
+        if (e.getActionCommand().equals("CONFIGURAR")) {
             configurar();
         }
     }
