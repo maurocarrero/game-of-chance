@@ -1,18 +1,15 @@
 package bingo.vistas;
 
+
 import bingo.controladores.ControlAdmin;
-import bingo.controladores.Controlador;
-import bingo.modelo.exceptions.ConfiguracionNoValidaException;
-import java.awt.HeadlessException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 /**
  * Interfaz para Administradores
  * @author maurocarrero
  */
-public final class VistaAdmin extends javax.swing.JFrame implements InterfazVista {
+public final class VistaAdmin extends JFrame {
     
     private ControlAdmin admin;
     
@@ -23,14 +20,15 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
         initComponents();
         this.setTitle("Bingo - Administrador");
         
+        menuConfigurar.setActionCommand("CONFIGURAR");
+        menuCrearInterfaces.setActionCommand("CREAR_INTERFACES");
+
         btnIngresar.setActionCommand("INGRESAR");
-        btnAceptar.setActionCommand("GUARDAR");
+        btnAceptar.setActionCommand("GUARDAR_CONFIGURACION");
         
-        ocultarPaneles();
-        panelLogin.setVisible(true);
-        menuBar.setVisible(false);
-        setLocationRelativeTo(null);
-        pack();
+        txtUsuario.setActionCommand("INGRESAR");
+        txtPassword.setActionCommand("INGRESAR");
+        
     }
     
     public char[] getPassword() {
@@ -63,13 +61,13 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
     
     public void mostrarMenu() {
         menuBar.setVisible(true);
-    }
-    
-    
+    }    
     
     public void mostrarPanelConfiguracion() {
         ocultarPaneles();
         panelConfigurar.setVisible(true);
+        pack();
+
     }
     
     public void mostrarCrearInterfaces() {
@@ -100,14 +98,21 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
         txtValorCarton.setText("" + valorCarton);
     }
     
-    @Override
+    
     public void ejecutar() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ocultarPaneles();
+        panelLogin.setVisible(true);
+        menuBar.setVisible(false);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        pack();
+        setVisible(true);
     }
-
-    @Override
-    public void setControlador(Controlador c) {
-
+    
+    public void setControlador(ControlAdmin c) {
+                
         // Login
         btnIngresar.addActionListener(c);
         txtUsuario.addActionListener(c);
@@ -184,7 +189,7 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
                         .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                             .addComponent(txtPassword))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,7 +257,7 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
                                 .addComponent(txtCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         panelConfigurarLayout.setVerticalGroup(
             panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,7 +276,7 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
                 .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCantCartones))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantJugadores)
                     .addComponent(txtCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -281,7 +286,7 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
                     .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnAceptar)
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel4.setText("Crear Interfaces de usuario");
@@ -320,21 +325,23 @@ public final class VistaAdmin extends javax.swing.JFrame implements InterfazVist
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();

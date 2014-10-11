@@ -1,10 +1,10 @@
 package bingo.modelo;
 
-import bingo.modelo.entidades.Jugador;
 import bingo.modelo.entidades.Administrador;
 import bingo.modelo.entidades.Usuario;
 import bingo.controladores.ControlAdmin;
 import bingo.controladores.ControlJugador;
+import bingo.modelo.entidades.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
@@ -14,13 +14,12 @@ import bingo.modelo.exceptions.SaldoInsuficienteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  *
  * @author maurocarrero
  */
-public class Bingo extends Observable implements Observer {
+public class Bingo extends Observable {
 
     private static Bingo instance;
     
@@ -31,12 +30,10 @@ public class Bingo extends Observable implements Observer {
     private static double valorCarton = 10;
     private static boolean juegoActivo = false;
     
-    private ControlAdmin controlAdmin;
-
     private List<Usuario> usuariosTest = null;
-    private Administrador admin;
 
     private static Partida partida;
+    private Administrador admin;
     
     private Bingo() {
         usuariosTest = new ArrayList();
@@ -57,8 +54,13 @@ public class Bingo extends Observable implements Observer {
     }
     
     
+    public static Partida getPartida() {
+        return Partida.getInstance(cantFilas, cantColumnas, cantMaxCartones, 
+                cantJugadores, valorCarton);
+    }
     
-    public void run() {
+    
+    public void ejecutar() {
         partida.iniciarJuego();
     }
     
@@ -140,7 +142,7 @@ public class Bingo extends Observable implements Observer {
     
     
     
-    public void loginJugador(String usuario, char[] password, int cantCartones, ControlJugador interfazJugador) 
+    public void loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException {
@@ -174,25 +176,13 @@ public class Bingo extends Observable implements Observer {
             throw new SaldoInsuficienteException();
         }
         
-        jugador.setCantCartones(cantCartones);
-        interfazJugador.setJugador(jugador);
-        partida.addJugador(interfazJugador);
-        addObserver(interfazJugador);
-        partida.updateCantCartones(jugador.getCantCartones());
+        partida.addJugador(jugador, cantCartones);
         
         if (listoParaEmpezar()) {
             iniciarJuego();
         }
     }
-    
-    
-    
-    public void lanzarNuevaInterfazJugador() {
-        
-        ControlJugador nuevaInterfaz = new ControlJugador(this);
-        //nuevaInterfaz.lanzar();
-    }
-    
+
     
     
     public boolean hayJuegoActivo() {
@@ -227,11 +217,6 @@ public class Bingo extends Observable implements Observer {
     
     public static double getValorCarton() {
         return valorCarton;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

@@ -1,8 +1,6 @@
 package bingo.controladores;
 
-import bingo.vistas.VistaJugador;
 import bingo.modelo.Bingo;
-import bingo.modelo.entidades.Bolilla;
 import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
@@ -10,61 +8,33 @@ import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
+import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
- * Fachada para módulo de jugadores
  * @author maurocarrero
  */
-public class ControlJugador extends Controlador implements Observer {
+public class ControlJugador extends Controlador implements ActionListener {
 
-    private JFrame frame;
     private Bingo modelo;
     private Jugador jugador;
     private VistaJugador vista;
     
-    public ControlJugador(Bingo modelo) {
+    public ControlJugador(VistaJugador vista, Bingo modelo) {
+        this.vista = vista;
         this.modelo = modelo;
-        this.vista = new VistaJugador();
     }
     
-    /*public void lanzar() {
-        frame = new VistaJugador(this);
-        frame.setVisible(true);
-    }*/
-    
-    /*public void login(String usuario, char[] password, int cantCartones) 
-            throws JuegoEnCursoException, AccesoDenegadoException,
-                CantidadCartonesInvalidaException, DemasiadosCartonesException, 
-                SaldoInsuficienteException {
-        sistema.loginJugador(usuario, password, cantCartones, this);
-    }*/
-    
-   /*private void ingresar() {
-        String usuario = vista.getUsuario();
-        char[] password = vista.getPassword();
-        int cantCartones = vista.getCantCartones();
-        
-        if (modelo.loginJugador(usuario, password, )) {
-            vista.ocultarPaneles();
-            vista.mostrarMenu();
-            JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", "Exito", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Acceso denegado", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }*/
-    
     private void ingresar() {
-        String usuario = vista.getUsuario();
-        char[] password = vista.getPassword();
-        //int cantCartones = vista.getCantCartones();
         try {
             
+            String usuario = vista.getUsuario();
+            char[] password = vista.getPassword();
+        
             if (usuario.length() == 0 || password.length == 0) {
                 throw new AccesoDenegadoException();
             }
@@ -76,7 +46,7 @@ public class ControlJugador extends Controlador implements Observer {
                 throw new CantidadCartonesInvalidaException();
             }
             
-            modelo.loginJugador(usuario, password, cantCartones, this);
+            modelo.loginJugador(usuario, password, cantCartones);
             vista.esperarComienzoJuego();
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", 
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
@@ -110,16 +80,8 @@ public class ControlJugador extends Controlador implements Observer {
     }
     
     @Override
-    public void update(Observable o, Object arg) {
-        Bolilla bolilla = (Bolilla) arg;
-        
-        System.out.println(modelo);
-        System.out.println("[Jugador " + this.getJugador().getUsuario() + "] " + bolilla.getValor());
-    }
-
-   @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "INGRESAR") {
+        if (e.getActionCommand().equals("INGRESAR")) {
             ingresar();
         }        
     }

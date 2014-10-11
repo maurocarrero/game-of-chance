@@ -13,7 +13,9 @@ import java.util.List;
 public class Carton {
     
     private int[][] numeros;
-    private Bolilla[][] bolillas;
+    private List<Bolilla> bolillas;
+    private int cantCasilleros;
+    private int cantAciertos;
     
     private int cantFilas;
     private int cantColumnas;
@@ -22,6 +24,8 @@ public class Carton {
         this.numeros = new int[cantFilas][cantColumnas];
         this.cantFilas = cantFilas;
         this.cantColumnas = cantColumnas;
+        this.cantCasilleros = cantFilas * cantColumnas;
+        this.cantAciertos = 0;
     }
     
     public void poblar(List<Bolilla> bolillas) {
@@ -40,6 +44,22 @@ public class Carton {
             }
             System.out.print("\n");
         }
+    }
+    
+    public void buscarBolilla(Bolilla bolilla) {
+        int valor = bolilla.getValor();
+        for (int x = 0; x < this.cantFilas; x++) {
+            for (int y = 0; y < this.cantColumnas; y++) {
+                if (numeros[x][y] == valor) {
+                    this.cantAciertos++;
+                    bolillas.add(bolilla);
+                }
+            }
+        }
+    }
+    
+    public boolean estaCompleto() {
+        return this.cantAciertos == this.cantCasilleros;
     }
     
 }

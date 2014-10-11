@@ -8,6 +8,7 @@ import bingo.modelo.entidades.Bolillero;
 import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Bolilla;
 import bingo.controladores.ControlJugador;
+import bingo.modelo.entidades.Jugador;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
  */
 public class Partida {
 
+    private static Partida instance;
+    
     private int cantFilas;
     private int cantColumnas;
     private int cantMaxCartones;
@@ -26,11 +29,12 @@ public class Partida {
     
     private int cantCartonesRequeridos;
     private Bolillero bolillero;
+    
     private List<Carton> cartones;
-    private List<ControlJugador> jugadores = null;
+    private List<Jugador> jugadores = null;
 
 
-    public Partida(int cantFilas, int cantColumnas, int cantMaxCartones, int cantJugadores, double valorCarton) {
+    private Partida(int cantFilas, int cantColumnas, int cantMaxCartones, int cantJugadores, double valorCarton) {
         this.cantFilas = cantFilas;
         this.cantColumnas = cantColumnas;
         this.cantMaxCartones = cantMaxCartones;
@@ -39,9 +43,16 @@ public class Partida {
         this.jugadores = new ArrayList();
     }
 
+    public static Partida getInstance(int cantFilas, int cantColumnas, 
+            int cantMaxCartones, int cantJugadores, double valorCarton) {
+        if (instance == null) {
+            instance = new Partida(cantFilas, cantColumnas, cantMaxCartones, 
+                    cantJugadores, valorCarton);
+        }
+        return instance;
+    }
     
-    
-    public List<ControlJugador> getJugadores() {
+    public List<Jugador> getJugadores() {
         return jugadores;
     }
 
@@ -52,8 +63,9 @@ public class Partida {
     }
     
     
-    public boolean addJugador(ControlJugador e) {
-        return jugadores.add(e);
+    public void addJugador(Jugador jugador, int cantCartones) {
+        this.jugadores.add(jugador);
+        this.updateCantCartones(jugador.getCantCartones());
     }
     
     
@@ -86,10 +98,9 @@ public class Partida {
     private void distribuirCartones() {
         construirBolillero();
         construirCartones();
-        for (ControlJugador interfaz : this.jugadores) {
-            for (int i = 0; i < interfaz.getJugador().getCantCartones(); i++) {
-                Carton carton = this.cartones.remove(0);
-                interfaz.addCarton(carton);
+        for (Jugador jugador : this.jugadores) {
+            for (int i = 0; i < jugador.getCantCartones(); i++) {
+                jugador.addCarton(this.cartones.remove(0));
             }
         }
     }
@@ -98,5 +109,12 @@ public class Partida {
     public void iniciarJuego() {
         distribuirCartones();
         Bolilla bolilla = this.bolillero.sacarBolilla();
+        anunciarBolilla(bolilla);
+    }
+    
+    public void anunciarBolilla(Bolilla bolilla) {
+        for (Jugador j : this.jugadores) {
+            j.buscarBolilla(bolilla);
+        }
     }
 }

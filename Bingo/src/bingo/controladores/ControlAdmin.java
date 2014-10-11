@@ -1,14 +1,13 @@
 package bingo.controladores;
 
 import bingo.modelo.Bingo;
-import bingo.modelo.entidades.Bolilla;
+import bingo.modelo.Partida;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import bingo.vistas.VistaAdmin;
+import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -27,8 +26,6 @@ public class ControlAdmin extends Controlador implements ActionListener {
     private ControlAdmin(VistaAdmin vista, Bingo modelo) {
         this.modelo = modelo;
         this.vista = vista;
-        frame = new VistaAdmin();
-        frame.setVisible(true);
     }
 
     public static ControlAdmin getInstance(VistaAdmin vista, Bingo modelo) {
@@ -56,15 +53,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
 
     public double getValorCarton() {
         return Bingo.getValorCarton();
-    }
-    
-    
-    /*@Override
-    public void update(Observable o, Object arg) {
-        Bolilla bolilla = (Bolilla) arg;
-        System.out.println("[Administración] El juego empezó: " + bolilla.getValor());
-    }*/
-    
+    }    
 
     private void ingresar() {
         String usuario = vista.getUsuario();
@@ -97,7 +86,11 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void lanzarNuevaInterfazJugador() {
-        modelo.lanzarNuevaInterfazJugador();
+        Partida partida = Bingo.getPartida();
+        VistaJugador nuevaVista = new VistaJugador();
+        ControlJugador control = new ControlJugador(nuevaVista, modelo);
+        nuevaVista.setControlador(control);
+        nuevaVista.ejecutar();
     }
     
     private void crearInterfaces() {
@@ -127,11 +120,18 @@ public class ControlAdmin extends Controlador implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getActionCommand().equals("INGRESAR")) {
             ingresar();
         }
         if (e.getActionCommand().equals("CONFIGURAR")) {
             configurar();
+        }
+        if (e.getActionCommand().equals("GUARDAR_CONFIGURACION")) {
+            guardarConfiguracion();
+        }
+        if (e.getActionCommand().equals("CREAR_INTERFACES")) {
+            crearInterfaces();
         }
     }
 }
