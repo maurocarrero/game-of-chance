@@ -104,10 +104,9 @@ public final class VistaAdmin extends JFrame {
         panelLogin.setVisible(true);
         menuBar.setVisible(false);
         
+        pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-        pack();
         setVisible(true);
     }
     

@@ -2,6 +2,13 @@ package bingo.vistas;
 
 import bingo.controladores.ControlJugador;
 import bingo.controladores.Controlador;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Interfaz para Jugadores
@@ -10,6 +17,7 @@ import bingo.controladores.Controlador;
 public final class VistaJugador extends javax.swing.JFrame implements InterfazVista {
 
     private ControlJugador jugador;
+    private Font font;
     
     /**
      * Creates new form InterfazJugador
@@ -17,6 +25,8 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
     public VistaJugador() {
         initComponents();
         this.setTitle("Bingo - Administrador");
+        
+        this.font = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
         btnIngresar.setActionCommand("INGRESAR");
     }
     
@@ -42,6 +52,30 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelLoginJugador.setVisible(false);
     }
     
+    public void dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {
+        System.out.println("\nDibujando cartón");
+        JInternalFrame frame = new JInternalFrame();
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(cantFilas, cantColumnas));
+        for (int x = 0; x < numeros.length; x++) {
+            for (int y = 0; y < numeros[x].length; y++) {
+                JLabel label = new JLabel("" + numeros[x][y]);
+                label.setAlignmentX(CENTER_ALIGNMENT);
+                label.setAlignmentY(CENTER_ALIGNMENT);
+                label.setBounds(10, 10, 10, 10);
+                label.setFont(this.font);
+                panel.add(label);
+            }
+        }
+        ocultarPaneles();
+        this.add(frame);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
+        panel.setVisible(true);
+    }
+    
+    
     @Override
     public void setControlador(Controlador c) {
         // Login
@@ -53,10 +87,15 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
 
     @Override
     public void ejecutar() {
+        
+        
         ocultarPaneles();
         panelLoginJugador.setVisible(true);
         setTitle("Interfaz de Jugador");
+        
         pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
     

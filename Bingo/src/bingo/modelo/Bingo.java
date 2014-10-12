@@ -1,10 +1,8 @@
 package bingo.modelo;
 
 import bingo.modelo.entidades.Administrador;
-import bingo.modelo.entidades.Usuario;
-import bingo.controladores.ControlAdmin;
-import bingo.controladores.ControlJugador;
 import bingo.modelo.entidades.Jugador;
+import bingo.modelo.entidades.Usuario;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
@@ -26,7 +24,12 @@ public class Bingo extends Observable {
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
     private static int cantMaxCartones = 2;
-    private static int cantJugadores = 3;
+    
+
+    //CAMBIAR POR 3 JUGADORES!!!
+    //TODO
+    private static int cantJugadores = 2;
+    
     private static double valorCarton = 10;
     private static boolean juegoActivo = false;
     
@@ -39,7 +42,10 @@ public class Bingo extends Observable {
         usuariosTest = new ArrayList();
         usuariosTest.add(new Administrador("mcarrero", "mcarrero"));
         usuariosTest.add(new Administrador("fgonzalez", "fgonzalez"));
-        usuariosTest.add(new Jugador("j1", "j1", 0, 1200));
+        
+        Jugador j = new Jugador("j1", "j1", 0, 1200);
+        
+        usuariosTest.add(j);
         usuariosTest.add(new Jugador("j2", "j2", 0, 2700));
         usuariosTest.add(new Jugador("j3", "j3", 0, 4200));
     }
@@ -95,15 +101,10 @@ public class Bingo extends Observable {
 
     
     
-    private boolean listoParaEmpezar() {
-        return partida.getJugadores().size() == cantJugadores;
-    }
-    
-    
-    
-    private void iniciarJuego() {
-        partida.iniciarJuego();
-        this.setChanged();
+    public void inicioCondicional() {
+        if (getPartida().getJugadores().size() == cantJugadores) {
+            getPartida().iniciarJuego();
+        }
     }
     
     
@@ -142,13 +143,13 @@ public class Bingo extends Observable {
     
     
     
-    public void loginJugador(String usuario, char[] password, int cantCartones) 
+    public Jugador loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException {
         
         Jugador jugador = (Jugador) login(usuario);
-
+        
         // ACCESO DENEGADO
         if (jugador == null) {
             throw new AccesoDenegadoException();
@@ -176,11 +177,9 @@ public class Bingo extends Observable {
             throw new SaldoInsuficienteException();
         }
         
-        partida.addJugador(jugador, cantCartones);
-        
-        if (listoParaEmpezar()) {
-            iniciarJuego();
-        }
+        getPartida().addJugador(jugador, cantCartones);
+                
+        return jugador;
     }
 
     

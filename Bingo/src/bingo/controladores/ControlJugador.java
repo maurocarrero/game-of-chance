@@ -1,5 +1,6 @@
 package bingo.controladores;
 
+import bingo.interfaces.IBolilla;
 import bingo.modelo.Bingo;
 import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Jugador;
@@ -12,13 +13,15 @@ import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JOptionPane;
 
 /**
  * @author maurocarrero
  */
-public class ControlJugador extends Controlador implements ActionListener {
+public class ControlJugador extends Controlador implements ActionListener, Observer {
 
     private Bingo modelo;
     private Jugador jugador;
@@ -46,8 +49,13 @@ public class ControlJugador extends Controlador implements ActionListener {
                 throw new CantidadCartonesInvalidaException();
             }
             
-            modelo.loginJugador(usuario, password, cantCartones);
+            Jugador j = modelo.loginJugador(usuario, password, cantCartones);
+            this.jugador = j;
+            
             vista.esperarComienzoJuego();
+
+            modelo.inicioCondicional();
+            
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", 
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
             
@@ -67,22 +75,39 @@ public class ControlJugador extends Controlador implements ActionListener {
         return Bingo.getCantMaxCartones();
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
-    }
 
     public Jugador getJugador() {
         return jugador;
     }
     
-    public void addCarton(Carton carton) {
-        carton.dibujar();
+    
+    private void dibujarCartones() {
+        System.out.println("Dibujando cartones");
+
+        List<Carton> cartones = this.getJugador().getCartones();
+
+        for (Carton c : cartones) {
+            int[][] numeros = c.getNumeros();
+            vista.dibujarCarton(numeros, c.getCantFilas(), c.getCantColumnas());
+        }
     }
+    
     
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("INGRESAR")) {
             ingresar();
         }        
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg != null) {
+            IBolilla bolilla = (IBolilla) arg;
+            System.out.println("Bolilla " + bolilla.getValor());
+        } else {
+            System.out.println("Inicio del juego desde el controlador del jugador " + this.jugador.getUsuario());
+            dibujarCartones();
+        }
     }
 }

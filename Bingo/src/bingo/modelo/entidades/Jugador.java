@@ -1,5 +1,6 @@
 package bingo.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class Jugador extends Usuario {
         super(usuario, password);
         this.cantCartones = cantCartones;
         this.saldo = saldo;
+        this.cartones = new ArrayList<>();
     }
     
     public int getCantCartones() {
@@ -25,6 +27,10 @@ public class Jugador extends Usuario {
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public List<Carton> getCartones() {
+        return cartones;
     }
     
     public boolean puedeCostear(double valorCartones) {

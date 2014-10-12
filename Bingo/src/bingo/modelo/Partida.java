@@ -4,20 +4,20 @@
  */
 package bingo.modelo;
 
+import bingo.modelo.entidades.Bolilla;
 import bingo.modelo.entidades.Bolillero;
 import bingo.modelo.entidades.Carton;
-import bingo.modelo.entidades.Bolilla;
-import bingo.controladores.ControlJugador;
 import bingo.modelo.entidades.Jugador;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 
 /**
  *
  * @author maurocarrero
  */
-public class Partida {
+public class Partida extends Observable {
 
     private static Partida instance;
     
@@ -64,8 +64,10 @@ public class Partida {
     
     
     public void addJugador(Jugador jugador, int cantCartones) {
+        jugador.setCantCartones(cantCartones);
+        this.updateCantCartones(cantCartones);
         this.jugadores.add(jugador);
-        this.updateCantCartones(jugador.getCantCartones());
+
     }
     
     
@@ -75,14 +77,17 @@ public class Partida {
     
     
     private void construirBolillero() {
+        System.out.println("Construir bolillero");
         int cantNumerosPorCarton = cantFilas * cantColumnas;
         int cantTotalNumeros = cantNumerosPorCarton * cantCartonesRequeridos;
         this.bolillero = new Bolillero(cantTotalNumeros);
+        System.out.println("Bolillero: " + this.bolillero.getListaBolillas().size());
     }
     
     
     
     private void construirCartones() {
+        System.out.println("Construir cartones");
         this.cartones = new ArrayList();
         List<Bolilla> bolillas = bolillero.getListaBolillas();
 
@@ -98,15 +103,24 @@ public class Partida {
     private void distribuirCartones() {
         construirBolillero();
         construirCartones();
+        
+        System.out.println("Distribuir cartones");
+        System.out.println("Cantidad de cartones: " + this.cartones.size());
+
         for (Jugador jugador : this.jugadores) {
             for (int i = 0; i < jugador.getCantCartones(); i++) {
                 jugador.addCarton(this.cartones.remove(0));
             }
+            System.out.println("Jugador: " + jugador.getUsuario());
+            System.out.println("Cantidad de cartones: " + jugador.getCartones().size());
         }
+        setChanged();
+        notifyObservers(null);
     }
     
     
     public void iniciarJuego() {
+        System.out.println("Inicia el juego");
         distribuirCartones();
         Bolilla bolilla = this.bolillero.sacarBolilla();
         anunciarBolilla(bolilla);
@@ -116,5 +130,7 @@ public class Partida {
         for (Jugador j : this.jugadores) {
             j.buscarBolilla(bolilla);
         }
+        setChanged();
+        notifyObservers(bolilla);
     }
 }

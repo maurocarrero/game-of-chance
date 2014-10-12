@@ -4,11 +4,13 @@
  */
 package bingo.modelo.entidades;
 
+import bingo.interfaces.IBolilla;
+
 /**
  *
  * @author maurocarrero
  */
-public class Bolilla {
+public class Bolilla implements IBolilla {
     private int valor;
 
     public Bolilla(int valor) {

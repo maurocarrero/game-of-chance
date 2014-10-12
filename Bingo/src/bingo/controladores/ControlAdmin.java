@@ -90,6 +90,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
         VistaJugador nuevaVista = new VistaJugador();
         ControlJugador control = new ControlJugador(nuevaVista, modelo);
         nuevaVista.setControlador(control);
+        partida.addObserver(control);
         nuevaVista.ejecutar();
     }
     

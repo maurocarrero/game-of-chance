@@ -4,6 +4,7 @@
  */
 package bingo.modelo.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class Carton {
         this.cantColumnas = cantColumnas;
         this.cantCasilleros = cantFilas * cantColumnas;
         this.cantAciertos = 0;
+        this.bolillas = new ArrayList<>();
     }
     
     public void poblar(List<Bolilla> bolillas) {
@@ -35,16 +37,20 @@ public class Carton {
             }
         }
     }
+
     
-    public void dibujar() {
-        System.out.println("\nCARTON");
-        for (int x = 0; x < this.cantFilas; x++) {
-            for (int y = 0; y < cantColumnas; y++) {
-                System.out.print(numeros[x][y] + " | ");
-            }
-            System.out.print("\n");
-        }
+    public int[][] getNumeros() {
+        return numeros;
     }
+
+    public int getCantFilas() {
+        return cantFilas;
+    }
+
+    public int getCantColumnas() {
+        return cantColumnas;
+    }
+    
     
     public void buscarBolilla(Bolilla bolilla) {
         int valor = bolilla.getValor();
