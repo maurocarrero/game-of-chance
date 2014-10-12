@@ -7,6 +7,7 @@ import bingo.modelo.entidades.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
+import bingo.modelo.exceptions.EstaLogeadoException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
 import bingo.vistas.JCasillero;
@@ -52,7 +53,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             
             Jugador j = modelo.loginJugador(usuario, password, cantCartones);
             this.jugador = j;
-            
+          
             vista.esperarComienzoJuego();
 
             modelo.inicioCondicional();
@@ -60,7 +61,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", 
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
             
-        } catch (AccesoDenegadoException | JuegoEnCursoException | 
+        } catch (AccesoDenegadoException | JuegoEnCursoException | EstaLogeadoException | 
                 SaldoInsuficienteException | CantidadCartonesInvalidaException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (DemasiadosCartonesException ex) {
@@ -103,11 +104,20 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         notifyObservers(bolilla.getValor());
     }
     
+    //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
+    public void meBorro(){
+        setChanged();
+        notifyObservers();
+        System.out.println("me borre " + jugador.getUsuario());
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("INGRESAR")) {
             ingresar();
+        }
+        if (e.getActionCommand().equals("NO_CONTINUAR")) {
+            meBorro();
         }        
     }
 

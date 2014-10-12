@@ -9,7 +9,9 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -58,6 +60,19 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         contenedor.setLayout(new GridLayout(tamanio, 1));
         contenedor.setSize(cantFilas * 100, cantColumnas * 100 * tamanio);
         add(contenedor, BorderLayout.CENTER);
+        //dibujarBotonesContinuar();
+    }
+    
+    public void dibujarBotonesContinuar(){
+        
+        JLabel labelContinuar = new JLabel("Desea Continuar");
+        JButton btnNo = new JButton("NO");
+        JButton btnSi = new JButton("Si");
+        btnNo.setActionCommand("NO_CONTINUAR");
+        btnSi.setActionCommand("SI_CONTINUAR");
+        contenedor.add(labelContinuar);
+        contenedor.add(btnNo);
+        contenedor.add(btnSi);
     }
     
     public List<JCasillero> dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {

@@ -56,7 +56,18 @@ public class Partida extends Observable {
         return jugadores;
     }
 
-    
+    public void borrarJugador(Jugador jugador){
+        List <Carton> cartones = jugador.getCartones();
+        for (Carton c : cartones){
+            c.borrarBolillas(this.bolillero);
+        }
+        for (Jugador j : jugadores){
+            if(jugador.equals(j)){
+                j = null;
+                jugador = null;
+            }
+        }
+    }
     
     public int getCantCartonesRequeridos() {
         return cantCartonesRequeridos;

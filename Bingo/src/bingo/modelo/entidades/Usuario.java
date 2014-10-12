@@ -11,10 +11,19 @@ package bingo.modelo.entidades;
 public abstract class Usuario {
     private String usuario;
     private String password;
+    private Boolean logeado = false;  
 
     public Usuario(String usuario, String password) {
         this.usuario = usuario;
         this.password = password;
+    }
+    
+    public Boolean estaLogeado(){
+        return this.logeado;
+    }
+    
+    public void setLogeado(Boolean logeado){
+        this.logeado = logeado;
     }
     
     public String getUsuario() {

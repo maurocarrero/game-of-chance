@@ -7,6 +7,7 @@ import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
+import bingo.modelo.exceptions.EstaLogeadoException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
 import java.util.ArrayList;
@@ -146,7 +147,7 @@ public class Bingo extends Observable {
     public Jugador loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
-                SaldoInsuficienteException {
+                SaldoInsuficienteException, EstaLogeadoException {
         
         Jugador jugador = (Jugador) login(usuario);
         
@@ -170,7 +171,9 @@ public class Bingo extends Observable {
         if (demasiadosCartones(cantCartones)) {
             throw new DemasiadosCartonesException();
         }             
-        
+        if (jugador.estaLogeado()){
+            throw new EstaLogeadoException("" + jugador.getUsuario());
+        }
         // SALDO INSUFICIENTE
         double precioCartones = getPrecioCartones(cantCartones);
         if (!jugador.puedeCostear(precioCartones)) {
@@ -178,6 +181,7 @@ public class Bingo extends Observable {
         }
         
         getPartida().addJugador(jugador, cantCartones);
+        jugador.setLogeado(true);
                 
         return jugador;
     }
