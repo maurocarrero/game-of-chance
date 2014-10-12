@@ -86,7 +86,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void lanzarNuevaInterfazJugador() {
-        Partida partida = Bingo.getPartida();
+        Partida partida = modelo.getPartida();
         VistaJugador nuevaVista = new VistaJugador();
         ControlJugador control = new ControlJugador(nuevaVista, modelo);
         nuevaVista.setControlador(control);

@@ -63,8 +63,7 @@ public class Partida extends Observable {
         }
         for (Jugador j : jugadores){
             if(jugador.equals(j)){
-                j = null;
-                jugador = null;
+                jugadores.remove(j);
             }
         }
     }
@@ -129,6 +128,11 @@ public class Partida extends Observable {
         notifyObservers(null);
     }
     
+    public void seguirJugando(Boolean seguir, Jugador j){
+        if(!seguir){
+            this.borrarJugador(j);
+        }
+    }
     
     public void iniciarJuego() {
         System.out.println("Inicia el juego");

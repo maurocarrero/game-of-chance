@@ -61,7 +61,7 @@ public class Bingo extends Observable {
     }
     
     
-    public static Partida getPartida() {
+    public Partida getPartida() {
         return Partida.getInstance(cantFilas, cantColumnas, cantMaxCartones, 
                 cantJugadores, valorCarton);
     }

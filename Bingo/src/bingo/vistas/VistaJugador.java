@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Interfaz para Jugadores
@@ -30,6 +31,9 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         initComponents();
         this.setTitle("Bingo - Administrador");
         btnIngresar.setActionCommand("INGRESAR");
+        btnNO.setActionCommand("NO_CONTINUAR");
+        btnSI.setActionCommand("SI_CONTINUAR");
+        panelContinuarJugando.setVisible(false);       
     }
     
     public String getUsuario(){
@@ -60,20 +64,8 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         contenedor.setLayout(new GridLayout(tamanio, 1));
         contenedor.setSize(cantFilas * 100, cantColumnas * 100 * tamanio);
         add(contenedor, BorderLayout.CENTER);
-        //dibujarBotonesContinuar();
-    }
-    
-    public void dibujarBotonesContinuar(){
-        
-        JLabel labelContinuar = new JLabel("Desea Continuar");
-        JButton btnNo = new JButton("NO");
-        JButton btnSi = new JButton("Si");
-        btnNo.setActionCommand("NO_CONTINUAR");
-        btnSi.setActionCommand("SI_CONTINUAR");
-        contenedor.add(labelContinuar);
-        contenedor.add(btnNo);
-        contenedor.add(btnSi);
-    }
+        contenedor.add(panelContinuarJugando).setVisible(true);
+    }  
     
     public List<JCasillero> dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {
         JPanel panel = new JPanel();
@@ -133,6 +125,10 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         txtCantCartones = new javax.swing.JTextField();
         panelEspera = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        panelContinuarJugando = new javax.swing.JPanel();
+        lblContinuarJugando = new javax.swing.JLabel();
+        btnSI = new javax.swing.JButton();
+        btnNO = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -193,30 +189,70 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
             .addGroup(panelEsperaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(279, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         panelEsperaLayout.setVerticalGroup(
             panelEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEsperaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        lblContinuarJugando.setText("¿Desea continuar jugando? ");
+
+        btnSI.setText("SI");
+
+        btnNO.setText("NO");
+
+        javax.swing.GroupLayout panelContinuarJugandoLayout = new javax.swing.GroupLayout(panelContinuarJugando);
+        panelContinuarJugando.setLayout(panelContinuarJugandoLayout);
+        panelContinuarJugandoLayout.setHorizontalGroup(
+            panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContinuarJugandoLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelContinuarJugandoLayout.createSequentialGroup()
+                        .addComponent(btnSI)
+                        .addGap(36, 36, 36)
+                        .addComponent(btnNO))
+                    .addComponent(lblContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelContinuarJugandoLayout.setVerticalGroup(
+            panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContinuarJugandoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblContinuarJugando)
+                .addGap(39, 39, 39)
+                .addGroup(panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSI)
+                    .addComponent(btnNO))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(panelEspera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelEspera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(129, 129, 129)
+                        .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(267, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelEspera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panelEspera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,10 +260,14 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JButton btnNO;
+    private javax.swing.JButton btnSI;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblCantCartones;
+    private javax.swing.JLabel lblContinuarJugando;
+    private javax.swing.JPanel panelContinuarJugando;
     private javax.swing.JPanel panelEspera;
     private javax.swing.JPanel panelLoginJugador;
     private javax.swing.JTextField txtCantCartones;

@@ -105,10 +105,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     }
     
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
-    public void meBorro(){
-        setChanged();
-        notifyObservers();
-        System.out.println("me borre " + jugador.getUsuario());
+    public void continuarParticipando(boolean seguir){
+       if(!seguir){
+           this.modelo.getPartida().seguirJugando(seguir, jugador);
+       }
     }
     
     @Override
@@ -117,7 +117,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             ingresar();
         }
         if (e.getActionCommand().equals("NO_CONTINUAR")) {
-            meBorro();
+            continuarParticipando(true);
+        }
+         if (e.getActionCommand().equals("SI_CONTINUAR")) {
+             continuarParticipando(false);
         }        
     }
 
