@@ -9,6 +9,7 @@ import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
+import bingo.vistas.JCasillero;
 import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -86,10 +87,20 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
 
         List<Carton> cartones = this.getJugador().getCartones();
 
+        vista.dibujarContenedorCartones(cartones.size(), Bingo.getCantFilas(), Bingo.getCantColumnas());
+        
         for (Carton c : cartones) {
             int[][] numeros = c.getNumeros();
-            vista.dibujarCarton(numeros, c.getCantFilas(), c.getCantColumnas());
+            List<JCasillero> casilleros = vista.dibujarCarton(numeros, c.getCantFilas(), c.getCantColumnas());
+            for (JCasillero casillero : casilleros) {
+                addObserver(casillero);
+            }
         }
+    }
+    
+    public void marcarCasillero(IBolilla bolilla) {
+        setChanged();
+        notifyObservers(bolilla.getValor());
     }
     
     
@@ -104,6 +115,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     public void update(Observable o, Object arg) {
         if (arg != null) {
             IBolilla bolilla = (IBolilla) arg;
+            marcarCasillero(bolilla);
             System.out.println("Bolilla " + bolilla.getValor());
         } else {
             System.out.println("Inicio del juego desde el controlador del jugador " + this.jugador.getUsuario());

@@ -2,12 +2,14 @@ package bingo.vistas;
 
 import bingo.controladores.ControlJugador;
 import bingo.controladores.Controlador;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -17,7 +19,7 @@ import javax.swing.JPanel;
 public final class VistaJugador extends javax.swing.JFrame implements InterfazVista {
 
     private ControlJugador jugador;
-    private Font font;
+    private JPanel contenedor;
     
     /**
      * Creates new form InterfazJugador
@@ -25,8 +27,6 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
     public VistaJugador() {
         initComponents();
         this.setTitle("Bingo - Administrador");
-        
-        this.font = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
         btnIngresar.setActionCommand("INGRESAR");
     }
     
@@ -52,29 +52,34 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelLoginJugador.setVisible(false);
     }
     
-    public void dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {
-        System.out.println("\nDibujando cartón");
-        JInternalFrame frame = new JInternalFrame();
+    public void dibujarContenedorCartones(int tamanio, int cantFilas, int cantColumnas) {
+        contenedor = new JPanel();
+        contenedor.setName("panelCasilleros");
+        contenedor.setLayout(new GridLayout(tamanio, 1));
+        contenedor.setSize(cantFilas * 100, cantColumnas * 100 * tamanio);
+        add(contenedor, BorderLayout.CENTER);
+    }
+    
+    public List<JCasillero> dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(cantFilas, cantColumnas));
+        panel.setSize(cantFilas * 100, cantColumnas * 100);
+        panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 10, true));
+        
+        List<JCasillero> casilleros = new ArrayList<>();
+        
         for (int x = 0; x < numeros.length; x++) {
             for (int y = 0; y < numeros[x].length; y++) {
-                JLabel label = new JLabel("" + numeros[x][y]);
-                label.setAlignmentX(CENTER_ALIGNMENT);
-                label.setAlignmentY(CENTER_ALIGNMENT);
-                label.setBounds(10, 10, 10, 10);
-                label.setFont(this.font);
-                panel.add(label);
+                JCasillero casillero = new JCasillero(numeros[x][y]);
+                panel.add(casillero);
+                casilleros.add(casillero);
             }
         }
         ocultarPaneles();
-        this.add(frame);
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
-        panel.setVisible(true);
+        contenedor.add(panel);
+        return casilleros;
     }
-    
+        
     
     @Override
     public void setControlador(Controlador c) {

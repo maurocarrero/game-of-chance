@@ -5,12 +5,13 @@
 package bingo.controladores;
 
 import java.awt.event.ActionListener;
+import java.util.Observable;
 
 /**
  *
  * @author maurocarrero
  */
-public abstract class Controlador implements ActionListener {
+public abstract class Controlador extends Observable implements ActionListener {
     
     
     
