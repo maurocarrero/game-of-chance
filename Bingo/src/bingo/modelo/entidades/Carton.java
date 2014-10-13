@@ -64,18 +64,6 @@ public class Carton {
         }
     }
     
-    public void borrarBolillas(Bolillero bolillero){
-        for (int x = 0; x < this.cantFilas; x++) {
-            for (int y = 0; y < this.cantColumnas; y++) {
-                for(Bolilla b : bolillero.getListaBolillas()){
-                    if(b.getValor() == numeros[x][y]){
-                        b = null;
-                    }
-                }
-            }
-        }
-    }
-    
     public boolean estaCompleto() {
         return this.cantAciertos == this.cantCasilleros;
     }

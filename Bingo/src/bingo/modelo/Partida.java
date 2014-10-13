@@ -32,7 +32,9 @@ public class Partida extends Observable {
     
     private List<Carton> cartones;
     private List<Jugador> jugadores = null;
-
+    private List<Jugador> jugadoresPendientes;
+    private boolean enCurso = false;
+    private double pozo = 0d;
 
     private Partida(int cantFilas, int cantColumnas, int cantMaxCartones, int cantJugadores, double valorCarton) {
         this.cantFilas = cantFilas;
@@ -41,6 +43,14 @@ public class Partida extends Observable {
         this.cantJugadores = cantJugadores;
         this.valorCarton = valorCarton;
         this.jugadores = new ArrayList();
+    }
+
+    public boolean isEnCurso() {
+        return enCurso;
+    }
+
+    public void setEnCurso(boolean enCurso) {
+        this.enCurso = enCurso;
     }
 
     public static Partida getInstance(int cantFilas, int cantColumnas, 
@@ -56,16 +66,16 @@ public class Partida extends Observable {
         return jugadores;
     }
 
+    /**
+     * VER COMO HACERLO MAS PERFORMANTE
+     * @param jugador
+     */
     public void borrarJugador(Jugador jugador){
-        List <Carton> cartones = jugador.getCartones();
-        for (Carton c : cartones){
-            c.borrarBolillas(this.bolillero);
+        for (Carton c : jugador.getCartones()) {
+            bolillero.borrarBolillas(c);
         }
-        for (Jugador j : jugadores){
-            if(jugador.equals(j)){
-                jugadores.remove(j);
-            }
-        }
+        jugadores.remove(jugador);
+        jugador.setLogueado(false);
     }
     
     public int getCantCartonesRequeridos() {
@@ -107,6 +117,11 @@ public class Partida extends Observable {
             carton.poblar(bolillas);
             this.cartones.add(carton);
         }
+    }
+    
+    private double calcularPozo(int cartonesEnJuego) {
+        return cantCartonesRequeridos * valorCarton +
+                cartonesEnJuego * valorCarton;
         
     }
     
@@ -128,24 +143,62 @@ public class Partida extends Observable {
         notifyObservers(null);
     }
     
-    public void seguirJugando(Boolean seguir, Jugador j){
-        if(!seguir){
-            this.borrarJugador(j);
-        }
+    
+    public void iniciar() {
+        System.out.println("Inicia el juego");
+        setEnCurso(true);
+        distribuirCartones();
+        siguienteTurno();
     }
     
-    public void iniciarJuego() {
-        System.out.println("Inicia el juego");
-        distribuirCartones();
+    
+    public void siguienteTurno() {
         Bolilla bolilla = this.bolillero.sacarBolilla();
         anunciarBolilla(bolilla);
+        jugadoresPendientes = new ArrayList<>(jugadores);
     }
     
+    
     public void anunciarBolilla(Bolilla bolilla) {
-        for (Jugador j : this.jugadores) {
-            j.buscarBolilla(bolilla);
+        for (Jugador jugador : this.jugadores) {
+            if (jugador.buscarBolilla(bolilla)) {
+                System.out.println("Bingo!!!");
+                finalizar(jugador);
+            }
         }
         setChanged();
         notifyObservers(bolilla);
+    }
+    
+    public void eliminarJugadorPendiente(Jugador jugador) {
+        for (int i = 0; i < jugadoresPendientes.size(); i++) {
+            if (jugadoresPendientes.get(i).getUsuario().equals(jugador.getUsuario())) {
+                jugadoresPendientes.remove(i);
+            }
+        }
+    }
+    
+    public void continuarParticipando(Boolean continua, Jugador jugador){
+        eliminarJugadorPendiente(jugador);
+        if (!continua) {
+            this.borrarJugador(jugador);
+        } else {
+            if (jugadoresPendientes.isEmpty()) {
+                siguienteTurno();
+            }
+        }
+    }
+    
+    private void finalizar(Jugador ganador) {
+        System.out.println("Bingo!!!");
+        int cantCartonesEnJuego = 0;
+        for (Jugador jugador : jugadores) {
+            cantCartonesEnJuego += jugador.getCantCartones();
+            if (!jugador.equals(ganador)) {
+                pozo += jugador.debitar(valorCarton);
+            }            
+        }
+        // this.pozo = calcularPozo(cantCartonesEnJuego);
+        
     }
 }

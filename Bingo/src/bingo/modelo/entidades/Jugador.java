@@ -45,13 +45,23 @@ public class Jugador extends Usuario {
         return cartones.add(e);
     }
     
-    public void buscarBolilla(Bolilla bolilla) {
+    public boolean buscarBolilla(Bolilla bolilla) {
         for (Carton c : this.cartones) {
             c.buscarBolilla(bolilla);
             if (c.estaCompleto()) {
-                System.out.println("Bingo!!!");
+                return true;
             }
         }
+        return false;
     }
     
+    public double debitar(double valorCarton) {
+        double monto = 0d;
+        for (int i = 0; i < cantCartones; i++) {
+            monto += valorCarton * 2;
+        }
+        saldo -= monto;
+        return monto;
+    }
+   
 }

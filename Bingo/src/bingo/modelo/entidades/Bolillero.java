@@ -34,4 +34,16 @@ public class Bolillero {
         return new ArrayList<>(this.bolillas);
     }
     
+    public void borrarBolillas(Carton carton){
+        for (int x = 0; x < carton.getCantFilas(); x++) {
+            for (int y = 0; y < carton.getCantColumnas(); y++) {
+                for (int i = 0; i < this.bolillas.size(); i++) {
+                    if(this.bolillas.get(i).getValor() == carton.getNumeros()[x][y]){
+                        this.bolillas.remove(i);
+                    }
+                }
+            }
+        }
+    }
+    
 }

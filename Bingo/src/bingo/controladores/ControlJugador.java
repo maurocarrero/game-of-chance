@@ -105,9 +105,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     }
     
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
-    public void continuarParticipando(boolean seguir){
-       if(!seguir){
-           this.modelo.getPartida().seguirJugando(seguir, jugador);
+    public void continuarParticipando(boolean continuar){
+       this.modelo.getPartida().continuarParticipando(continuar, jugador);
+       if (!continuar) {
+           vista.abandonarPartida();
        }
     }
     
@@ -117,10 +118,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             ingresar();
         }
         if (e.getActionCommand().equals("NO_CONTINUAR")) {
-            continuarParticipando(true);
+            continuarParticipando(false);
         }
          if (e.getActionCommand().equals("SI_CONTINUAR")) {
-             continuarParticipando(false);
+             continuarParticipando(true);
         }        
     }
 

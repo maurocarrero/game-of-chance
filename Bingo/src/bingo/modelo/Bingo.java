@@ -68,7 +68,7 @@ public class Bingo extends Observable {
     
     
     public void ejecutar() {
-        partida.iniciarJuego();
+        partida.iniciar();
     }
     
     
@@ -104,7 +104,7 @@ public class Bingo extends Observable {
     
     public void inicioCondicional() {
         if (getPartida().getJugadores().size() == cantJugadores) {
-            getPartida().iniciarJuego();
+            getPartida().iniciar();
         }
     }
     
@@ -149,7 +149,7 @@ public class Bingo extends Observable {
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException, EstaLogeadoException {
         
-        Jugador jugador = (Jugador) login(usuario);
+        Jugador jugador = (Jugador) login (usuario);
         
         // ACCESO DENEGADO
         if (jugador == null) {
@@ -160,7 +160,7 @@ public class Bingo extends Observable {
         }
 
         // JUEGO ACTIVO
-        if (hayJuegoActivo()) {
+        if (getPartida().isEnCurso()) {
             throw new JuegoEnCursoException();
         }
 
@@ -171,7 +171,7 @@ public class Bingo extends Observable {
         if (demasiadosCartones(cantCartones)) {
             throw new DemasiadosCartonesException();
         }             
-        if (jugador.estaLogeado()){
+        if (jugador.estaLogueado()){
             throw new EstaLogeadoException("" + jugador.getUsuario());
         }
         // SALDO INSUFICIENTE
@@ -181,7 +181,7 @@ public class Bingo extends Observable {
         }
         
         getPartida().addJugador(jugador, cantCartones);
-        jugador.setLogeado(true);
+        jugador.setLogueado(true);
                 
         return jugador;
     }

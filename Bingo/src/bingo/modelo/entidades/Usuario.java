@@ -4,6 +4,8 @@
  */
 package bingo.modelo.entidades;
 
+import java.util.Objects;
+
 /**
  *
  * @author maurocarrero
@@ -11,19 +13,19 @@ package bingo.modelo.entidades;
 public abstract class Usuario {
     private String usuario;
     private String password;
-    private Boolean logeado = false;  
+    private Boolean logueado = false;  
 
     public Usuario(String usuario, String password) {
         this.usuario = usuario;
         this.password = password;
     }
     
-    public Boolean estaLogeado(){
-        return this.logeado;
+    public Boolean estaLogueado(){
+        return this.logueado;
     }
     
-    public void setLogeado(Boolean logeado){
-        this.logeado = logeado;
+    public void setLogueado(Boolean logueado){
+        this.logueado = logueado;
     }
     
     public String getUsuario() {
