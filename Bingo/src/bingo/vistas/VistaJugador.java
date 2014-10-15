@@ -74,7 +74,7 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(cantFilas, cantColumnas));
         panel.setSize(cantFilas * 100, cantColumnas * 100);
-        panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 10, true));
+        panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 10));
         
         List<JCasillero> casilleros = new ArrayList<>();
         

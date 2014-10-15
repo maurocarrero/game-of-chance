@@ -4,8 +4,6 @@
  */
 package bingo.modelo.entidades;
 
-import java.util.Objects;
-
 /**
  *
  * @author maurocarrero
