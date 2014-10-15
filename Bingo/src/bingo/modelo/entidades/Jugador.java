@@ -1,6 +1,8 @@
 package bingo.modelo.entidades;
 
-import bingo.modelo.Bingo;
+import bingo.interfaces.IBolilla;
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IJugador;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +10,12 @@ import java.util.List;
  *
  * @author maurocarrero
  */
-public class Jugador extends Usuario {
+public class Jugador extends Usuario implements IJugador {
 
     private int cantCartones;
     private double saldo;
     
-    private List<Carton> cartones;
+    private List<ICarton> cartones;
     
     public Jugador(String usuario, String password, int cantCartones, int saldo) {
         super(usuario, password);
@@ -22,32 +24,39 @@ public class Jugador extends Usuario {
         this.cartones = new ArrayList<>();
     }
     
+    @Override
     public int getCantCartones() {
         return cantCartones;
     }
 
+    @Override
     public double getSaldo() {
         return saldo;
     }
 
-    public List<Carton> getCartones() {
+    @Override
+    public List<ICarton> getCartones() {
         return cartones;
     }
     
+    @Override
     public boolean puedeCostear(double valorCartones) {
         return this.saldo >= valorCartones;
     }
 
+    @Override
     public void setCantCartones(int cantCartones) {
         this.cantCartones = cantCartones;
     }
 
-    public boolean addCarton(Carton e) {
+    @Override
+    public boolean addCarton(ICarton e) {
         return cartones.add(e);
     }
     
-    public boolean buscarBolilla(Bolilla bolilla) {
-        for (Carton c : this.cartones) {
+    @Override
+    public boolean buscarBolilla(IBolilla bolilla) {
+        for (ICarton c : this.cartones) {
             c.buscarBolilla(bolilla);
             if (c.estaCompleto()) {
                 return true;
@@ -56,6 +65,18 @@ public class Jugador extends Usuario {
         return false;
     }
     
+    @Override
+    public boolean tieneBolilla(IBolilla bolilla) {
+        boolean tiene = false;
+        for (ICarton c : this.cartones) {
+            if (c.tieneBolilla(bolilla)) {
+                tiene = true;
+            }
+        }
+        return tiene;
+    }
+
+    @Override
     public double debitar(double valorCarton) {
         double monto = 0d;
         for (int i = 0; i < cantCartones; i++) {
@@ -65,8 +86,14 @@ public class Jugador extends Usuario {
         return monto;
     }
     
+    @Override
     public double calcularSaldo(double valorCarton){
         return getSaldo() - getCantCartones() * valorCarton * 2;        
+    }
+    
+    @Override
+    public String toString() {
+        return this.getUsuario();
     }
    
 }

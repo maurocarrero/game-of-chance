@@ -110,6 +110,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
             Bingo.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
                     cantJugadores, valorCarton);
             
+            vista.ocultarPaneles();
             vista.mostrarInfo("Configuración guardada", "Exito");
             
         } catch (NumberFormatException | ConfiguracionNoValidaException | HeadlessException ex) {

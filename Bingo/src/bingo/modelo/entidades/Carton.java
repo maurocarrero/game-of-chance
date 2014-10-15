@@ -4,6 +4,8 @@
  */
 package bingo.modelo.entidades;
 
+import bingo.interfaces.IBolilla;
+import bingo.interfaces.ICarton;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +13,10 @@ import java.util.List;
  *
  * @author maurocarrero
  */
-public class Carton {
+public class Carton implements ICarton {
     
     private int[][] numeros;
-    private List<Bolilla> bolillas;
+    private List<IBolilla> bolillas;
     private int cantCasilleros;
     private int cantAciertos;
     
@@ -30,7 +32,8 @@ public class Carton {
         this.bolillas = new ArrayList<>();
     }
     
-    public void poblar(List<Bolilla> bolillas) {
+    @Override
+    public void poblar(List<IBolilla> bolillas) {
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < cantColumnas; y++) {
                 numeros[x][y] = bolillas.remove(0).getValor();
@@ -39,20 +42,24 @@ public class Carton {
     }
 
     
+    @Override
     public int[][] getNumeros() {
         return numeros;
     }
 
+    @Override
     public int getCantFilas() {
         return cantFilas;
     }
 
+    @Override
     public int getCantColumnas() {
         return cantColumnas;
     }
     
     
-    public void buscarBolilla(Bolilla bolilla) {
+    @Override
+    public void buscarBolilla(IBolilla bolilla) {
         int valor = bolilla.getValor();
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < this.cantColumnas; y++) {
@@ -64,6 +71,20 @@ public class Carton {
         }
     }
     
+    @Override
+    public boolean tieneBolilla(IBolilla bolilla) {
+        int valor = bolilla.getValor();
+        for (int x = 0; x < this.cantFilas; x++) {
+            for (int y = 0; y < this.cantColumnas; y++) {
+                if (numeros[x][y] == valor) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    @Override
     public boolean estaCompleto() {
         return this.cantAciertos == this.cantCasilleros;
     }

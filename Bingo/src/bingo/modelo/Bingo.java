@@ -21,7 +21,7 @@ import java.util.Observable;
 public class Bingo extends Observable {
 
     private static Bingo instance;
-    
+   
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
     private static int cantMaxCartones = 2;

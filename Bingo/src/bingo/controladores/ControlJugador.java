@@ -1,8 +1,9 @@
 package bingo.controladores;
 
 import bingo.interfaces.IBolilla;
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IJugador;
 import bingo.modelo.Bingo;
-import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
@@ -15,6 +16,7 @@ import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -26,7 +28,7 @@ import javax.swing.JOptionPane;
 public class ControlJugador extends Controlador implements ActionListener, Observer {
 
     private Bingo modelo;
-    private Jugador jugador;
+    private IJugador jugador;
     private VistaJugador vista;
     
     public ControlJugador(VistaJugador vista, Bingo modelo) {
@@ -79,32 +81,51 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     }
 
 
-    public Jugador getJugador() {
+    public IJugador getJugador() {
         return jugador;
     }
     
+    public void inicioJuego() {
+       dibujarCartones();
+       mostrarInfo();
+    }
     
+    private void finJuego() {
+       vista.mostrarMensaje("Fin del juego");
+    }
     
     private void dibujarCartones() {
-        System.out.println("Dibujando cartones");
-
-        List<Carton> cartones = this.getJugador().getCartones();
-
+        List<ICarton> cartones = this.getJugador().getCartones();
         vista.dibujarContenedorCartones(cartones.size(), Bingo.getCantFilas(), Bingo.getCantColumnas());
-        vista.setSaldo("" + jugador.calcularSaldo(Bingo.getValorCarton()));
         
-        for (Carton c : cartones) {
+        for (ICarton c : cartones) {
             int[][] numeros = c.getNumeros();
             List<JCasillero> casilleros = vista.dibujarCarton(numeros, c.getCantFilas(), c.getCantColumnas());
             for (JCasillero casillero : casilleros) {
                 addObserver(casillero);
             }
         }
+        
+        vista.mostrarCartones();    
     }
+    
+    
+    public void mostrarInfo() {
+        List<IJugador> demasJugadoresEnJuego = new ArrayList<>(modelo.getPartida().getJugadores());
+        demasJugadoresEnJuego.remove(jugador);
+        vista.mostrarInfo(jugador.toString(), modelo.getPartida().getPozo(), jugador.getSaldo(), demasJugadoresEnJuego);
+    }
+    
     
     public void marcarCasillero(IBolilla bolilla) {
         setChanged();
         notifyObservers(bolilla.getValor());
+        vista.setBolilla(bolilla.getValor());
+        if (jugador.tieneBolilla(bolilla)) {
+            vista.mostrarMensaje("¡Anotó!");
+        } else {
+            vista.mostrarMensaje("");
+        }
     }
     
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
@@ -130,13 +151,15 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg != null) {
-            IBolilla bolilla = (IBolilla) arg;
-            marcarCasillero(bolilla);
-            System.out.println("Bolilla " + bolilla.getValor());
+        if (arg == null) {
+            inicioJuego();
         } else {
-            System.out.println("Inicio del juego desde el controlador del jugador " + this.jugador.getUsuario());
-            dibujarCartones();
+            try {
+                IBolilla bolilla = (IBolilla) arg;
+                marcarCasillero(bolilla);
+            } catch (ClassCastException ex) {
+                finJuego();
+            }
         }
     }
 }

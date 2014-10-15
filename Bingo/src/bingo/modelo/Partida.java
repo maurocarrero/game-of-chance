@@ -4,7 +4,9 @@
  */
 package bingo.modelo;
 
-import bingo.modelo.entidades.Bolilla;
+import bingo.interfaces.IBolilla;
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IJugador;
 import bingo.modelo.entidades.Bolillero;
 import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Jugador;
@@ -30,9 +32,9 @@ public class Partida extends Observable {
     private int cantCartonesRequeridos;
     private Bolillero bolillero;
     
-    private List<Carton> cartones;
-    private List<Jugador> jugadores = null;
-    private List<Jugador> jugadoresPendientes;
+    private List<ICarton> cartones;
+    private List<IJugador> jugadores = null;
+    private List<IJugador> jugadoresPendientes;
     private boolean enCurso = false;
     private double pozo = 0d;
     private boolean juegoActivo = false;
@@ -44,6 +46,10 @@ public class Partida extends Observable {
         this.cantJugadores = cantJugadores;
         this.valorCarton = valorCarton;
         this.jugadores = new ArrayList();
+    }
+
+    public double getPozo() {
+        return pozo;
     }
 
     public boolean isEnCurso() {
@@ -71,7 +77,7 @@ public class Partida extends Observable {
         return instance;
     }
     
-    public List<Jugador> getJugadores() {
+    public List<IJugador> getJugadores() {
         return jugadores;
     }
 
@@ -79,12 +85,13 @@ public class Partida extends Observable {
      * VER COMO HACERLO MAS PERFORMANTE
      * @param jugador
      */
-    public void borrarJugador(Jugador jugador){
-        for (Carton c : jugador.getCartones()) {
+    public void borrarJugador(IJugador jugador){
+        for (ICarton c : jugador.getCartones()) {
             bolillero.borrarBolillas(c);
         }
         jugadores.remove(jugador);
         jugador.setLogueado(false);
+        cantCartonesRequeridos -= jugador.getCantCartones();
     }
     
     public int getCantCartonesRequeridos() {
@@ -106,23 +113,20 @@ public class Partida extends Observable {
     
     
     private void construirBolillero() {
-        System.out.println("Construir bolillero");
         int cantNumerosPorCarton = cantFilas * cantColumnas;
         int cantTotalNumeros = cantNumerosPorCarton * cantCartonesRequeridos;
         this.bolillero = new Bolillero(cantTotalNumeros);
-        System.out.println("Bolillero: " + this.bolillero.getListaBolillas().size());
     }
     
     
     
     private void construirCartones() {
-        System.out.println("Construir cartones");
         this.cartones = new ArrayList();
-        List<Bolilla> bolillas = bolillero.getListaBolillas();
+        List<IBolilla> bolillas = bolillero.getListaBolillas();
 
         for (int i = 0; i < cantCartonesRequeridos; i++) {
             Collections.shuffle(bolillas);
-            Carton carton = new Carton(this.cantFilas, this.cantColumnas);
+            ICarton carton = new Carton(this.cantFilas, this.cantColumnas);
             carton.poblar(bolillas);
             this.cartones.add(carton);
         }
@@ -130,8 +134,9 @@ public class Partida extends Observable {
     
     
     private double calcularPozo(int cartonesEnJuego) {
-        return cantCartonesRequeridos * valorCarton +
+        this.pozo = cantCartonesRequeridos * valorCarton +
                 cartonesEnJuego * valorCarton;
+        return this.pozo;
         
     }
     
@@ -139,40 +144,34 @@ public class Partida extends Observable {
         construirBolillero();
         construirCartones();
         
-        System.out.println("Distribuir cartones");
-        System.out.println("Cantidad de cartones: " + this.cartones.size());
-
-        for (Jugador jugador : this.jugadores) {
+        for (IJugador jugador : this.jugadores) {
             for (int i = 0; i < jugador.getCantCartones(); i++) {
                 jugador.addCarton(this.cartones.remove(0));
             }
-            System.out.println("Jugador: " + jugador.getUsuario());
-            System.out.println("Cantidad de cartones: " + jugador.getCartones().size());
         }
-        setChanged();
-        notifyObservers(null);
     }
     
     
     public void iniciar() {
-        System.out.println("Inicia el juego");
         setEnCurso(true);
+        calcularPozo(cantCartonesRequeridos);
         distribuirCartones();
+        setChanged();
+        notifyObservers();
         siguienteTurno();
     }
     
     
     public void siguienteTurno() {
-        Bolilla bolilla = this.bolillero.sacarBolilla();
+        IBolilla bolilla = this.bolillero.sacarBolilla();
         anunciarBolilla(bolilla);
         jugadoresPendientes = new ArrayList<>(jugadores);
     }
     
     
-    public void anunciarBolilla(Bolilla bolilla) {
-        for (Jugador jugador : this.jugadores) {
+    public void anunciarBolilla(IBolilla bolilla) {
+        for (IJugador jugador : this.jugadores) {
             if (jugador.buscarBolilla(bolilla)) {
-                System.out.println("Bingo!!!");
                 finalizar(jugador);
             }
         }
@@ -180,7 +179,7 @@ public class Partida extends Observable {
         notifyObservers(bolilla);
     }
     
-    public void eliminarJugadorPendiente(Jugador jugador) {
+    public void eliminarJugadorPendiente(IJugador jugador) {
         for (int i = 0; i < jugadoresPendientes.size(); i++) {
             if (jugadoresPendientes.get(i).getUsuario().equals(jugador.getUsuario())) {
                 jugadoresPendientes.remove(i);
@@ -188,7 +187,7 @@ public class Partida extends Observable {
         }
     }
     
-    public void continuarParticipando(Boolean continua, Jugador jugador){
+    public void continuarParticipando(Boolean continua, IJugador jugador){
         eliminarJugadorPendiente(jugador);
         if (!continua) {
             this.borrarJugador(jugador);
@@ -199,17 +198,15 @@ public class Partida extends Observable {
         }
     }
     
-    private void finalizar(Jugador ganador) {
-        System.out.println("Bingo!!!");
+    private void finalizar(IJugador ganador) {
         int cantCartonesEnJuego = 0;
-        for (Jugador jugador : jugadores) {
+        for (IJugador jugador : jugadores) {
             cantCartonesEnJuego += jugador.getCantCartones();
             if (!jugador.equals(ganador)) {
                 pozo += jugador.debitar(valorCarton);
-            }            
+            }
         }
-        
-        // this.pozo = calcularPozo(cantCartonesEnJuego);
-        
+        setChanged();
+        notifyObservers(ganador.getUsuario());
     }
 }
