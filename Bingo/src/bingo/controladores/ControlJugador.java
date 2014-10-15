@@ -83,10 +83,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         return jugador;
     }
     
-    private String calcularSaldo(){
-        Double saldo = this.jugador.getSaldo() - (this.jugador.getCantCartones() * Bingo.getValorCarton());
-        return saldo.toString();
-    }
+    
     
     private void dibujarCartones() {
         System.out.println("Dibujando cartones");
@@ -94,7 +91,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         List<Carton> cartones = this.getJugador().getCartones();
 
         vista.dibujarContenedorCartones(cartones.size(), Bingo.getCantFilas(), Bingo.getCantColumnas());
-        vista.setSaldo(calcularSaldo());
+        vista.setSaldo("" + jugador.calcularSaldo(Bingo.getValorCarton()));
         
         for (Carton c : cartones) {
             int[][] numeros = c.getNumeros();

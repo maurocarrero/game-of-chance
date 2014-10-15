@@ -76,7 +76,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void configurar() {
-        if (!modelo.hayJuegoActivo()) {
+        if (!modelo.getPartida().isJuegoActivo()) {
             vista.mostrarPanelConfiguracion();          
             poblarCamposConfiguracion();
         } else {

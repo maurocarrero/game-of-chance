@@ -1,5 +1,6 @@
 package bingo.modelo.entidades;
 
+import bingo.modelo.Bingo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,10 @@ public class Jugador extends Usuario {
         }
         saldo -= monto;
         return monto;
+    }
+    
+    public double calcularSaldo(double valorCarton){
+        return getSaldo() - getCantCartones() * valorCarton * 2;        
     }
    
 }

@@ -32,7 +32,6 @@ public class Bingo extends Observable {
     private static int cantJugadores = 2;
     
     private static double valorCarton = 10;
-    private static boolean juegoActivo = false;
     
     private List<Usuario> usuariosTest = null;
 
@@ -182,17 +181,11 @@ public class Bingo extends Observable {
         
         getPartida().addJugador(jugador, cantCartones);
         jugador.setLogueado(true);
+        getPartida().setJuegoActivo(true);
                 
         return jugador;
-    }
-
-    
-    
-    public boolean hayJuegoActivo() {
-        return juegoActivo;
-    }
-    
-    
+        
+    }    
     
     public static int getCantFilas() {
         return cantFilas;

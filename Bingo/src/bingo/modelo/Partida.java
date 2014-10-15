@@ -35,6 +35,7 @@ public class Partida extends Observable {
     private List<Jugador> jugadoresPendientes;
     private boolean enCurso = false;
     private double pozo = 0d;
+    private boolean juegoActivo = false;
 
     private Partida(int cantFilas, int cantColumnas, int cantMaxCartones, int cantJugadores, double valorCarton) {
         this.cantFilas = cantFilas;
@@ -51,6 +52,14 @@ public class Partida extends Observable {
 
     public void setEnCurso(boolean enCurso) {
         this.enCurso = enCurso;
+    }
+
+    public boolean isJuegoActivo() {
+        return juegoActivo;
+    }
+
+    public void setJuegoActivo(boolean juegoActivo) {
+        this.juegoActivo = juegoActivo;
     }
 
     public static Partida getInstance(int cantFilas, int cantColumnas, 
@@ -118,6 +127,7 @@ public class Partida extends Observable {
             this.cartones.add(carton);
         }
     }
+    
     
     private double calcularPozo(int cartonesEnJuego) {
         return cantCartonesRequeridos * valorCarton +
@@ -198,6 +208,7 @@ public class Partida extends Observable {
                 pozo += jugador.debitar(valorCarton);
             }            
         }
+        
         // this.pozo = calcularPozo(cantCartonesEnJuego);
         
     }
