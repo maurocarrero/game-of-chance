@@ -59,7 +59,7 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelEspera.setVisible(true);
     }
     
-    private void ocultarPaneles() {
+    public void ocultarPaneles() {
         panelEspera.setVisible(false);
         panelLoginJugador.setVisible(false);
         panelContinuarJugando.setVisible(false);
@@ -101,6 +101,7 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
     
     public void mostrarMensaje(String msg) {
         lblMensaje.setText(msg);
+        pack();
     }
 
 

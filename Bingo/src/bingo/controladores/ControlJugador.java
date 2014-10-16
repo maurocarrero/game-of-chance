@@ -90,8 +90,8 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
        mostrarInfo();
     }
     
-    private void finJuego() {
-       vista.mostrarMensaje("Fin del juego");
+    private void finJuego(String ganador) {
+       vista.mostrarMensaje("Fin del juego, Ganador: " + ganador);
     }
     
     private void dibujarCartones() {
@@ -158,7 +158,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
                 IBolilla bolilla = (IBolilla) arg;
                 marcarCasillero(bolilla);
             } catch (ClassCastException ex) {
-                finJuego();
+                finJuego(arg.toString());
             }
         }
     }

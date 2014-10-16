@@ -170,13 +170,17 @@ public class Partida extends Observable {
     
     
     public void anunciarBolilla(IBolilla bolilla) {
+        IJugador ganador = null;
         for (IJugador jugador : this.jugadores) {
             if (jugador.buscarBolilla(bolilla)) {
-                finalizar(jugador);
+                ganador = jugador;
             }
         }
         setChanged();
         notifyObservers(bolilla);
+        if (ganador != null) {
+            finalizar(ganador);
+        }        
     }
     
     public void eliminarJugadorPendiente(IJugador jugador) {
