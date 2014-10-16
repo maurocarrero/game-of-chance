@@ -96,9 +96,7 @@ public class Partida extends Observable {
         }
         jugadores.remove(jugador);
         jugador.setLogueado(false);
-        cantCartonesRequeridos -= jugador.getCantCartones();
-        setChanged();
-        notifyObservers();
+        cantCartonesRequeridos -= jugador.getCantCartones();       
         return jugador.debitarAbandono(valorCarton);
     }
     
@@ -165,7 +163,7 @@ public class Partida extends Observable {
         calcularPozo(cantCartonesRequeridos);
         distribuirCartones();
         setChanged();
-        notifyObservers();
+        notifyObservers("INICIO");
         siguienteTurno();
     }
     
@@ -203,6 +201,8 @@ public class Partida extends Observable {
         eliminarJugadorPendiente(jugador);
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));
+             setChanged();
+             notifyObservers("ABANDONO");
         } else {
             if (jugadoresPendientes.isEmpty()) {
                 siguienteTurno();

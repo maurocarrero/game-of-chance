@@ -95,7 +95,6 @@ public class Jugador extends Usuario implements IJugador {
     public double debitarAbandono(double valorCarton){
         double monto = cantCartones * valorCarton;
         saldo -= monto;
-        System.out.println(getUsuario() + " abandono la partida en curso, saldo: " + saldo);
         return monto;
     }
     

@@ -92,6 +92,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     private void finJuego(String ganador) {
        vista.mostrarMensaje("Fin del juego, Ganador: " + ganador);
+       vista.finalizarJuego();
     }
     
     private void dibujarCartones() {
@@ -116,16 +117,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         vista.mostrarInfo(jugador.toString(), modelo.getPartida().getPozo(),
             jugador.getSaldoPreview(modelo.getPartida().getValorCarton()),
             restoJugadoresEnJuego);
-    }
-    
-    private void abandonarPartida(){
-        vista.abandonarPartida();
-        vista.actualizarPozo(modelo.getPartida().getPozo());
-        
-        if (modelo.getPartida().getJugadores().size() == 1){
-            finJuego(modelo.getPartida().getJugadores().get(0).getUsuario());
-        } 
-    }
+    }  
     
     public void marcarCasillero(IBolilla bolilla) {
         setChanged();
@@ -138,11 +130,17 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         }
     }
     
+     private void finalizarPartida(){        
+        if (modelo.getPartida().getJugadores().size() == 1 && modelo.getPartida().isEnCurso()){
+            finJuego(modelo.getPartida().getJugadores().get(0).getUsuario());
+        } 
+    }
+    
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
     public void continuarParticipando(boolean continuar){
        this.modelo.getPartida().continuarParticipando(continuar, jugador);
        if (!continuar) {
-           abandonarPartida();
+           vista.abandonarPartida();
        }
     }
     
@@ -161,9 +159,16 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg == null) {
+        if (arg == "INICIO") {
             inicioJuego();
-        } else {
+            return;
+        }
+        if (arg == "ABANDONO") {
+            vista.actualizarPozo(modelo.getPartida().getPozo());
+            finalizarPartida();
+            return;
+        }
+        else {
             try {
                 IBolilla bolilla = (IBolilla) arg;
                 marcarCasillero(bolilla);

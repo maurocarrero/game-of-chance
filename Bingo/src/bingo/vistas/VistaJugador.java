@@ -107,7 +107,10 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         lblMensaje.setText(msg);
         pack();
     }
-
+    
+    public void finalizarJuego(){
+        panelContinuarJugando.setVisible(false);
+    }
 
     @Override
     public void setControlador(Controlador c) {
