@@ -93,6 +93,10 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         listJugadores.setListData(jugadores.toArray());
     }
     
+    public void actualizarPozo(double pozo){
+        lblPozo.setText(pozo + "");
+    }
+    
     public void abandonarPartida() {
         ocultarPaneles();
         panelLoginJugador.setVisible(true);

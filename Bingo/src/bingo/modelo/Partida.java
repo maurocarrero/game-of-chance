@@ -60,6 +60,10 @@ public class Partida extends Observable {
         this.enCurso = enCurso;
     }
 
+    public double getValorCarton() {
+        return valorCarton;
+    }
+
     public boolean isJuegoActivo() {
         return juegoActivo;
     }
@@ -84,14 +88,18 @@ public class Partida extends Observable {
     /**
      * VER COMO HACERLO MAS PERFORMANTE
      * @param jugador
+     * @return 
      */
-    public void borrarJugador(IJugador jugador){
+    public double borrarJugador(IJugador jugador){
         for (ICarton c : jugador.getCartones()) {
             bolillero.borrarBolillas(c);
         }
         jugadores.remove(jugador);
         jugador.setLogueado(false);
         cantCartonesRequeridos -= jugador.getCantCartones();
+        setChanged();
+        notifyObservers();
+        return jugador.debitarAbandono(valorCarton);
     }
     
     public int getCantCartonesRequeridos() {
@@ -194,12 +202,16 @@ public class Partida extends Observable {
     public void continuarParticipando(Boolean continua, IJugador jugador){
         eliminarJugadorPendiente(jugador);
         if (!continua) {
-            this.borrarJugador(jugador);
+            recalcularPozo(borrarJugador(jugador));
         } else {
             if (jugadoresPendientes.isEmpty()) {
                 siguienteTurno();
             }
         }
+    }
+    
+    public void recalcularPozo(double monto){
+        this.pozo -= monto;
     }
     
     private void finalizar(IJugador ganador) {

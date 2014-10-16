@@ -4,8 +4,6 @@
  */
 package bingo.interfaces;
 
-import bingo.modelo.entidades.Bolilla;
-import bingo.modelo.entidades.Carton;
 import java.util.List;
 
 /**
@@ -33,7 +31,11 @@ public interface IJugador {
     public double debitar(double valorCarton);
     
     double calcularSaldo(double valorCarton);
+    
+    public double debitarAbandono(double valorCarton);
 
+    public double getSaldoPreview(double valorCarton);
+            
     // Usuario
     public String getUsuario();
     

@@ -33,6 +33,11 @@ public class Jugador extends Usuario implements IJugador {
     public double getSaldo() {
         return saldo;
     }
+    
+    @Override
+    public double getSaldoPreview(double valorCarton) {
+        return saldo - cantCartones * valorCarton * 2;
+    }
 
     @Override
     public List<ICarton> getCartones() {
@@ -41,7 +46,7 @@ public class Jugador extends Usuario implements IJugador {
     
     @Override
     public boolean puedeCostear(double valorCartones) {
-        return this.saldo >= valorCartones;
+        return this.saldo >= valorCartones * 2;
     }
 
     @Override
@@ -83,6 +88,14 @@ public class Jugador extends Usuario implements IJugador {
             monto += valorCarton * 2;
         }
         saldo -= monto;
+        return monto;
+    }
+    
+    @Override
+    public double debitarAbandono(double valorCarton){
+        double monto = cantCartones * valorCarton;
+        saldo -= monto;
+        System.out.println(getUsuario() + " abandono la partida en curso, saldo: " + saldo);
         return monto;
     }
     

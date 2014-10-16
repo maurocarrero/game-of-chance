@@ -111,11 +111,21 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     
     public void mostrarInfo() {
-        List<IJugador> demasJugadoresEnJuego = new ArrayList<>(modelo.getPartida().getJugadores());
-        demasJugadoresEnJuego.remove(jugador);
-        vista.mostrarInfo(jugador.toString(), modelo.getPartida().getPozo(), jugador.getSaldo(), demasJugadoresEnJuego);
+        List<IJugador> restoJugadoresEnJuego = new ArrayList<>(modelo.getPartida().getJugadores());
+        restoJugadoresEnJuego.remove(jugador);
+        vista.mostrarInfo(jugador.toString(), modelo.getPartida().getPozo(),
+            jugador.getSaldoPreview(modelo.getPartida().getValorCarton()),
+            restoJugadoresEnJuego);
     }
     
+    private void abandonarPartida(){
+        vista.abandonarPartida();
+        vista.actualizarPozo(modelo.getPartida().getPozo());
+        
+        if (modelo.getPartida().getJugadores().size() == 1){
+            finJuego(modelo.getPartida().getJugadores().get(0).getUsuario());
+        } 
+    }
     
     public void marcarCasillero(IBolilla bolilla) {
         setChanged();
@@ -132,7 +142,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     public void continuarParticipando(boolean continuar){
        this.modelo.getPartida().continuarParticipando(continuar, jugador);
        if (!continuar) {
-           vista.abandonarPartida();
+           abandonarPartida();
        }
     }
     
