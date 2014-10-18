@@ -17,6 +17,7 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -90,9 +91,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
        mostrarInfo();
     }
     
-    private void finJuego(String ganador) {
-       vista.mostrarMensaje("Fin del juego, Ganador: " + ganador);
-       vista.finalizarJuego();
+    private void finJuego(IJugador ganador, double pozo) {
+      // vista.mostrarMensaje("Fin del juego, Ganador: " + ganador);
+      // vista.
+       vista.finalizarJuego(ganador.getUsuario(), getJugador().getSaldo(), pozo);
     }
     
     private void dibujarCartones() {
@@ -130,11 +132,11 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         }
     }
     
-     private void finalizarPartida(){        
+    /* private void finalizarPartida(double pozo){        
         if (modelo.getPartida().getJugadores().size() == 1 && modelo.getPartida().isEnCurso()){
-            finJuego(modelo.getPartida().getJugadores().get(0).getUsuario());
+            finJuego(modelo.getPartida().getJugadores().get(0), pozo );
         } 
-    }
+    }*/
     
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
     public void continuarParticipando(boolean continuar){
@@ -159,22 +161,22 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg == "INICIO") {
+        Hashtable evento = (Hashtable)arg;
+        
+        if (evento.containsKey("inicio")) {
             inicioJuego();
-            return;
         }
-        if (arg == "ABANDONO") {
-            vista.actualizarPozo(modelo.getPartida().getPozo());
-            finalizarPartida();
-            return;
+        if (evento.containsKey("abandono")) {
+            vista.actualizarPozo((double)(evento.get("abandono")));
+            finJuego(getJugador(), (double)(evento.get("abandono")));
         }
-        else {
-            try {
-                IBolilla bolilla = (IBolilla) arg;
-                marcarCasillero(bolilla);
-            } catch (ClassCastException ex) {
-                finJuego(arg.toString());
-            }
+        if (evento.containsKey("bolilla")) {
+            IBolilla bolilla = (IBolilla)evento.get("bolilla");
+            marcarCasillero(bolilla);
         }
+        if (evento.containsKey("ganador")) {
+            IJugador ganador = (IJugador)evento.get("ganador");
+            finJuego(ganador, 0);
+        }       
     }
 }

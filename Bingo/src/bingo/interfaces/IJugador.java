@@ -28,13 +28,15 @@ public interface IJugador {
 
     public boolean tieneBolilla(IBolilla bolilla);
     
-    public double debitar(double valorCarton);
+    public double debitarDoble(double valorCarton);
     
     double calcularSaldo(double valorCarton);
     
-    public double debitarAbandono(double valorCarton);
+    public double debitarSimple(double valorCarton);
 
     public double getSaldoPreview(double valorCarton);
+    
+    public void acreditar(double credito);
             
     // Usuario
     public String getUsuario();

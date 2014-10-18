@@ -108,8 +108,13 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         pack();
     }
     
-    public void finalizarJuego(){
+    public void finalizarJuego(String usuario, double saldo, double pozo){
+        mostrarMensaje("Fin del juego, Ganador: " + usuario);
+        actualizarPozo(pozo);
+        lblSaldoActual.setText(saldo + "");        
         panelContinuarJugando.setVisible(false);
+        listJugadores.removeAll();
+        listJugadores.setVisible(false);
     }
 
     @Override

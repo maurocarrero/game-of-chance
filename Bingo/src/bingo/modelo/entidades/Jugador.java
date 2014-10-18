@@ -82,7 +82,12 @@ public class Jugador extends Usuario implements IJugador {
     }
 
     @Override
-    public double debitar(double valorCarton) {
+    public void acreditar(double credito){
+        saldo += credito;
+    }
+    
+    @Override
+    public double debitarDoble(double valorCarton) {
         double monto = 0d;
         for (int i = 0; i < cantCartones; i++) {
             monto += valorCarton * 2;
@@ -92,11 +97,11 @@ public class Jugador extends Usuario implements IJugador {
     }
     
     @Override
-    public double debitarAbandono(double valorCarton){
+    public double debitarSimple(double valorCarton){
         double monto = cantCartones * valorCarton;
         saldo -= monto;
         return monto;
-    }
+    }   
     
     @Override
     public double calcularSaldo(double valorCarton){

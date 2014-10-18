@@ -12,6 +12,7 @@ import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Jugador;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Observable;
 
@@ -96,8 +97,8 @@ public class Partida extends Observable {
         }
         jugadores.remove(jugador);
         jugador.setLogueado(false);
-        cantCartonesRequeridos -= jugador.getCantCartones();       
-        return jugador.debitarAbandono(valorCarton);
+        cantCartonesRequeridos -= jugador.getCantCartones();
+        return jugador.debitarSimple(valorCarton);
     }
     
     public int getCantCartonesRequeridos() {
@@ -158,15 +159,20 @@ public class Partida extends Observable {
     }
     
     
-    public void iniciar() {
+    public void iniciar() {        
         setEnCurso(true);
         calcularPozo(cantCartonesRequeridos);
         distribuirCartones();
         setChanged();
-        notifyObservers("INICIO");
+        notifyObservers(crearHash("inicio", "INICIO"));
         siguienteTurno();
     }
     
+    private Hashtable crearHash(String clave, Object valor){
+        Hashtable evento = new Hashtable();
+        evento.put(clave, valor);
+        return evento;
+    }
     
     public void siguienteTurno() {
         IBolilla bolilla = this.bolillero.sacarBolilla();
@@ -175,7 +181,7 @@ public class Partida extends Observable {
     }
     
     
-    public void anunciarBolilla(IBolilla bolilla) {
+    public void anunciarBolilla(IBolilla bolilla) {        
         IJugador ganador = null;
         for (IJugador jugador : this.jugadores) {
             if (jugador.buscarBolilla(bolilla)) {
@@ -183,7 +189,7 @@ public class Partida extends Observable {
             }
         }
         setChanged();
-        notifyObservers(bolilla);
+        notifyObservers(crearHash("bolilla", bolilla));
         if (ganador != null) {
             finalizar(ganador);
         }        
@@ -201,8 +207,12 @@ public class Partida extends Observable {
         eliminarJugadorPendiente(jugador);
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));
-             setChanged();
-             notifyObservers("ABANDONO");
+             if(jugadores.size() > 1){
+                setChanged();
+                notifyObservers(crearHash("abandono", getPozo()));
+             } else {
+                 finalizar(jugadores.get(0));
+             }
         } else {
             if (jugadoresPendientes.isEmpty()) {
                 siguienteTurno();
@@ -215,14 +225,16 @@ public class Partida extends Observable {
     }
     
     private void finalizar(IJugador ganador) {
+        //double restoApuestaAGanador = ganador.getCantCartones() * getValorCarton() *2;
         int cantCartonesEnJuego = 0;
         for (IJugador jugador : jugadores) {
             cantCartonesEnJuego += jugador.getCantCartones();
             if (!jugador.equals(ganador)) {
-                pozo += jugador.debitar(valorCarton);
+                pozo += jugador.debitarDoble(valorCarton);
             }
         }
+        ganador.acreditar(pozo);
         setChanged();
-        notifyObservers(ganador.getUsuario());
+        notifyObservers(crearHash("ganador", ganador));
     }
 }
