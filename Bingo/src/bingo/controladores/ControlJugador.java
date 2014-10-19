@@ -103,8 +103,6 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     }
     
     private void finJuego(IJugador ganador, double pozo) {
-      // vista.mostrarMensaje("Fin del juego, Ganador: " + ganador);
-      // vista.
        vista.finalizarJuego(ganador.getUsuario(), getJugador().getSaldo(), pozo);
     }
     

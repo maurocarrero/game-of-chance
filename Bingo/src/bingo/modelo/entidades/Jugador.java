@@ -112,5 +112,11 @@ public class Jugador extends Usuario implements IJugador {
     public String toString() {
         return this.getUsuario();
     }
+    
+    @Override
+    public void resetearCartones() {
+        this.cantCartones = 0;
+        this.cartones = null;
+    }
    
 }

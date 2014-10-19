@@ -231,14 +231,22 @@ public class Partida extends Observable {
     private void finalizar(IJugador ganador) {
         //double restoApuestaAGanador = ganador.getCantCartones() * getValorCarton() *2;
         int cantCartonesEnJuego = 0;
+        resetearPozo();
         for (IJugador jugador : jugadores) {
             cantCartonesEnJuego += jugador.getCantCartones();
             if (!jugador.equals(ganador)) {
                 pozo += jugador.debitarDoble(valorCarton);
             }
+            jugador.resetearCartones();
         }
+        System.out.println("cantCartonesEnJuego: " + cantCartonesEnJuego);
+        System.out.println("cantCartonesRequeridos: " + cantCartonesRequeridos);
         ganador.acreditar(pozo);
         setChanged();
         notifyObservers(crearHash("ganador", ganador));
+    }
+    
+    public void resetearPozo() {
+        this.pozo = 0;
     }
 }

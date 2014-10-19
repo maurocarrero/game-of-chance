@@ -77,11 +77,7 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelInfo.setVisible(true);
         panelMensaje.setVisible(true);
         panelContinuarJugando.setVisible(true);
-        // panelCartones.setLayout(new BoxLayout(panelCartones, BoxLayout.PAGE_AXIS));
         panelCartones.setLayout(new GridLayout(0, 5));
-        
-        
-
     }  
     
     public List<JCasillero> dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {
@@ -144,7 +140,6 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         setTitle("Interfaz de Jugador");
         
         pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }

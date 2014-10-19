@@ -43,4 +43,6 @@ public interface IJugador {
     
     public void setLogueado(Boolean logueado);
 
+    public void resetearCartones();
+    
 }
