@@ -24,12 +24,9 @@ public class Bingo extends Observable {
    
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
-    private static int cantMaxCartones = 2;
+    private static int cantMaxCartones = 10;
     
-
-    //CAMBIAR POR 3 JUGADORES!!!
-    //TODO
-    private static int cantJugadores = 2;
+    private static int cantJugadores = 3;
     
     private static double valorCarton = 10;
     

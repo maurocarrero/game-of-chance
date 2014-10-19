@@ -12,7 +12,7 @@ import bingo.modelo.entidades.Carton;
 import bingo.modelo.entidades.Jugador;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
@@ -168,8 +168,8 @@ public class Partida extends Observable {
         siguienteTurno();
     }
     
-    private Hashtable crearHash(String clave, Object valor){
-        Hashtable evento = new Hashtable();
+    private HashMap crearHash(String clave, Object valor){
+        HashMap<String, Object> evento = new HashMap();
         evento.put(clave, valor);
         return evento;
     }
@@ -214,10 +214,14 @@ public class Partida extends Observable {
                  finalizar(jugadores.get(0));
              }
         } else {
-            if (jugadoresPendientes.isEmpty()) {
+            if (!hayJugadoresPendientes()) {
                 siguienteTurno();
             }
         }
+    }
+    
+    public boolean hayJugadoresPendientes() {
+        return !jugadoresPendientes.isEmpty();
     }
     
     public void recalcularPozo(double monto){

@@ -166,11 +166,18 @@ public final class VistaAdmin extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel1.setText("Usuario");
 
-        jLabel2.setText("Contraseña");
+        jLabel2.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        jLabel2.setText("Contrasenia");
 
+        btnIngresar.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         btnIngresar.setText("Ingresar");
+
+        txtUsuario.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
+
+        txtPassword.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
         panelLogin.setLayout(panelLoginLayout);
@@ -199,7 +206,7 @@ public final class VistaAdmin extends JFrame {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(txtPassword)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,26 +216,37 @@ public final class VistaAdmin extends JFrame {
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel3.setText("Configurar");
 
+        lblCantFilas.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblCantFilas.setText("Cantidad de filas:");
 
+        txtCantFilas.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
         txtCantFilas.setPreferredSize(new java.awt.Dimension(10, 25));
 
+        lblCantColumnas.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblCantColumnas.setText("Cantidad de columnas:");
 
+        txtCantColumnas.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
         txtCantColumnas.setPreferredSize(new java.awt.Dimension(10, 25));
 
+        lblCantCartones.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblCantCartones.setText("Cantidad máxima de cartones:");
 
+        txtCantMaxCartones.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
         txtCantMaxCartones.setPreferredSize(new java.awt.Dimension(10, 25));
 
+        lblCantJugadores.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblCantJugadores.setText("Cantidad de jugadores:");
 
+        txtCantJugadores.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
         txtCantJugadores.setPreferredSize(new java.awt.Dimension(10, 25));
 
+        lblValorCarton.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblValorCarton.setText("Valor del cartón:");
 
+        txtValorCarton.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
         txtValorCarton.setPreferredSize(new java.awt.Dimension(10, 25));
 
+        btnAceptar.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         btnAceptar.setText("Aceptar");
 
         javax.swing.GroupLayout panelConfigurarLayout = new javax.swing.GroupLayout(panelConfigurar);
@@ -256,7 +274,7 @@ public final class VistaAdmin extends JFrame {
                                 .addComponent(txtCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelConfigurarLayout.setVerticalGroup(
             panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,7 +284,7 @@ public final class VistaAdmin extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantFilas)
-                    .addComponent(txtCantFilas, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                    .addComponent(txtCantFilas, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCantColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,6 +306,7 @@ public final class VistaAdmin extends JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel4.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel4.setText("Crear Interfaces de usuario");
 
         javax.swing.GroupLayout panelCrearInterfacesLayout = new javax.swing.GroupLayout(panelCrearInterfaces);

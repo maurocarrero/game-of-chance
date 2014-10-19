@@ -25,7 +25,7 @@ public class JCasillero extends JLabel implements Observer {
         super(valor + "");
         setVerticalAlignment(SwingConstants.CENTER);
         setHorizontalAlignment(SwingConstants.CENTER);
-        setPreferredSize(new Dimension(100, 100));
+        setPreferredSize(new Dimension(50, 50));
         setBackground(Color.BLACK);
         setForeground(Color.GREEN);
         setOpaque(true);

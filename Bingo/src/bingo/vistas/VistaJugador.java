@@ -3,13 +3,8 @@ package bingo.vistas;
 import bingo.controladores.ControlJugador;
 import bingo.controladores.Controlador;
 import bingo.interfaces.IJugador;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -65,14 +60,28 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelContinuarJugando.setVisible(false);
         panelCartones.setVisible(false);
         panelInfo.setVisible(false);
+        panelMensaje.setVisible(false);
     }
     
+    
+    public void ocultarPanelContinuar() {
+        panelContinuarJugando.setVisible(false);
+    }
+    
+    public void mostrarPanelContinuar() {
+        panelContinuarJugando.setVisible(true);
+    }
    
     public void dibujarContenedorCartones(int tamanio, int cantFilas, int cantColumnas) {
         ocultarPaneles();
         panelInfo.setVisible(true);
+        panelMensaje.setVisible(true);
         panelContinuarJugando.setVisible(true);
-        panelCartones.setLayout(new BoxLayout(panelCartones, BoxLayout.PAGE_AXIS));
+        // panelCartones.setLayout(new BoxLayout(panelCartones, BoxLayout.PAGE_AXIS));
+        panelCartones.setLayout(new GridLayout(0, 5));
+        
+        
+
     }  
     
     public List<JCasillero> dibujarCarton(int[][] numeros, int cantFilas, int cantColumnas) {
@@ -170,17 +179,28 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         listJugadores = new javax.swing.JList();
         jLabel4 = new javax.swing.JLabel();
         lblBolilla = new javax.swing.JLabel();
+        panelMensaje = new javax.swing.JPanel();
         lblMensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel1.setText("Usuario");
 
-        jLabel2.setText("Contraseña");
+        jLabel2.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        jLabel2.setText("Contrasenia");
 
+        txtUsuario.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
+
+        txtPassword.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
+
+        btnIngresar.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         btnIngresar.setText("Ingresar");
 
+        lblCantCartones.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblCantCartones.setText("Cantidad de cartones");
+
+        txtCantCartones.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout panelLoginJugadorLayout = new javax.swing.GroupLayout(panelLoginJugador);
         panelLoginJugador.setLayout(panelLoginJugadorLayout);
@@ -210,10 +230,12 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLoginJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelLoginJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(panelLoginJugadorLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(txtPassword)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelLoginJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCantCartones, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCantCartones))
@@ -222,6 +244,7 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
                 .addGap(29, 29, 29))
         );
 
+        jLabel3.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel3.setText("Esperando inicio del juego...");
 
         javax.swing.GroupLayout panelEsperaLayout = new javax.swing.GroupLayout(panelEspera);
@@ -231,20 +254,22 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
             .addGroup(panelEsperaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelEsperaLayout.setVerticalGroup(
             panelEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEsperaLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
+        lblContinuarJugando.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblContinuarJugando.setText("¿Desea continuar jugando? ");
 
+        btnSI.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         btnSI.setText("SI");
 
+        btnNO.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         btnNO.setText("NO");
 
         javax.swing.GroupLayout panelContinuarJugandoLayout = new javax.swing.GroupLayout(panelContinuarJugando);
@@ -263,9 +288,9 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
                         .addGap(36, 36, 36)
                         .addComponent(btnNO, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelContinuarJugandoLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addContainerGap()
                         .addComponent(lblContinuarJugando)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
         panelContinuarJugandoLayout.setVerticalGroup(
             panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,19 +309,29 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelCartones.setLayout(panelCartonesLayout);
         panelCartonesLayout.setHorizontalGroup(
             panelCartonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         panelCartonesLayout.setVerticalGroup(
             panelCartonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 194, Short.MAX_VALUE)
+            .addGap(0, 68, Short.MAX_VALUE)
         );
 
+        lblPozoName.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblPozoName.setText("Pozo:");
 
+        lblSaldoName.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblSaldoName.setText("Saldo actual:");
 
+        lblSaldoActual.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        lblSaldoActual.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblPozo.setFont(new java.awt.Font("Yuanti SC", 1, 24)); // NOI18N
+        lblPozo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblJugadoresName.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblJugadoresName.setText("Jugadores en el juego:");
 
+        listJugadores.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         listJugadores.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -304,9 +339,13 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         });
         jScrollPane1.setViewportView(listJugadores);
 
+        jLabel4.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel4.setText("Bolilla sorteada:");
 
-        lblBolilla.setBackground(new java.awt.Color(204, 255, 204));
+        lblBolilla.setBackground(new java.awt.Color(0, 0, 0));
+        lblBolilla.setFont(new java.awt.Font("Yuanti SC", 1, 36)); // NOI18N
+        lblBolilla.setForeground(new java.awt.Color(204, 255, 204));
+        lblBolilla.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblBolilla.setOpaque(true);
 
         javax.swing.GroupLayout panelInfoLayout = new javax.swing.GroupLayout(panelInfo);
@@ -314,72 +353,95 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         panelInfoLayout.setHorizontalGroup(
             panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfoLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addContainerGap()
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelInfoLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelInfoLayout.createSequentialGroup()
                         .addComponent(lblJugadoresName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelInfoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelInfoLayout.createSequentialGroup()
+                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblPozoName)
+                            .addComponent(lblSaldoName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPozo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSaldoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelInfoLayout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addComponent(lblPozoName)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblPozo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4))
                             .addGroup(panelInfoLayout.createSequentialGroup()
-                                .addComponent(lblSaldoName)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblSaldoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(104, 104, 104)
-                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblBolilla, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))))
-                .addGap(66, 66, 66)
-                .addComponent(lblMensaje)
-                .addContainerGap(136, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(lblBolilla, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 21, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelInfoLayout.setVerticalGroup(
             panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfoLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(15, 15, 15)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelInfoLayout.createSequentialGroup()
                         .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPozoName)
-                            .addComponent(lblPozo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel4)
+                            .addComponent(lblPozoName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBolilla, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelInfoLayout.createSequentialGroup()
+                        .addComponent(lblPozo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
                         .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblSaldoName)
-                            .addComponent(lblSaldoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelInfoLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblBolilla, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)))
-                .addGap(18, 18, 18)
+                            .addComponent(lblSaldoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblJugadoresName)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMensaje))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        lblMensaje.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        lblMensaje.setForeground(new java.awt.Color(0, 102, 102));
+        lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout panelMensajeLayout = new javax.swing.GroupLayout(panelMensaje);
+        panelMensaje.setLayout(panelMensajeLayout);
+        panelMensajeLayout.setHorizontalGroup(
+            panelMensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMensajeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelMensajeLayout.setVerticalGroup(
+            panelMensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMensajeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelEspera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(panelContinuarJugando, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(panelMensaje, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(panelEspera, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -387,14 +449,17 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelEspera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(panelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelCartones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -425,6 +490,7 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
     private javax.swing.JPanel panelEspera;
     private javax.swing.JPanel panelInfo;
     private javax.swing.JPanel panelLoginJugador;
+    private javax.swing.JPanel panelMensaje;
     private javax.swing.JTextField txtCantCartones;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;

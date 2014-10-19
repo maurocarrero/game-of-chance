@@ -4,6 +4,7 @@ import bingo.interfaces.IBolilla;
 import bingo.interfaces.ICarton;
 import bingo.interfaces.IJugador;
 import bingo.modelo.Bingo;
+import bingo.modelo.Partida;
 import bingo.modelo.entidades.Jugador;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
@@ -17,7 +18,7 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -31,6 +32,8 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     private Bingo modelo;
     private IJugador jugador;
     private VistaJugador vista;
+    
+    private boolean nuevaBolilla = false;
     
     public ControlJugador(VistaJugador vista, Bingo modelo) {
         this.vista = vista;
@@ -64,14 +67,22 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", 
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
             
-        } catch (AccesoDenegadoException | JuegoEnCursoException | EstaLogeadoException | 
-                SaldoInsuficienteException | CantidadCartonesInvalidaException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (AccesoDenegadoException | JuegoEnCursoException | 
+                EstaLogeadoException | SaldoInsuficienteException | 
+                CantidadCartonesInvalidaException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", 
+                    JOptionPane.ERROR_MESSAGE);
         } catch (DemasiadosCartonesException ex) {
-            String msg = "No puede participar con más de " + modelo.getCantMaxCartones() + " cartones";
-            JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+            String msg = "No puede participar con más de " + 
+                    Bingo.getCantMaxCartones() + " cartones";
+            JOptionPane.showMessageDialog(null, msg, "Error", 
+                    JOptionPane.ERROR_MESSAGE);
         } catch (HeadlessException ex) {
-            JOptionPane.showMessageDialog(null, "This is headless!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "This is headless!", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (ClassCastException ex) {
+            JOptionPane.showMessageDialog(null, "Debe crear un perfil de Jugador para jugar.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
         }
         
     } 
@@ -130,6 +141,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         } else {
             vista.mostrarMensaje("");
         }
+        vista.mostrarPanelContinuar();
     }
     
     /* private void finalizarPartida(double pozo){        
@@ -140,9 +152,17 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
     public void continuarParticipando(boolean continuar){
-       this.modelo.getPartida().continuarParticipando(continuar, jugador);
+       Partida partida = modelo.getPartida();
+       setNuevaBolilla(false);       
+       partida.continuarParticipando(continuar, jugador);
+       
        if (!continuar) {
            vista.abandonarPartida();
+       } else {
+           if (!isNuevaBolilla()) {
+               vista.ocultarPanelContinuar();
+               vista.mostrarMensaje("Esperando a los demás jugadores...");
+           }           
        }
     }
     
@@ -156,12 +176,12 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         }
          if (e.getActionCommand().equals("SI_CONTINUAR")) {
              continuarParticipando(true);
-        }        
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        Hashtable evento = (Hashtable)arg;
+        HashMap<String, Object> evento = (HashMap)arg;
         
         if (evento.containsKey("inicio")) {
             inicioJuego();
@@ -172,6 +192,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         }
         if (evento.containsKey("bolilla")) {
             IBolilla bolilla = (IBolilla)evento.get("bolilla");
+            setNuevaBolilla(true);
             marcarCasillero(bolilla);
         }
         if (evento.containsKey("ganador")) {
@@ -179,4 +200,14 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             finJuego(ganador, 0);
         }       
     }
+
+    public void setNuevaBolilla(boolean nuevaBolilla) {
+        this.nuevaBolilla = nuevaBolilla;
+    }
+
+    public boolean isNuevaBolilla() {
+        return nuevaBolilla;
+    }
+    
+    
 }
