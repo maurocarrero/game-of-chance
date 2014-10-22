@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.modelo;
 
 import bingo.interfaces.IBolilla;
@@ -18,7 +14,7 @@ import java.util.Observable;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class Partida extends Observable {
 

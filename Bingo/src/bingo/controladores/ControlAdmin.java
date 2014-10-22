@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class ControlAdmin extends Controlador implements ActionListener {
     

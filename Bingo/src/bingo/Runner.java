@@ -6,7 +6,7 @@ import bingo.vistas.VistaAdmin;
 
 /**
  * Bingo
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class Runner {
 

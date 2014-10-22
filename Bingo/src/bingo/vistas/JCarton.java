@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Mauro.Carrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class JCarton extends JPanel {
     

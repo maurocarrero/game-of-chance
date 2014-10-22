@@ -2,7 +2,7 @@ package bingo.modelo.exceptions;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class DemasiadosCartonesException extends Exception {
     

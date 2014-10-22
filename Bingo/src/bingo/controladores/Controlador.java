@@ -9,7 +9,7 @@ import java.util.Observable;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public abstract class Controlador extends Observable implements ActionListener {
     

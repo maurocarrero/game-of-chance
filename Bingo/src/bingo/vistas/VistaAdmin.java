@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Interfaz para Administradores
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public final class VistaAdmin extends JFrame {
     

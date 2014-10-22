@@ -6,7 +6,7 @@ package bingo.interfaces;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public interface IBolilla {
     

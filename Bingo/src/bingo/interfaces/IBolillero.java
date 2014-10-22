@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  *
- * @author Mauro.Carrero
+ * @author maurocarrero/fernandogonzalez
  */
 public interface IBolillero {
     

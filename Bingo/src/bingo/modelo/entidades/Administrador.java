@@ -2,7 +2,7 @@ package bingo.modelo.entidades;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class Administrador extends Usuario {
 

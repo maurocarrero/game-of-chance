@@ -16,7 +16,7 @@ import java.util.Observable;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class Bingo extends Observable {
 

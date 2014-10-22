@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class JCasillero extends JLabel implements Observer {
 

@@ -25,7 +25,7 @@ import java.util.Observer;
 import javax.swing.JOptionPane;
 
 /**
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class ControlJugador extends Controlador implements ActionListener, Observer {
 

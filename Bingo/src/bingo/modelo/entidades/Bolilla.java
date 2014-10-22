@@ -8,7 +8,7 @@ import bingo.interfaces.IBolilla;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class Bolilla implements IBolilla {
     private int valor;

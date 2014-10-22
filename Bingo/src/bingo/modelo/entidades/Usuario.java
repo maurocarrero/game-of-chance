@@ -6,7 +6,7 @@ package bingo.modelo.entidades;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public abstract class Usuario {
     private String usuario;

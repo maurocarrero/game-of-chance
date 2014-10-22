@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public class Bolillero {
 

@@ -8,7 +8,7 @@ package bingo.modelo.exceptions;
 
 /**
  *
- * @author zorro
+ * @author maurocarrero/fernandogonzalez
  */
 public class EstaLogeadoException extends Exception{
     

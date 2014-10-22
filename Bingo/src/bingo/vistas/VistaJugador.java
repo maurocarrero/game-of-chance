@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 /**
  * Interfaz para Jugadores
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public final class VistaJugador extends javax.swing.JFrame implements InterfazVista {
 

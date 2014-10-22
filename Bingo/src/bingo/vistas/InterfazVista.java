@@ -8,7 +8,7 @@ import bingo.controladores.Controlador;
 
 /**
  *
- * @author maurocarrero
+ * @author maurocarrero/fernandogonzalez
  */
 public interface InterfazVista {
     
