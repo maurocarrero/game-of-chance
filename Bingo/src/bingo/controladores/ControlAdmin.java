@@ -76,7 +76,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void configurar() {
-        if (!modelo.getPartida().isJuegoActivo()) {
+        if (!modelo.getPartidaInstance().isJuegoActivo()) {
             vista.mostrarPanelConfiguracion();          
             poblarCamposConfiguracion();
         } else {
@@ -86,7 +86,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void lanzarNuevaInterfazJugador() {
-        Partida partida = modelo.getPartida();
+        Partida partida = modelo.getPartidaInstance();
         VistaJugador nuevaVista = new VistaJugador();
         ControlJugador control = new ControlJugador(nuevaVista, modelo);
         nuevaVista.setControlador(control);

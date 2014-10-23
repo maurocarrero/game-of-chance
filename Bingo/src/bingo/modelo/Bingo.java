@@ -57,11 +57,15 @@ public class Bingo extends Observable {
     }
     
     
-    public Partida getPartida() {
-        return Partida.getInstance(cantFilas, cantColumnas, cantMaxCartones, 
+    public Partida getPartidaInstance() {
+        partida = Partida.getInstance(cantFilas, cantColumnas, cantMaxCartones, 
                 cantJugadores, valorCarton);
+        return partida;
     }
     
+    public Partida getPartida(){
+        return this.partida;
+    }
     
     public void ejecutar() {
         partida.iniciar();
@@ -78,11 +82,11 @@ public class Bingo extends Observable {
             throw new ConfiguracionNoValidaException();
         }
         
-        cantFilas = cF;
-        cantColumnas = cCols;
-        cantMaxCartones = cCart;
-        cantJugadores = cJ;
-        valorCarton = vC;
+        partida.setCantFilas(cF);
+        partida.setCantColumnas(cCols);
+        partida.setCantMaxCartones(cCart);
+        partida.setCantJugadores(cJ);
+        partida.setValorCarton(vC);        
     }
     
     
@@ -99,8 +103,8 @@ public class Bingo extends Observable {
     
     
     public void inicioCondicional() {
-        if (getPartida().getJugadores().size() == cantJugadores) {
-            getPartida().iniciar();
+        if (getPartidaInstance().getJugadores().size() == partida.getCantJugadores()) {
+            getPartidaInstance().iniciar();
         }
     }
     
@@ -156,7 +160,7 @@ public class Bingo extends Observable {
         }
 
         // JUEGO ACTIVO
-        if (getPartida().isEnCurso()) {
+        if (getPartidaInstance().isEnCurso()) {
             throw new JuegoEnCursoException();
         }
 
@@ -176,9 +180,9 @@ public class Bingo extends Observable {
             throw new SaldoInsuficienteException();
         }
         
-        getPartida().addJugador(jugador, cantCartones);
+        getPartidaInstance().addJugador(jugador, cantCartones);
         jugador.setLogueado(true);
-        getPartida().setJuegoActivo(true);
+        getPartidaInstance().setJuegoActivo(true);
                 
         return jugador;
         

@@ -53,8 +53,36 @@ public class Partida extends Observable {
         return enCurso;
     }
 
+    public void setCantFilas(int cantFilas) {
+        this.cantFilas = cantFilas;
+    }
+
+    public void setCantColumnas(int cantColumnas) {
+        this.cantColumnas = cantColumnas;
+    }
+
+    public void setCantMaxCartones(int cantMaxCartones) {
+        this.cantMaxCartones = cantMaxCartones;
+    }
+
+    public void setCantJugadores(int cantJugadores) {
+        this.cantJugadores = cantJugadores;
+    }
+
+    public void setValorCarton(double valorCarton) {
+        this.valorCarton = valorCarton;
+    }
+
+    public void setCantCartonesRequeridos(int cantCartonesRequeridos) {
+        this.cantCartonesRequeridos = cantCartonesRequeridos;
+    }
+
     public void setEnCurso(boolean enCurso) {
         this.enCurso = enCurso;
+    }
+
+    public int getCantJugadores() {
+        return cantJugadores;
     }
 
     public double getValorCarton() {

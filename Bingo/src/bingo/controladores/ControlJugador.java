@@ -123,10 +123,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     
     public void mostrarInfo() {
-        List<IJugador> restoJugadoresEnJuego = new ArrayList<>(modelo.getPartida().getJugadores());
+        List<IJugador> restoJugadoresEnJuego = new ArrayList<>(modelo.getPartidaInstance().getJugadores());
         restoJugadoresEnJuego.remove(jugador);
-        vista.mostrarInfo(jugador.toString(), modelo.getPartida().getPozo(),
-            jugador.getSaldoPreview(modelo.getPartida().getValorCarton()),
+        vista.mostrarInfo(jugador.toString(), modelo.getPartidaInstance().getPozo(),
+            jugador.getSaldoPreview(modelo.getPartidaInstance().getValorCarton()),
             restoJugadoresEnJuego);
     }  
     
@@ -143,14 +143,14 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     }
     
     /* private void finalizarPartida(double pozo){        
-        if (modelo.getPartida().getJugadores().size() == 1 && modelo.getPartida().isEnCurso()){
-            finJuego(modelo.getPartida().getJugadores().get(0), pozo );
+        if (modelo.getPartidaInstance().getJugadores().size() == 1 && modelo.getPartidaInstance().isEnCurso()){
+            finJuego(modelo.getPartidaInstance().getJugadores().get(0), pozo );
         } 
     }*/
     
     //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
     public void continuarParticipando(boolean continuar){
-       Partida partida = modelo.getPartida();
+       Partida partida = modelo.getPartidaInstance();
        setNuevaBolilla(false);       
        partida.continuarParticipando(continuar, jugador);
        
@@ -186,7 +186,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         }
         if (evento.containsKey("abandono")) {
             vista.actualizarPozo((double)(evento.get("abandono")));
-            finJuego(getJugador(), (double)(evento.get("abandono")));
+            //finJuego(getJugador(), (double)(evento.get("abandono")));
         }
         if (evento.containsKey("bolilla")) {
             IBolilla bolilla = (IBolilla)evento.get("bolilla");
