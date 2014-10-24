@@ -22,29 +22,23 @@ public class Bingo extends Observable {
 
     private static Bingo instance;
    
-    private static int cantFilas = 3;
-    private static int cantColumnas = 2;
-    private static int cantMaxCartones = 3;
     
-    private static int cantJugadores = 3;
-    
-    private static double valorCarton = 10;
     
     private List<Usuario> usuariosTest = null;
 
-    private static Partida partida;
+    private Partida partida;
     private Administrador admin;
     
     private Bingo() {
         usuariosTest = new ArrayList();
+
         usuariosTest.add(new Administrador("mcarrero", "mcarrero"));
         usuariosTest.add(new Administrador("fgonzalez", "fgonzalez"));
-        
-        Jugador j = new Jugador("j1", "j1", 0, 1200);
-        
-        usuariosTest.add(j);
+
+        usuariosTest.add(new Jugador("j1", "j1", 0, 1200));
         usuariosTest.add(new Jugador("j2", "j2", 0, 2700));
         usuariosTest.add(new Jugador("j3", "j3", 0, 4200));
+        usuariosTest.add(new Jugador("j4", "j4", 0, 7000));
     }
     
     
@@ -58,8 +52,7 @@ public class Bingo extends Observable {
     
     
     public Partida getPartidaInstance() {
-        partida = Partida.getInstance(cantFilas, cantColumnas, cantMaxCartones, 
-                cantJugadores, valorCarton);
+        partida = Partida.getInstance();
         return partida;
     }
     
@@ -73,20 +66,19 @@ public class Bingo extends Observable {
     
     
     
-    public static void guardarConfiguracion(int cF, int cCols, int cCart, 
-            int cJ, double vC) throws ConfiguracionNoValidaException {
+    public static void guardarConfiguracion(int cantFilas, int cantColumnas, 
+            int cantMaxCartones, int cantJugadores, double valorCarton) 
+            throws ConfiguracionNoValidaException {
         
         // VALIDACIONES
-        if (cF < 1 || cF > 10 || cCols < 2 || cCols > 10 || cCart < 2 || 
-                cJ < 2 || vC < 1) {
+        if (cantFilas < 1 || cantFilas > 10 || cantColumnas < 2 || 
+                cantColumnas > 10 || cantMaxCartones < 2 || cantJugadores < 2 || 
+                valorCarton < 1) {
             throw new ConfiguracionNoValidaException();
         }
         
-        partida.setCantFilas(cF);
-        partida.setCantColumnas(cCols);
-        partida.setCantMaxCartones(cCart);
-        partida.setCantJugadores(cJ);
-        partida.setValorCarton(vC);        
+        Partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
+                cantJugadores, valorCarton);
     }
     
     
@@ -111,13 +103,13 @@ public class Bingo extends Observable {
     
     
     private boolean demasiadosCartones(int cC) {
-        return cC > cantMaxCartones;
+        return cC > Partida.getCantMaxCartones();
     }
     
     
     
     private double getPrecioCartones(int cantCartones) {
-        return cantCartones * valorCarton * 2;
+        return cantCartones * Partida.getValorCarton() * 2;
     }
     
     
@@ -186,34 +178,5 @@ public class Bingo extends Observable {
                 
         return jugador;
         
-    }    
-    
-    public static int getCantFilas() {
-        return cantFilas;
     }
-
-    
-    
-    public static int getCantColumnas() {
-        return cantColumnas;
-    }
-
-    
-    
-    public static int getCantMaxCartones() {
-        return cantMaxCartones;
-    }
-
-    
-    
-    public static int getCantJugadores() {
-        return cantJugadores;
-    }
-
-    
-    
-    public static double getValorCarton() {
-        return valorCarton;
-    }
-
 }

@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
  */
 public class JCasillero extends JLabel implements Observer {
 
-    private static Font font = new Font(Font.SANS_SERIF, Font.BOLD, 24);
+    private static Font font = new Font(Font.SANS_SERIF, Font.BOLD, 20);
    
     
     public JCasillero(int valor) {

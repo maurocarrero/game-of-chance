@@ -74,7 +74,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
                     JOptionPane.ERROR_MESSAGE);
         } catch (DemasiadosCartonesException ex) {
             String msg = "No puede participar con más de " + 
-                    Bingo.getCantMaxCartones() + " cartones";
+                    Partida.getCantMaxCartones() + " cartones";
             JOptionPane.showMessageDialog(null, msg, "Error", 
                     JOptionPane.ERROR_MESSAGE);
         } catch (HeadlessException ex) {
@@ -89,7 +89,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     
     public int getCantMaxCartones() {
-        return Bingo.getCantMaxCartones();
+        return Partida.getCantMaxCartones();
     }
 
 
@@ -98,8 +98,13 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     }
     
     public void inicioJuego() {
-       dibujarCartones();
-       mostrarInfo();
+        if (this.jugador == null) {
+            vista.dispose();
+            modelo.getPartida().deleteObserver(this);
+        } else {
+            dibujarCartones();
+            mostrarInfo();
+        }
     }
     
     private void finJuego(IJugador ganador, double pozo) {
@@ -108,7 +113,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     private void dibujarCartones() {
         List<ICarton> cartones = this.getJugador().getCartones();
-        vista.dibujarContenedorCartones(cartones.size(), Bingo.getCantFilas(), Bingo.getCantColumnas());
+        vista.dibujarContenedorCartones(cartones.size(), Partida.getCantFilas(), Partida.getCantColumnas());
         
         for (ICarton c : cartones) {
             int[][] numeros = c.getNumeros();
@@ -126,9 +131,11 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         List<IJugador> restoJugadoresEnJuego = new ArrayList<>(modelo.getPartidaInstance().getJugadores());
         restoJugadoresEnJuego.remove(jugador);
         vista.mostrarInfo(jugador.toString(), modelo.getPartidaInstance().getPozo(),
-            jugador.getSaldoPreview(modelo.getPartidaInstance().getValorCarton()),
+            jugador.getSaldoPreview(Partida.getValorCarton()),
             restoJugadoresEnJuego);
     }  
+    
+    
     
     public void marcarCasillero(IBolilla bolilla) {
         setChanged();
@@ -142,13 +149,8 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         vista.mostrarPanelContinuar();
     }
     
-    /* private void finalizarPartida(double pozo){        
-        if (modelo.getPartidaInstance().getJugadores().size() == 1 && modelo.getPartidaInstance().isEnCurso()){
-            finJuego(modelo.getPartidaInstance().getJugadores().get(0), pozo );
-        } 
-    }*/
     
-    //HAY QUE VER QUE HACER ACA CUANDO UN USUARIO DEJA DE JUGAR!!
+    
     public void continuarParticipando(boolean continuar){
        Partida partida = modelo.getPartidaInstance();
        setNuevaBolilla(false);       
@@ -185,8 +187,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             inicioJuego();
         }
         if (evento.containsKey("abandono")) {
-            vista.actualizarPozo((double)(evento.get("abandono")));
-            //finJuego(getJugador(), (double)(evento.get("abandono")));
+            mostrarInfo();
         }
         if (evento.containsKey("bolilla")) {
             IBolilla bolilla = (IBolilla)evento.get("bolilla");

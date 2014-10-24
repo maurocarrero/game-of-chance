@@ -35,26 +35,6 @@ public class ControlAdmin extends Controlador implements ActionListener {
         return instance;
     }
     
-    public int getCantFilas() {
-        return Bingo.getCantFilas();
-    }
-
-    public int getCantColumnas() {
-        return Bingo.getCantColumnas();
-    }
-
-    public int getCantMaxCartones() {
-       return Bingo.getCantMaxCartones();
-    }
-
-    public int getCantJugadores() {
-        return Bingo.getCantJugadores();
-    }
-
-    public double getValorCarton() {
-        return Bingo.getValorCarton();
-    }    
-
     private void ingresar() {
         String usuario = vista.getUsuario();
         char[] password = vista.getPassword();
@@ -68,11 +48,11 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void poblarCamposConfiguracion() {
-        vista.poblarCamposConfiguracion(Bingo.getCantFilas(), 
-                Bingo.getCantColumnas(),
-                Bingo.getCantMaxCartones(),
-                Bingo.getCantJugadores(),
-                Bingo.getValorCarton());
+        vista.poblarCamposConfiguracion(Partida.getCantFilas(), 
+                Partida.getCantColumnas(),
+                Partida.getCantMaxCartones(),
+                Partida.getCantJugadores(),
+                Partida.getValorCarton());
     }
     
     private void configurar() {

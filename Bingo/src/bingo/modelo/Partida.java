@@ -20,11 +20,13 @@ public class Partida extends Observable {
 
     private static Partida instance;
     
-    private int cantFilas;
-    private int cantColumnas;
-    private int cantMaxCartones;
-    private int cantJugadores;
-    private double valorCarton;
+    private static int cantFilas = 3;
+    private static int cantColumnas = 2;
+    private static int cantMaxCartones = 3;
+    
+    private static int cantJugadores = 3;
+    
+    private static double valorCarton = 10;
     
     private int cantCartonesRequeridos;
     private Bolillero bolillero;
@@ -36,13 +38,68 @@ public class Partida extends Observable {
     private double pozo = 0d;
     private boolean juegoActivo = false;
 
-    private Partida(int cantFilas, int cantColumnas, int cantMaxCartones, int cantJugadores, double valorCarton) {
-        this.cantFilas = cantFilas;
-        this.cantColumnas = cantColumnas;
-        this.cantMaxCartones = cantMaxCartones;
-        this.cantJugadores = cantJugadores;
-        this.valorCarton = valorCarton;
-        this.jugadores = new ArrayList();
+    private Partida() {
+        jugadores = new ArrayList();
+    }
+
+    public static void setCantFilas(int cantFilas) {
+        Partida.cantFilas = cantFilas;
+    }
+
+    public static void setCantColumnas(int cantColumnas) {
+        Partida.cantColumnas = cantColumnas;
+    }
+
+    public static void setCantMaxCartones(int cantMaxCartones) {
+        Partida.cantMaxCartones = cantMaxCartones;
+    }
+
+    public static void setCantJugadores(int cantJugadores) {
+        Partida.cantJugadores = cantJugadores;
+    }
+
+    public static void setValorCarton(double valorCarton) {
+        Partida.valorCarton = valorCarton;
+    }
+
+    public void setPozo(double pozo) {
+        this.pozo = pozo;
+    }
+
+    
+    
+    public static int getCantFilas() {
+        return cantFilas;
+    }
+
+    public static int getCantColumnas() {
+        return cantColumnas;
+    }
+
+    public static int getCantMaxCartones() {
+        return cantMaxCartones;
+    }
+
+    public static int getCantJugadores() {
+        return cantJugadores;
+    }
+
+    public static double getValorCarton() {
+        return valorCarton;
+    }
+
+    
+    
+    public Bolillero getBolillero() {
+        return bolillero;
+    }
+
+    public List<ICarton> getCartones() {
+        return cartones;
+    }
+
+    public List<IJugador> getJugadoresPendientes() {
+        return jugadoresPendientes;
     }
 
     public double getPozo() {
@@ -53,40 +110,12 @@ public class Partida extends Observable {
         return enCurso;
     }
 
-    public void setCantFilas(int cantFilas) {
-        this.cantFilas = cantFilas;
-    }
-
-    public void setCantColumnas(int cantColumnas) {
-        this.cantColumnas = cantColumnas;
-    }
-
-    public void setCantMaxCartones(int cantMaxCartones) {
-        this.cantMaxCartones = cantMaxCartones;
-    }
-
-    public void setCantJugadores(int cantJugadores) {
-        this.cantJugadores = cantJugadores;
-    }
-
-    public void setValorCarton(double valorCarton) {
-        this.valorCarton = valorCarton;
-    }
-
     public void setCantCartonesRequeridos(int cantCartonesRequeridos) {
         this.cantCartonesRequeridos = cantCartonesRequeridos;
     }
 
     public void setEnCurso(boolean enCurso) {
         this.enCurso = enCurso;
-    }
-
-    public int getCantJugadores() {
-        return cantJugadores;
-    }
-
-    public double getValorCarton() {
-        return valorCarton;
     }
 
     public boolean isJuegoActivo() {
@@ -97,13 +126,20 @@ public class Partida extends Observable {
         this.juegoActivo = juegoActivo;
     }
 
-    public static Partida getInstance(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton) {
+    public static Partida getInstance() {
         if (instance == null) {
-            instance = new Partida(cantFilas, cantColumnas, cantMaxCartones, 
-                    cantJugadores, valorCarton);
+            instance = new Partida();
         }
         return instance;
+    }
+    
+    public static void guardarConfiguracion(int cF, int cC, int cMC, 
+            int cJ, double vC) {
+        setCantFilas(cF);
+        setCantColumnas(cC);
+        setCantMaxCartones(cMC);
+        setCantJugadores(cJ);
+        setValorCarton(vC);
     }
     
     public List<IJugador> getJugadores() {
@@ -237,10 +273,9 @@ public class Partida extends Observable {
              } else {
                  finalizar(jugadores.get(0));
              }
-        } else {
-            if (!hayJugadoresPendientes()) {
-                siguienteTurno();
-            }
+        }
+        if (!hayJugadoresPendientes()) {
+            siguienteTurno();
         }
     }
     
