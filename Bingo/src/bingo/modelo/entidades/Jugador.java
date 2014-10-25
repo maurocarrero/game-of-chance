@@ -118,5 +118,11 @@ public class Jugador extends Usuario implements IJugador {
         this.cantCartones = 0;
         this.cartones = null;
     }
+    
+    @Override
+    public void mostrar() {
+        System.out.println("Jugador: " + getUsuario());
+        System.out.println("Saldo: " + getSaldo() + "\n");
+    }
    
 }

@@ -250,7 +250,7 @@ public class Partida extends Observable {
         setChanged();
         notifyObservers(crearHash("bolilla", bolilla));
         if (ganador != null) {
-            finalizar(ganador);
+            finalizar(ganador, false);
         }        
     }
     
@@ -266,14 +266,15 @@ public class Partida extends Observable {
         eliminarJugadorPendiente(jugador);
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));
-             if(jugadores.size() > 1){
-                setChanged();
-                notifyObservers(crearHash("abandono", getPozo()));
-             } else {
-                 finalizar(jugadores.get(0));
-             }
+            jugador.mostrar();
+            if(jugadores.size() > 1){
+               setChanged();
+               notifyObservers(crearHash("abandono", getPozo()));
+            } else {
+                finalizar(jugadores.get(0), true);
+            }
         }
-        if (!hayJugadoresPendientes()) {
+        if (!hayJugadoresPendientes() && jugadores.size() > 1) {
             siguienteTurno();
         }
     }
@@ -286,17 +287,23 @@ public class Partida extends Observable {
         this.pozo -= monto;
     }
     
-    private void finalizar(IJugador ganador) {
-        resetearPozo();
+    private void finalizar(IJugador ganador, boolean porAbandono) {
         for (IJugador jugador : jugadores) {
-            if (!jugador.equals(ganador)) {
-                pozo += jugador.debitarDoble(valorCarton);
-            }
+            jugador.debitarDoble(valorCarton);
             jugador.resetearCartones();
         }
         ganador.acreditar(pozo);
+        mostrarEstadoJugadores();
+        resetearPozo();
         setChanged();
         notifyObservers(crearHash("ganador", ganador));
+    }
+    
+    
+    private void mostrarEstadoJugadores() {
+        for (IJugador jugador : jugadores) {
+            jugador.mostrar();
+        }
     }
     
     public void resetearPozo() {

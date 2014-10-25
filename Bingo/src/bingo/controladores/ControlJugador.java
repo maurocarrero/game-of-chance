@@ -68,8 +68,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (AccesoDenegadoException | JuegoEnCursoException | 
-                EstaLogeadoException | SaldoInsuficienteException | 
-                CantidadCartonesInvalidaException ex) {
+                EstaLogeadoException | CantidadCartonesInvalidaException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", 
                     JOptionPane.ERROR_MESSAGE);
         } catch (DemasiadosCartonesException ex) {
@@ -80,13 +79,17 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         } catch (HeadlessException ex) {
             JOptionPane.showMessageDialog(null, "This is headless!", "Error", 
                     JOptionPane.ERROR_MESSAGE);
+            vista.limpiarCampos();
+        } catch (SaldoInsuficienteException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            vista.limpiarCampos();
         } catch (ClassCastException ex) {
             JOptionPane.showMessageDialog(null, "Debe crear un perfil de Jugador para jugar.", "Error", 
                     JOptionPane.ERROR_MESSAGE);
         }
         
     } 
-    
     
     public int getCantMaxCartones() {
         return Partida.getCantMaxCartones();
@@ -99,7 +102,6 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     
     public void inicioJuego() {
         if (this.jugador == null) {
-            vista.dispose();
             modelo.getPartida().deleteObserver(this);
         } else {
             dibujarCartones();
@@ -161,7 +163,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
        } else {
            if (!isNuevaBolilla()) {
                vista.ocultarPanelContinuar();
-               vista.mostrarMensaje("Esperando a los demás jugadores...");
+               vista.mostrarMensaje("Esperando ...");
            }           
        }
     }

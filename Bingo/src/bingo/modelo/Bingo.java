@@ -39,6 +39,7 @@ public class Bingo extends Observable {
         usuariosTest.add(new Jugador("j2", "j2", 0, 2700));
         usuariosTest.add(new Jugador("j3", "j3", 0, 4200));
         usuariosTest.add(new Jugador("j4", "j4", 0, 7000));
+        usuariosTest.add(new Jugador("j5", "j5", 0, 30));
     }
     
     
@@ -95,7 +96,7 @@ public class Bingo extends Observable {
     
     
     public void inicioCondicional() {
-        if (getPartidaInstance().getJugadores().size() == partida.getCantJugadores()) {
+        if (getPartidaInstance().getJugadores().size() == Partida.getCantJugadores()) {
             getPartidaInstance().iniciar();
         }
     }

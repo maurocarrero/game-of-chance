@@ -1,11 +1,9 @@
 package bingo.vistas;
 
-import bingo.controladores.ControlJugador;
 import bingo.controladores.Controlador;
 import bingo.interfaces.IJugador;
 import java.awt.GridLayout;
 import java.util.List;
-import javax.swing.JPanel;
 
 /**
  * Interfaz para Jugadores
@@ -13,15 +11,17 @@ import javax.swing.JPanel;
  */
 public final class VistaJugador extends javax.swing.JFrame implements InterfazVista {
 
-    private ControlJugador jugador;
-    private JPanel contenedor;
-    
+   
     /**
      * Creates new form InterfazJugador
      */
     public VistaJugador() {
         initComponents();
         btnIngresar.setActionCommand("INGRESAR");
+        txtUsuario.setActionCommand("INGRESAR");
+        txtPassword.setActionCommand("INGRESAR");
+        txtCantCartones.setActionCommand("INGRESAR");
+        
         btnNO.setActionCommand("NO_CONTINUAR");
         btnSI.setActionCommand("SI_CONTINUAR");
         ocultarPaneles();
@@ -101,6 +101,14 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         lblPozo.setText(pozo + "");
         
     }
+
+    public void limpiarCampos() {
+        txtUsuario.setText("");
+        txtPassword.setText("");
+        txtCantCartones.setText("");
+        txtUsuario.requestFocus();
+    }
+    
     
     public void abandonarPartida() {
         dispose();

@@ -45,4 +45,6 @@ public interface IJugador {
 
     public void resetearCartones();
     
+    public void mostrar();
+    
 }
