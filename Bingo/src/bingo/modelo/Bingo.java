@@ -179,4 +179,11 @@ public class Bingo extends Observable {
         return jugador;
         
     }
+    
+    public void finalizarAplicacion() {
+        if (partida != null) {
+            partida.finalizarAplicacion();
+        }        
+        System.exit(0);
+    }
 }

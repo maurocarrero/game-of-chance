@@ -22,6 +22,7 @@ public final class VistaAdmin extends JFrame {
         
         menuConfigurar.setActionCommand("CONFIGURAR");
         menuCrearInterfaces.setActionCommand("CREAR_INTERFACES");
+        menuFinalizar.setActionCommand("FINALIZAR_APLICACION");
 
         btnIngresar.setActionCommand("INGRESAR");
         btnAceptar.setActionCommand("GUARDAR_CONFIGURACION");
@@ -128,6 +129,7 @@ public final class VistaAdmin extends JFrame {
         // Menu
         menuConfigurar.addActionListener(c);
         menuCrearInterfaces.addActionListener(c);
+        menuFinalizar.addActionListener(c);
     }
 
     
@@ -161,6 +163,7 @@ public final class VistaAdmin extends JFrame {
         mnuAdministrar = new javax.swing.JMenu();
         menuConfigurar = new javax.swing.JMenuItem();
         menuCrearInterfaces = new javax.swing.JMenuItem();
+        menuFinalizar = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -207,7 +210,7 @@ public final class VistaAdmin extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -334,6 +337,9 @@ public final class VistaAdmin extends JFrame {
         menuCrearInterfaces.setText("Crear Interfaces");
         mnuAdministrar.add(menuCrearInterfaces);
 
+        menuFinalizar.setText("Finalizar aplicación");
+        mnuAdministrar.add(menuFinalizar);
+
         menuBar.add(mnuAdministrar);
 
         setJMenuBar(menuBar);
@@ -381,6 +387,7 @@ public final class VistaAdmin extends JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuConfigurar;
     private javax.swing.JMenuItem menuCrearInterfaces;
+    private javax.swing.JMenuItem menuFinalizar;
     private javax.swing.JMenu mnuAdministrar;
     private javax.swing.JPanel panelConfigurar;
     private javax.swing.JPanel panelCrearInterfaces;

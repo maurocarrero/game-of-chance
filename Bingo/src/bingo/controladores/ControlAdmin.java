@@ -67,11 +67,13 @@ public class ControlAdmin extends Controlador implements ActionListener {
     
     private void lanzarNuevaInterfazJugador() {
         Partida partida = modelo.getPartidaInstance();
-        VistaJugador nuevaVista = new VistaJugador();
-        ControlJugador control = new ControlJugador(nuevaVista, modelo);
-        nuevaVista.setControlador(control);
-        partida.addObserver(control);
-        nuevaVista.ejecutar();
+        if (!partida.isEnCurso()) {
+            VistaJugador nuevaVista = new VistaJugador();
+            ControlJugador control = new ControlJugador(nuevaVista, modelo);
+            nuevaVista.setControlador(control);
+            partida.addObserver(control);
+            nuevaVista.ejecutar();
+        }
     }
     
     private void crearInterfaces() {
@@ -100,6 +102,11 @@ public class ControlAdmin extends Controlador implements ActionListener {
         }
     }
 
+    private void finalizarAplicacion() {
+        vista.dispose();
+        modelo.finalizarAplicacion();
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -114,6 +121,9 @@ public class ControlAdmin extends Controlador implements ActionListener {
         }
         if (e.getActionCommand().equals("CREAR_INTERFACES")) {
             crearInterfaces();
+        }
+        if (e.getActionCommand().equals("FINALIZAR_APLICACION")) {
+            finalizarAplicacion();
         }
     }
 }

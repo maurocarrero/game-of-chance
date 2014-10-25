@@ -24,6 +24,11 @@
                 <Property name="text" type="java.lang.String" value="Crear Interfaces"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuFinalizar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Finalizar aplicaci&#xf3;n"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -115,7 +120,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPassword" pref="30" max="32767" attributes="0"/>
+                      <Component id="txtPassword" pref="34" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnIngresar" min="-2" pref="38" max="-2" attributes="0"/>

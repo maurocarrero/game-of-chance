@@ -13,6 +13,4 @@ import java.util.Observable;
  */
 public abstract class Controlador extends Observable implements ActionListener {
     
-    
-    
 }

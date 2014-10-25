@@ -20,12 +20,11 @@ public class Partida extends Observable {
 
     private static Partida instance;
     
+    // VALORES POR DEFECTO
     private static int cantFilas = 3;
     private static int cantColumnas = 2;
-    private static int cantMaxCartones = 3;
-    
-    private static int cantJugadores = 3;
-    
+    private static int cantMaxCartones = 2;
+    private static int cantJugadores = 3;    
     private static double valorCarton = 10;
     
     private int cantCartonesRequeridos;
@@ -302,5 +301,10 @@ public class Partida extends Observable {
     
     public void resetearPozo() {
         this.pozo = 0;
+    }
+    
+    public void finalizarAplicacion() {
+        setChanged();
+        notifyObservers(crearHash("finalizar_aplicacion", null));
     }
 }

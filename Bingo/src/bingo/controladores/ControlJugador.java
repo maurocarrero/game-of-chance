@@ -197,7 +197,11 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         if (evento.containsKey("ganador")) {
             IJugador ganador = (IJugador)evento.get("ganador");
             finJuego(ganador, 0);
-        }       
+        }
+        if (evento.containsKey("finalizar_aplicacion")) {
+            vista.dispose();
+            System.exit(0);
+        }
     }
 
     public void setNuevaBolilla(boolean nuevaBolilla) {
