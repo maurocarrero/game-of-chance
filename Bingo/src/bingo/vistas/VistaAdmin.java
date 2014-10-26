@@ -11,8 +11,6 @@ import javax.swing.JOptionPane;
  */
 public final class VistaAdmin extends JFrame {
     
-    private ControlAdmin admin;
-    
     /**
      * Creates new form InterfazAdmin
      */
