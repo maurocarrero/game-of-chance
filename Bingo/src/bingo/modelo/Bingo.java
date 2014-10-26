@@ -21,9 +21,7 @@ import java.util.Observable;
 public class Bingo extends Observable {
 
     private static Bingo instance;
-   
-    
-    
+
     private List<Usuario> usuariosTest = null;
 
     private Partida partida;

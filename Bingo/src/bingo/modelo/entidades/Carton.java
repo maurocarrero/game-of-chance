@@ -6,7 +6,6 @@ package bingo.modelo.entidades;
 
 import bingo.interfaces.IBolilla;
 import bingo.interfaces.ICarton;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +15,6 @@ import java.util.List;
 public class Carton implements ICarton {
     
     private int[][] numeros;
-    private List<IBolilla> bolillas;
     private int cantCasilleros;
     private int cantAciertos;
     
@@ -29,7 +27,6 @@ public class Carton implements ICarton {
         this.cantColumnas = cantColumnas;
         this.cantCasilleros = cantFilas * cantColumnas;
         this.cantAciertos = 0;
-        this.bolillas = new ArrayList<>();
     }
     
     @Override
@@ -65,7 +62,6 @@ public class Carton implements ICarton {
             for (int y = 0; y < this.cantColumnas; y++) {
                 if (numeros[x][y] == valor) {
                     this.cantAciertos++;
-                    bolillas.add(bolilla);
                 }
             }
         }

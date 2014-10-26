@@ -4,12 +4,13 @@ import bingo.controladores.Controlador;
 import bingo.interfaces.IJugador;
 import java.awt.GridLayout;
 import java.util.List;
+import javax.swing.JFrame;
 
 /**
  * Interfaz para Jugadores
  * @author maurocarrero/fernandogonzalez
  */
-public final class VistaJugador extends javax.swing.JFrame implements InterfazVista {
+public final class VistaJugador extends JFrame {
 
    
     /**
@@ -129,7 +130,6 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         listJugadores.setVisible(false);
     }
 
-    @Override
     public void setControlador(Controlador c) {
         // Login
         btnIngresar.addActionListener(c);
@@ -140,7 +140,6 @@ public final class VistaJugador extends javax.swing.JFrame implements InterfazVi
         btnSI.addActionListener(c);
     }
 
-    @Override
     public void ejecutar() {
         ocultarPaneles();
         panelLoginJugador.setVisible(true);

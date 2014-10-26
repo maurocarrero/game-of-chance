@@ -8,7 +8,6 @@ import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,7 +17,6 @@ import javax.swing.JOptionPane;
 public class ControlAdmin extends Controlador implements ActionListener {
     
     private static ControlAdmin instance;
-    private JFrame frame;
     
     private Bingo modelo;
     private VistaAdmin vista;
