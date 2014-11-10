@@ -4,7 +4,6 @@ import bingo.modelo.Bingo;
 import bingo.modelo.Partida;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import bingo.vistas.VistaAdmin;
-import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,7 +62,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
         
     }
     
-    private void lanzarNuevaInterfazJugador() {
+    /*private void lanzarNuevaInterfazJugador() {
         Partida partida = modelo.getPartidaInstance();
         if (!partida.isEnCurso()) {
             VistaJugador nuevaVista = new VistaJugador();
@@ -72,12 +71,12 @@ public class ControlAdmin extends Controlador implements ActionListener {
             partida.addObserver(control);
             nuevaVista.ejecutar();
         }
-    }
+    }*/
     
-    private void crearInterfaces() {
+   /* private void crearInterfaces() {
         vista.mostrarCrearInterfaces();
         lanzarNuevaInterfazJugador();
-    }
+    }*/
     
     private void guardarConfiguracion() {
         try {
@@ -117,9 +116,9 @@ public class ControlAdmin extends Controlador implements ActionListener {
         if (e.getActionCommand().equals("GUARDAR_CONFIGURACION")) {
             guardarConfiguracion();
         }
-        if (e.getActionCommand().equals("CREAR_INTERFACES")) {
+        /*if (e.getActionCommand().equals("CREAR_INTERFACES")) {
             crearInterfaces();
-        }
+        }*/
         if (e.getActionCommand().equals("FINALIZAR_APLICACION")) {
             finalizarAplicacion();
         }

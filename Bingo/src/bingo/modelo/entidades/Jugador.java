@@ -63,7 +63,7 @@ public class Jugador extends Usuario implements IJugador {
     public boolean buscarBolilla(IBolilla bolilla) {
         for (ICarton c : this.cartones) {
             c.buscarBolilla(bolilla);
-            if (c.estaCompleto()) {
+            if (c.estaCompleto() || c.tieneFiguras()) {
                 return true;
             }
         }
