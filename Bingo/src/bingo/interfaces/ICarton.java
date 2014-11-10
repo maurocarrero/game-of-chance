@@ -25,5 +25,7 @@ public interface ICarton {
     public boolean tieneBolilla(IBolilla bolilla);
     
     public boolean estaCompleto();
+
+    public boolean tieneFiguras();
     
 }
