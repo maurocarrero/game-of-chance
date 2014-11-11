@@ -60,10 +60,10 @@ public class Jugador extends Usuario implements IJugador {
     }
     
     @Override
-    public boolean buscarBolilla(IBolilla bolilla) {
+    public boolean buscarBolilla(IBolilla bolilla, boolean linea, boolean diagonal, boolean centro) {
         for (ICarton c : this.cartones) {
             c.buscarBolilla(bolilla);
-            if (c.estaCompleto() || c.tieneFiguras()) {
+            if (c.estaCompleto() || c.tieneFiguras(linea, diagonal, centro)) {
                 return true;
             }
         }

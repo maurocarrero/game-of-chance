@@ -26,6 +26,6 @@ public interface ICarton {
     
     public boolean estaCompleto();
 
-    public boolean tieneFiguras();
+    public boolean tieneFiguras(boolean linea, boolean diagonal, boolean centro);
     
 }

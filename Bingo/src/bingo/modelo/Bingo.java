@@ -66,7 +66,8 @@ public class Bingo extends Observable {
     
     
     public static void guardarConfiguracion(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton) 
+            int cantMaxCartones, int cantJugadores, double valorCarton,
+            boolean linea, boolean diagonal, boolean centro) 
             throws ConfiguracionNoValidaException {
         
         // VALIDACIONES
@@ -75,9 +76,19 @@ public class Bingo extends Observable {
                 valorCarton < 1) {
             throw new ConfiguracionNoValidaException();
         }
+        // VALIDACIONES FIGURAS
+        if(cantFilas != cantColumnas){
+            if(diagonal == true || centro == true) throw new ConfiguracionNoValidaException();
+        }else{
+            if(centro){
+                if(cantColumnas %2 == 0 || cantFilas %2 == 0) throw new ConfiguracionNoValidaException();                
+            }            
+        }
+        
+        
         
         Partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
-                cantJugadores, valorCarton);
+                cantJugadores, valorCarton, linea, diagonal, centro);
     }
     
     

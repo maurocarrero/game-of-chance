@@ -57,29 +57,27 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="1" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="panelConfigurar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelConfigurar" min="-2" max="-2" attributes="0"/>
                   <Component id="panelLogin" min="-2" max="-2" attributes="0"/>
+                  <Component id="panelCrearInterfaces" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelCrearInterfaces" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelCrearInterfaces" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="panelConfigurar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelLogin" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Component id="panelCrearInterfaces" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="panelLogin" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <Component id="panelConfigurar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -121,9 +119,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPassword" pref="34" max="32767" attributes="0"/>
+                      <Component id="txtPassword" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace pref="29" max="32767" attributes="0"/>
                   <Component id="btnIngresar" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
@@ -179,31 +177,32 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="btnAceptar" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="lblCantFilas" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCantColumnas" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCantCartones" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCantJugadores" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblValorCarton" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="lblCantFilas" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCantColumnas" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCantCartones" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblValorCarton" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCantJugadores" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkLinea" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkDiagonal" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkCentro" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="txtCantColumnas" alignment="2" min="-2" pref="50" max="-2" attributes="0"/>
+                                  <Component id="txtCantFilas" alignment="2" min="-2" pref="50" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="2" attributes="0">
-                                      <Component id="txtCantColumnas" alignment="2" min="-2" pref="50" max="-2" attributes="0"/>
-                                      <Component id="txtCantFilas" alignment="2" min="-2" pref="50" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="txtCantJugadores" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
-                                  <Component id="txtCantMaxCartones" min="-2" pref="50" max="-2" attributes="0"/>
-                                  <Component id="txtValorCarton" min="-2" pref="50" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="txtCantJugadores" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="txtCantMaxCartones" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="txtValorCarton" min="-2" pref="50" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="14" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -222,24 +221,30 @@
                       <Component id="lblCantColumnas" min="-2" max="-2" attributes="0"/>
                       <Component id="txtCantColumnas" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblCantCartones" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCantMaxCartones" min="-2" pref="30" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtCantMaxCartones" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="lblCantCartones" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblCantJugadores" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtCantJugadores" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="lblCantJugadores" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblValorCarton" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="txtValorCarton" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtValorCarton" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="lblValorCarton" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
+                  <Component id="chkLinea" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="chkDiagonal" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="chkCentro" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="46" max="32767" attributes="0"/>
+                  <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -351,6 +356,21 @@
             <Property name="text" type="java.lang.String" value="Aceptar"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JCheckBox" name="chkLinea">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Linea"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkDiagonal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Diagonal"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkCentro">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Centro"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="panelCrearInterfaces">
@@ -370,7 +390,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="239" max="32767" attributes="0"/>
+                  <EmptySpace pref="224" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

@@ -23,8 +23,6 @@ public interface IJugador {
     public void setCantCartones(int cantCartones);
 
     public boolean addCarton(ICarton e);
-    
-    public boolean buscarBolilla(IBolilla bolilla);
 
     public boolean tieneBolilla(IBolilla bolilla);
     
@@ -46,5 +44,7 @@ public interface IJugador {
     public void resetearCartones();
     
     public void mostrar();
+
+    public boolean buscarBolilla(IBolilla bolilla, boolean linea, boolean diagonal, boolean centro);
     
 }

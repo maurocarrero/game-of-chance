@@ -36,6 +36,11 @@ public class Partida extends Observable {
     private boolean enCurso = false;
     private double pozo = 0d;
     private boolean juegoActivo = false;
+    
+    //Figuras
+    private static boolean linea = false;
+    private static boolean diagonal = false;
+    private static boolean centro = false;
 
     private Partida() {
         jugadores = new ArrayList();
@@ -65,6 +70,18 @@ public class Partida extends Observable {
         this.pozo = pozo;
     }
 
+    public static void setLinea(boolean linea) {
+        Partida.linea = linea;
+    }
+
+    public static void setDiagonal(boolean diagonal) {
+        Partida.diagonal = diagonal;
+    }
+
+    public static void setCentro(boolean centro) {
+        Partida.centro = centro;
+    }
+
     
     
     public static int getCantFilas() {
@@ -85,6 +102,18 @@ public class Partida extends Observable {
 
     public static double getValorCarton() {
         return valorCarton;
+    }
+
+    public static boolean getLinea() {
+        return linea;
+    }
+
+    public static boolean getDiagonal() {
+        return diagonal;
+    }
+
+    public static boolean getCentro() {
+        return centro;
     }
 
     
@@ -133,12 +162,15 @@ public class Partida extends Observable {
     }
     
     public static void guardarConfiguracion(int cF, int cC, int cMC, 
-            int cJ, double vC) {
+            int cJ, double vC, boolean linea, boolean diagonal, boolean centro) {
         setCantFilas(cF);
         setCantColumnas(cC);
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
+        setLinea(linea);
+        setDiagonal(diagonal);
+        setCentro(centro);
     }
     
     public List<IJugador> getJugadores() {
@@ -243,7 +275,7 @@ public class Partida extends Observable {
     public void anunciarBolilla(IBolilla bolilla) {        
         IJugador ganador = null;
         for (IJugador jugador : this.jugadores) {
-            if (jugador.buscarBolilla(bolilla)) {
+            if (jugador.buscarBolilla(bolilla, linea, diagonal, centro)) {
                 ganador = jugador;
             }
         }
