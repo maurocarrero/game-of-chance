@@ -25,4 +25,43 @@ public class Diagonal extends Figura {
         super(nombre);
     }
     
+    public boolean condicional(Carton c){
+        if(diagonalHaciaDerecha(c)){
+           return true; 
+        }else{
+            return diagonalHaciaIzquierda(c);
+        }
+    }
+    
+    //Figura Diagonal Hacia la derecha "\"
+    public boolean diagonalHaciaDerecha(Carton c){
+        int cantPintados = 0;
+        for (int x = 0; x < c.getCantColumnas(); x++) {
+            if (c.getPintados()[x][x]) {
+                cantPintados ++;
+            }
+        }
+        //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
+        if(cantPintados == c.getCantColumnas()) return true;
+        else{
+            cantPintados = 0;
+        }       
+        return false;
+    }
+    
+    //Figura Diagonal Hacia la izquierda "/"
+    public boolean diagonalHaciaIzquierda(Carton c){
+        int cantPintados = 0;
+        for (int x =c.getCantColumnas()-1 ; x > 0; x--) {
+            if (c.getPintados()[x][x]) {
+                cantPintados ++;
+            }
+        }
+        //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
+        if(cantPintados == c.getCantColumnas()) return true;
+        else{
+            cantPintados = 0;
+        }       
+        return false;
+    }
 }

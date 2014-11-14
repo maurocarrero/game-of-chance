@@ -51,6 +51,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
                 Partida.getCantMaxCartones(),
                 Partida.getCantJugadores(),
                 Partida.getValorCarton(),
+                Partida.ge
                 Partida.getLinea(),
                 Partida.getDiagonal(),
                 Partida.getCentro());

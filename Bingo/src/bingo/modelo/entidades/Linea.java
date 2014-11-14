@@ -25,4 +25,48 @@ public class Linea extends Figura {
         super(nombre);
     }
     
+    public boolean condicional(Carton c){
+        if(recorrerFilas(c)){
+           return true; 
+        }else{
+            return recorrerColumnas(c);
+        }
+    }
+    
+    //Lineal por Fila
+    private boolean recorrerFilas(Carton c) {
+        int cantPintados = 0;
+         for (int x = 0; x < c.getCantFilas(); x++) {
+            for (int y = 0; y < c.getCantColumnas(); y++) {
+                if (c.getPintados()[x][y]) {
+                    cantPintados ++;
+                }
+            }
+            //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
+            if(cantPintados == c.getCantColumnas()) return true;
+            else{
+                cantPintados = 0;
+            }
+        }
+        return false;
+    }
+    
+    //Lineal por Columna
+    private boolean recorrerColumnas(Carton c) {
+        int cantPintados = 0;
+         for (int x = 0; x < c.getCantColumnas(); x++) {
+            for (int y = 0; y < c.getCantFilas(); y++) {
+                if (c.getPintados()[y][x]) {
+                    cantPintados ++;
+                }
+            }
+            //if(cantPintados == cantFilas && cantPintados == cantAciertos) return true;
+            if(cantPintados == c.getCantFilas()) return true;
+            else{
+                cantPintados = 0;
+            }
+        }
+        return false;
+    }
+    
 }

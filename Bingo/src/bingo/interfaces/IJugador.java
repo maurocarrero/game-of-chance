@@ -4,6 +4,7 @@
  */
 package bingo.interfaces;
 
+import bingo.modelo.entidades.Figura;
 import java.util.List;
 
 /**
@@ -45,6 +46,6 @@ public interface IJugador {
     
     public void mostrar();
 
-    public boolean buscarBolilla(IBolilla bolilla, boolean linea, boolean diagonal, boolean centro);
+    public boolean buscarBolilla(IBolilla bolilla, List<Figura> figuras);
     
 }

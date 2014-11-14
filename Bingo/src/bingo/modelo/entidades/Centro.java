@@ -25,4 +25,11 @@ public class Centro extends Figura {
         super(nombre);
     }
     
+    public boolean condicional(Carton c){
+        int centro = (c.getCantFilas() -1) / 2;
+        //if(pintados[centro][centro] && cantAciertos == 1) return true;
+        if(c.getPintados()[centro][centro]) return true;
+        return false;
+    }
+    
 }

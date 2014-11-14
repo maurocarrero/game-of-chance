@@ -40,6 +40,10 @@ public class Carton implements ICarton {
         }
     }
 
+    public boolean[][] getPintados() {
+        return pintados;
+    }
+    
     
     @Override
     public int[][] getNumeros() {
@@ -86,108 +90,17 @@ public class Carton implements ICarton {
     @Override
     public boolean estaCompleto() {
         return this.cantAciertos == this.cantCasilleros;
-    }
+    }     
     
-    //Lineal por Fila
-    public boolean recorrerFilas() {
-        int cantPintados = 0;
-         for (int x = 0; x < this.cantFilas; x++) {
-            for (int y = 0; y < this.cantColumnas; y++) {
-                if (pintados[x][y]) {
-                    cantPintados ++;
-                }
-            }
-            //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-            if(cantPintados == cantColumnas) return true;
-            else{
-                cantPintados = 0;
-            }
-        }
-        return false;
-    }
     
-    //Lineal por Columna
-    public boolean recorrerColumnas() {
-        int cantPintados = 0;
-         for (int x = 0; x < this.cantColumnas; x++) {
-            for (int y = 0; y < this.cantFilas; y++) {
-                if (pintados[y][x]) {
-                    cantPintados ++;
-                }
-            }
-            //if(cantPintados == cantFilas && cantPintados == cantAciertos) return true;
-            if(cantPintados == cantFilas) return true;
-            else{
-                cantPintados = 0;
-            }
-        }
-        return false;
-    }
-    
-    //Figura Centro
-    public boolean devolverCentro() {
-        int centro = (cantFilas -1) / 2;
-        //if(pintados[centro][centro] && cantAciertos == 1) return true;
-        if(pintados[centro][centro]) return true;
-        return false;
-    }
-    
-    //Figura Diagonal Hacia la derecha "\"
-    public boolean diagonalHaciaDerecha(){
-        int cantPintados = 0;
-        for (int x = 0; x < this.cantColumnas; x++) {
-            if (pintados[x][x]) {
-                cantPintados ++;
-            }
-        }
-        //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-        if(cantPintados == cantColumnas) return true;
-        else{
-            cantPintados = 0;
-        }       
-        return false;
-    }
-    
-    //Figura Diagonal Hacia la izquierda "/"
-    public boolean diagonalHaciaIzquierda(){
-        int cantPintados = 0;
-        for (int x =cantColumnas-1 ; x > 0; x--) {
-            if (pintados[x][x]) {
-                cantPintados ++;
-            }
-        }
-        //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-        if(cantPintados == cantColumnas) return true;
-        else{
-            cantPintados = 0;
-        }       
-        return false;
-    }
     
     //Condicional para tener Figuras
     public boolean tieneFiguras(List<Figura> figuras) {
         int casilleroCentro = (cantFilas -1) / 2;
         
         for(Figura fig : figuras){
-            
-        }
-        if(linea){
-            if(recorrerFilas()) return true;
-            if(recorrerColumnas()) return true;            
-        }            
-        if(cantColumnas == cantFilas) {
-            if(centro){
-                if(cantColumnas %2 != 0 && cantFilas %2 != 0) {
-                    if(devolverCentro()) return true;
-                }   
-            }
-           if(diagonal){
-               if(pintados[casilleroCentro][casilleroCentro]) {
-                   if(diagonalHaciaDerecha()) return true;
-                   if(diagonalHaciaIzquierda()) return true;
-               }
-           } 
-        }
+            if(fig.condicional()) return true;
+        }         
         return false;
     }
     

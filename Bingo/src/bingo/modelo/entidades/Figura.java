@@ -32,5 +32,8 @@ public class Figura {
         this.activa = activa;
     }
     
+    public boolean condicional(){
+        return false;
+    }
     
 }

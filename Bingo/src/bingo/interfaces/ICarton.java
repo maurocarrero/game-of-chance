@@ -4,6 +4,7 @@
  */
 package bingo.interfaces;
 
+import bingo.modelo.entidades.Figura;
 import java.util.List;
 
 /**
@@ -26,6 +27,6 @@ public interface ICarton {
     
     public boolean estaCompleto();
 
-    public boolean tieneFiguras(boolean linea, boolean diagonal, boolean centro);
+    public boolean tieneFiguras(List<Figura> figuras);
     
 }
