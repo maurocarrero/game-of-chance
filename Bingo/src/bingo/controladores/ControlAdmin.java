@@ -8,6 +8,7 @@ import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,15 +47,13 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void poblarCamposConfiguracion() {
+        List<String> figuras = Partida.getFigurasString();
         vista.poblarCamposConfiguracion(Partida.getCantFilas(), 
                 Partida.getCantColumnas(),
                 Partida.getCantMaxCartones(),
                 Partida.getCantJugadores(),
                 Partida.getValorCarton(),
-                Partida.ge
-                Partida.getLinea(),
-                Partida.getDiagonal(),
-                Partida.getCentro());
+                figuras);
     }
     
     private void configurar() {

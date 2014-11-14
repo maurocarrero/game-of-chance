@@ -24,8 +24,6 @@ public interface ICarton {
     public void buscarBolilla(IBolilla bolilla);
     
     public boolean tieneBolilla(IBolilla bolilla);
-    
-    public boolean estaCompleto();
 
     public boolean tieneFiguras(List<Figura> figuras);
     

@@ -2,6 +2,7 @@ package bingo.vistas;
 
 
 import bingo.controladores.ControlAdmin;
+import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -105,15 +106,18 @@ public final class VistaAdmin extends JFrame {
     
     public void poblarCamposConfiguracion(int cantFilas, int cantColumnas, 
             int cantMaxCartones, int cantJugadores, double valorCarton,
-            boolean linea, boolean diagonal, boolean centro) {
+            List<String> figuras) {
         txtCantFilas.setText("" + cantFilas);
         txtCantColumnas.setText("" + cantColumnas);
         txtCantMaxCartones.setText("" + cantMaxCartones);
         txtCantJugadores.setText("" + cantJugadores);
         txtValorCarton.setText("" + valorCarton);
-        chkLinea.setSelected(linea);
-        chkDiagonal.setSelected(diagonal);
-        chkCentro.setSelected(centro);
+        for(String str : figuras){
+            String[] nombreActivo = str.split("#");
+            if(nombreActivo[0].equals("linea")) chkLinea.setSelected(Boolean.parseBoolean(nombreActivo[1]));
+            if(nombreActivo[0].equals("diagonal")) chkDiagonal.setSelected(Boolean.parseBoolean(nombreActivo[1]));
+            if(nombreActivo[0].equals("centro")) chkCentro.setSelected(Boolean.parseBoolean(nombreActivo[1]));
+        }
     }
     
     
@@ -177,6 +181,7 @@ public final class VistaAdmin extends JFrame {
         chkLinea = new javax.swing.JCheckBox();
         chkDiagonal = new javax.swing.JCheckBox();
         chkCentro = new javax.swing.JCheckBox();
+        chkCartonLleno = new javax.swing.JCheckBox();
         panelCrearInterfaces = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -278,6 +283,11 @@ public final class VistaAdmin extends JFrame {
 
         chkCentro.setText("Centro");
 
+        chkCartonLleno.setSelected(true);
+        chkCartonLleno.setText("Carton Lleno");
+        chkCartonLleno.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        chkCartonLleno.setEnabled(false);
+
         javax.swing.GroupLayout panelConfigurarLayout = new javax.swing.GroupLayout(panelConfigurar);
         panelConfigurar.setLayout(panelConfigurarLayout);
         panelConfigurarLayout.setHorizontalGroup(
@@ -296,7 +306,8 @@ public final class VistaAdmin extends JFrame {
                             .addComponent(lblCantJugadores)
                             .addComponent(chkLinea)
                             .addComponent(chkDiagonal)
-                            .addComponent(chkCentro))
+                            .addComponent(chkCentro)
+                            .addComponent(chkCartonLleno))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -338,7 +349,9 @@ public final class VistaAdmin extends JFrame {
                 .addComponent(chkDiagonal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkCentro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkCartonLleno)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(btnAceptar)
                 .addGap(11, 11, 11))
         );
@@ -407,6 +420,7 @@ public final class VistaAdmin extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JCheckBox chkCartonLleno;
     private javax.swing.JCheckBox chkCentro;
     private javax.swing.JCheckBox chkDiagonal;
     private javax.swing.JCheckBox chkLinea;

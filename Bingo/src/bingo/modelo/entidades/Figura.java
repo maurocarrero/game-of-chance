@@ -32,7 +32,7 @@ public class Figura {
         this.activa = activa;
     }
     
-    public boolean condicional(){
+    public boolean condicional(Carton c){
         return false;
     }
     

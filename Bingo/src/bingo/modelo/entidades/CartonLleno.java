@@ -26,4 +26,8 @@ public class CartonLleno extends Figura {
         super.setActiva(true);
     }
     
+    @Override
+    public boolean condicional(Carton c){
+        return c.getCantAciertos() == c.getCantCasilleros();
+    }
 }

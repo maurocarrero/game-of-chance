@@ -59,6 +59,14 @@ public class Carton implements ICarton {
     public int getCantColumnas() {
         return cantColumnas;
     }
+
+    public int getCantCasilleros() {
+        return cantCasilleros;
+    }
+
+    public int getCantAciertos() {
+        return cantAciertos;
+    }
     
     
     @Override
@@ -87,19 +95,16 @@ public class Carton implements ICarton {
         return false;
     }
     
+    
+    
+    
     @Override
-    public boolean estaCompleto() {
-        return this.cantAciertos == this.cantCasilleros;
-    }     
-    
-    
-    
     //Condicional para tener Figuras
     public boolean tieneFiguras(List<Figura> figuras) {
         int casilleroCentro = (cantFilas -1) / 2;
         
         for(Figura fig : figuras){
-            if(fig.condicional()) return true;
+            if(fig.condicional(this)) return true;
         }         
         return false;
     }

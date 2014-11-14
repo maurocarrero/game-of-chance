@@ -23,8 +23,10 @@ public class Linea extends Figura {
     
     public Linea(String nombre) {
         super(nombre);
+        super.setActiva(false);
     }
     
+    @Override
     public boolean condicional(Carton c){
         if(recorrerFilas(c)){
            return true; 

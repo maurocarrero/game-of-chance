@@ -23,8 +23,10 @@ public class Diagonal extends Figura {
     
     public Diagonal(String nombre) {
         super(nombre);
+        super.setActiva(false);
     }
     
+    @Override
     public boolean condicional(Carton c){
         if(diagonalHaciaDerecha(c)){
            return true; 

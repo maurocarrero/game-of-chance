@@ -23,8 +23,10 @@ public class Centro extends Figura {
     
     public Centro(String nombre) {
         super(nombre);
+        super.setActiva(false);
     }
     
+    @Override
     public boolean condicional(Carton c){
         int centro = (c.getCantFilas() -1) / 2;
         //if(pintados[centro][centro] && cantAciertos == 1) return true;

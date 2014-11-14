@@ -54,6 +54,11 @@ public class Partida extends Observable {
 
     private Partida() {
         jugadores = new ArrayList();
+        figuras = new ArrayList<>();
+        figuras.add(CartonLleno.getInstance());
+        figuras.add(Linea.getInstance());
+        figuras.add(Diagonal.getInstance());
+        figuras.add(Centro.getInstance());
     }
 
     public static void setCantFilas(int cantFilas) {
@@ -125,6 +130,14 @@ public class Partida extends Observable {
         return figuras;
     }
 
+    public static List<String> getFigurasString(){
+        List<String> listaString = new ArrayList<String>();
+        for(Figura fig : figuras){
+            listaString.add(fig.getNombre() + "#" + fig.isActiva() + "");
+        }
+        return listaString;
+    }
+    
     public double getPozo() {
         return pozo;
     }
@@ -163,11 +176,10 @@ public class Partida extends Observable {
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
-        figuras.clear();
-        figuras.add(CartonLleno.getInstance());
-        if(linea) figuras.add(Linea.getInstance());
-        if(diagonal) figuras.add(Diagonal.getInstance());
-        if(centro) figuras.add(Centro.getInstance());
+        CartonLleno.getInstance().setActiva(true);
+        Linea.getInstance().setActiva(linea);
+        Diagonal.getInstance().setActiva(diagonal);
+        Centro.getInstance().setActiva(centro);
     }
     
     public List<IJugador> getJugadores() {
