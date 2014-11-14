@@ -149,9 +149,15 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             vista.mostrarMensaje("");
         }
         vista.mostrarPanelContinuar();
+        //modelo.getPartidaInstance().getTimer().addObserver(this);
+       // modelo.getPartidaInstance().getTimer().run();
+       // timer();
     }
     
-    
+    private void timer(){
+        Thread thread = new Thread(modelo.getPartidaInstance().getTimer());
+        thread.run();
+    }
     
     public void continuarParticipando(boolean continuar){
        Partida partida = modelo.getPartidaInstance();
@@ -166,6 +172,11 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
                vista.mostrarMensaje("Esperando ...");
            }           
        }
+       modelo.getPartidaInstance().getTimer().deleteObserver(this);
+    }
+    
+    public void actualizarTimer(int timer){
+        vista.actualizarTimer(timer);
     }
     
     @Override
@@ -196,6 +207,11 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             setNuevaBolilla(true);
             marcarCasillero(bolilla);
         }
+        if (evento.containsKey("timer")) {
+            int timer = (int)(evento.get("timer"));
+            System.out.println(timer);
+            actualizarTimer(timer);
+        }        
         if (evento.containsKey("ganador")) {
             IJugador ganador = (IJugador)evento.get("ganador");
             finJuego(ganador, 0);

@@ -5,7 +5,13 @@ import bingo.interfaces.ICarton;
 import bingo.interfaces.IJugador;
 import bingo.modelo.entidades.Bolillero;
 import bingo.modelo.entidades.Carton;
+import bingo.modelo.entidades.CartonLleno;
+import bingo.modelo.entidades.Centro;
+import bingo.modelo.entidades.Diagonal;
+import bingo.modelo.entidades.Figura;
 import bingo.modelo.entidades.Jugador;
+import bingo.modelo.entidades.Linea;
+import bingo.modelo.entidades.Timer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,9 +44,13 @@ public class Partida extends Observable {
     private boolean juegoActivo = false;
     
     //Figuras
-    private static boolean linea = false;
-    private static boolean diagonal = false;
-    private static boolean centro = false;
+    private static List<Figura> figuras = new ArrayList();
+   // private static boolean linea = false;
+   // private static boolean diagonal = false;
+   // private static boolean centro = false;
+    
+    //Timer
+    private static Timer timer;
 
     private Partida() {
         jugadores = new ArrayList();
@@ -69,19 +79,14 @@ public class Partida extends Observable {
     public void setPozo(double pozo) {
         this.pozo = pozo;
     }
-
-    public static void setLinea(boolean linea) {
-        Partida.linea = linea;
+    
+    public static void setTimer(int segundos) {
+        Partida.timer.setTiempo(segundos);
     }
 
-    public static void setDiagonal(boolean diagonal) {
-        Partida.diagonal = diagonal;
+    public static Timer getTimer(){
+        return new Timer(10);
     }
-
-    public static void setCentro(boolean centro) {
-        Partida.centro = centro;
-    }
-
     
     
     public static int getCantFilas() {
@@ -102,21 +107,7 @@ public class Partida extends Observable {
 
     public static double getValorCarton() {
         return valorCarton;
-    }
-
-    public static boolean getLinea() {
-        return linea;
-    }
-
-    public static boolean getDiagonal() {
-        return diagonal;
-    }
-
-    public static boolean getCentro() {
-        return centro;
-    }
-
-    
+    }  
     
     public Bolillero getBolillero() {
         return bolillero;
@@ -128,6 +119,10 @@ public class Partida extends Observable {
 
     public List<IJugador> getJugadoresPendientes() {
         return jugadoresPendientes;
+    }
+
+    public List<Figura> getFiguras() {
+        return figuras;
     }
 
     public double getPozo() {
@@ -168,9 +163,11 @@ public class Partida extends Observable {
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
-        setLinea(linea);
-        setDiagonal(diagonal);
-        setCentro(centro);
+        figuras.clear();
+        figuras.add(CartonLleno.getInstance());
+        if(linea) figuras.add(Linea.getInstance());
+        if(diagonal) figuras.add(Diagonal.getInstance());
+        if(centro) figuras.add(Centro.getInstance());
     }
     
     public List<IJugador> getJugadores() {
@@ -275,7 +272,7 @@ public class Partida extends Observable {
     public void anunciarBolilla(IBolilla bolilla) {        
         IJugador ganador = null;
         for (IJugador jugador : this.jugadores) {
-            if (jugador.buscarBolilla(bolilla, linea, diagonal, centro)) {
+            if (jugador.buscarBolilla(bolilla, figuras)) {
                 ganador = jugador;
             }
         }

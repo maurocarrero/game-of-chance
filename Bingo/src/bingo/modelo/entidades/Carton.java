@@ -165,8 +165,12 @@ public class Carton implements ICarton {
     }
     
     //Condicional para tener Figuras
-    public boolean tieneFiguras(boolean linea, boolean diagonal, boolean centro) {
+    public boolean tieneFiguras(List<Figura> figuras) {
         int casilleroCentro = (cantFilas -1) / 2;
+        
+        for(Figura fig : figuras){
+            
+        }
         if(linea){
             if(recorrerFilas()) return true;
             if(recorrerColumnas()) return true;            

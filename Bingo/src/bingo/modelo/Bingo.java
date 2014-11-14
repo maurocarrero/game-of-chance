@@ -83,9 +83,7 @@ public class Bingo extends Observable {
             if(centro){
                 if(cantColumnas %2 == 0 || cantFilas %2 == 0) throw new ConfiguracionNoValidaException();                
             }            
-        }
-        
-        
+        }      
         
         Partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
                 cantJugadores, valorCarton, linea, diagonal, centro);
