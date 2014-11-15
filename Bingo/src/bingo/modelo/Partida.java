@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -50,7 +51,7 @@ public class Partida extends Observable {
    // private static boolean centro = false;
     
     //Timer
-    private static Timer timer;
+    private static Timer timer = new Timer(10);
 
     private Partida() {
         jugadores = new ArrayList();
@@ -90,7 +91,7 @@ public class Partida extends Observable {
     }
 
     public static Timer getTimer(){
-        return new Timer(10);
+        return timer;
     }
     
     
@@ -176,7 +177,6 @@ public class Partida extends Observable {
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
-        CartonLleno.getInstance().setActiva(true);
         Linea.getInstance().setActiva(linea);
         Diagonal.getInstance().setActiva(diagonal);
         Centro.getInstance().setActiva(centro);
@@ -292,7 +292,9 @@ public class Partida extends Observable {
         notifyObservers(crearHash("bolilla", bolilla));
         if (ganador != null) {
             finalizar(ganador, false);
-        }        
+        }else{
+            SwingUtilities.invokeLater(timer);
+        }
     }
     
     public void eliminarJugadorPendiente(IJugador jugador) {

@@ -28,11 +28,18 @@ public class Linea extends Figura {
     
     @Override
     public boolean condicional(Carton c){
-        if(recorrerFilas(c)){
-           return true; 
-        }else{
-            return recorrerColumnas(c);
+        boolean acierto = false; 
+        boolean verFilas = c.getCantAciertos() == c.getCantFilas();
+        boolean verColumnas = c.getCantAciertos() == c.getCantColumnas();
+        if(verFilas || verColumnas){
+            if(verFilas){
+               acierto = recorrerFilas(c);
+            }
+            if(!acierto && verColumnas){
+                acierto = recorrerColumnas(c);
+            }
         }
+        return acierto;
     }
     
     //Lineal por Fila
@@ -45,10 +52,8 @@ public class Linea extends Figura {
                 }
             }
             //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-            if(cantPintados == c.getCantColumnas()) return true;
-            else{
-                cantPintados = 0;
-            }
+            if(cantPintados == c.getCantAciertos()) return true;
+            else cantPintados = 0;
         }
         return false;
     }

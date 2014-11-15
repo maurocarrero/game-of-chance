@@ -6,6 +6,7 @@ import bingo.interfaces.IJugador;
 import bingo.modelo.Bingo;
 import bingo.modelo.Partida;
 import bingo.modelo.entidades.Jugador;
+import bingo.modelo.entidades.Timer;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  * @author maurocarrero/fernandogonzalez
@@ -149,14 +151,8 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             vista.mostrarMensaje("");
         }
         vista.mostrarPanelContinuar();
-        //modelo.getPartidaInstance().getTimer().addObserver(this);
-       // modelo.getPartidaInstance().getTimer().run();
-       // timer();
-    }
-    
-    private void timer(){
-        Thread thread = new Thread(modelo.getPartidaInstance().getTimer());
-        thread.run();
+        Timer timer = modelo.getPartidaInstance().getTimer();
+        timer.addObserver(this);           
     }
     
     public void continuarParticipando(boolean continuar){

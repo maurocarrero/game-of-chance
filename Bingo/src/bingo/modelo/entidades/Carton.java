@@ -100,11 +100,11 @@ public class Carton implements ICarton {
     
     @Override
     //Condicional para tener Figuras
-    public boolean tieneFiguras(List<Figura> figuras) {
-        int casilleroCentro = (cantFilas -1) / 2;
-        
+    public boolean tieneFiguras(List<Figura> figuras) {        
         for(Figura fig : figuras){
-            if(fig.condicional(this)) return true;
+            if(fig.isActiva()){
+                if(fig.condicional(this)) return true;                
+            }            
         }         
         return false;
     }

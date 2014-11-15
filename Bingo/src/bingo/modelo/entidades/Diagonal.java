@@ -28,11 +28,12 @@ public class Diagonal extends Figura {
     
     @Override
     public boolean condicional(Carton c){
-        if(diagonalHaciaDerecha(c)){
-           return true; 
-        }else{
-            return diagonalHaciaIzquierda(c);
+        if(c.getCantAciertos() == c.getCantColumnas()){
+            if(diagonalHaciaDerecha(c)) System.out.println("diagonal derecha");
+            if(diagonalHaciaIzquierda(c)) System.out.println("diagonal izquierda");
+            return diagonalHaciaDerecha(c) || diagonalHaciaIzquierda(c);            
         }
+        return false;
     }
     
     //Figura Diagonal Hacia la derecha "\"
@@ -43,27 +44,17 @@ public class Diagonal extends Figura {
                 cantPintados ++;
             }
         }
-        //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-        if(cantPintados == c.getCantColumnas()) return true;
-        else{
-            cantPintados = 0;
-        }       
-        return false;
+        return cantPintados == c.getCantAciertos();  
     }
     
     //Figura Diagonal Hacia la izquierda "/"
-    public boolean diagonalHaciaIzquierda(Carton c){
+    public boolean diagonalHaciaIzquierda(Carton c){       
         int cantPintados = 0;
-        for (int x =c.getCantColumnas()-1 ; x > 0; x--) {
+        for (int x = c.getCantColumnas()-1 ; x > 0; x--) {
             if (c.getPintados()[x][x]) {
                 cantPintados ++;
             }
         }
-        //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-        if(cantPintados == c.getCantColumnas()) return true;
-        else{
-            cantPintados = 0;
-        }       
-        return false;
+        return cantPintados == c.getCantAciertos();        
     }
 }

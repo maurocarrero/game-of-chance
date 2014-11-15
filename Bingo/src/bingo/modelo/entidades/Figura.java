@@ -10,7 +10,7 @@ package bingo.modelo.entidades;
  *
  * @author zorro
  */
-public class Figura {
+public abstract class Figura {
     
     private String nombre;
     private boolean activa;
@@ -32,8 +32,6 @@ public class Figura {
         this.activa = activa;
     }
     
-    public boolean condicional(Carton c){
-        return false;
-    }
+    public abstract boolean condicional(Carton c);
     
 }
