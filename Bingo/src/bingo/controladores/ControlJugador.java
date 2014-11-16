@@ -151,10 +151,16 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         vista.mostrarPanelContinuar();
     }
     
-    public void continuarParticipando(boolean continuar){
+    public void continuarParticipando(boolean continuar, boolean perdieronTodos){
        Partida partida = modelo.getPartidaInstance();
        setNuevaBolilla(false);
-       partida.continuarParticipando(continuar, jugador);
+       
+       if (perdieronTodos) {
+           partida.perdieronTodos();
+       } else {
+           partida.continuarParticipando(continuar, jugador);
+       }
+       
        
        if (!continuar) {
            vista.abandonarPartida();
@@ -176,10 +182,10 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             ingresar();
         }
         if (e.getActionCommand().equals("NO_CONTINUAR")) {
-            continuarParticipando(false);
+            continuarParticipando(false, false);
         }
          if (e.getActionCommand().equals("SI_CONTINUAR")) {
-             continuarParticipando(true);
+            continuarParticipando(true, false);
         }
     }
 
@@ -202,9 +208,19 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         if (evento.containsKey("timer")) {
             int timer = (int)(evento.get("timer"));
             System.out.println("Timer " + this.jugador + ": " + timer);
+            
             if (timer == 0) {
+
+                int cantJugadoresPendientes = modelo.getPartida().getJugadoresPendientes().size();
+                int cantJugadores = modelo.getPartida().getJugadores().size();
+                boolean perdieronTodos = false;
+
+                if (cantJugadoresPendientes == cantJugadores) {
+                    perdieronTodos = true;
+                    System.out.println("Perdieron todos!");   
+                }
                 modelo.getPartidaInstance().getTimer().deleteObserver(this);
-                continuarParticipando(false);
+                continuarParticipando(false, perdieronTodos);                
             } else {
                 actualizarTimer(timer);
             }

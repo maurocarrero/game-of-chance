@@ -19,6 +19,7 @@ public class Timer extends Observable implements Runnable {
     private int tiempo = 0;
     private static Timer instance;
     private Thread thread = null;
+    private volatile boolean done = false;
     
     public Timer(int segundos){
         this.tiempo = segundos;
@@ -33,12 +34,16 @@ public class Timer extends Observable implements Runnable {
     
     public Timer(){}
        
+    public void resetThread() {
+        done = true;
+    }
+    
     @Override
-    public void run() {
+    public synchronized void run() {
         System.out.println("Observers: " + this.countObservers());
         int cont = tiempo;
         try {
-            while (!Thread.currentThread().isInterrupted() && cont >= 0){
+            while (!done && cont >= 0){
                 setChanged();
                 notifyObservers(crearHash("timer", cont));
                 System.out.println("Timer " + cont);
@@ -51,8 +56,15 @@ public class Timer extends Observable implements Runnable {
     }
     
     public void start() {
-        thread = new Thread(this);
-        thread.start();
+        if (thread == null) {
+            thread = new Thread(this);
+            thread.start();
+        } else {
+            resetThread();
+            setTiempo(10);
+            thread.start();
+        }
+        
     }
     
     private HashMap crearHash(String clave, Object valor){

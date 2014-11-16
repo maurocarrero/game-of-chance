@@ -189,8 +189,12 @@ public class Partida extends Observable {
      * @return 
      */
     public double borrarJugador(IJugador jugador){
-        for (ICarton c : jugador.getCartones()) {
-            bolillero.borrarBolillas(c);
+        System.out.println(jugador);
+        System.out.println(jugador.getCartones());
+        if (jugador.getCartones() != null) {
+            for (ICarton c : jugador.getCartones()) {
+                bolillero.borrarBolillas(c);
+            }
         }
         jugadores.remove(jugador);
         jugador.setLogueado(false);
@@ -302,8 +306,13 @@ public class Partida extends Observable {
         }
     }
     
+    public void perdieronTodos() {
+        finalizarAplicacion();
+    }
+    
     public void continuarParticipando(Boolean continua, IJugador jugador){
         eliminarJugadorPendiente(jugador);
+        System.out.println("jugador: " + jugador);
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));
             jugador.mostrar();
@@ -311,7 +320,12 @@ public class Partida extends Observable {
                setChanged();
                notifyObservers(crearHash("abandono", getPozo()));
             } else {
-                finalizar(jugadores.get(0), true);
+                if (jugadores.size() > 0) {
+                    IJugador ganador = jugadores.get(0);
+                    if (ganador != null) {
+                        finalizar(jugadores.get(0), true);
+                    }
+                }
             }
         }
         if (!hayJugadoresPendientes() && jugadores.size() > 1) {
