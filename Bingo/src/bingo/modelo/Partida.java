@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -43,15 +42,12 @@ public class Partida extends Observable {
     private boolean enCurso = false;
     private double pozo = 0d;
     private boolean juegoActivo = false;
-    
+        
     //Figuras
     private static List<Figura> figuras = new ArrayList();
-   // private static boolean linea = false;
-   // private static boolean diagonal = false;
-   // private static boolean centro = false;
     
     //Timer
-    private static Timer timer = new Timer(10);
+    private Timer timer;
 
     private Partida() {
         jugadores = new ArrayList();
@@ -60,6 +56,7 @@ public class Partida extends Observable {
         figuras.add(Linea.getInstance());
         figuras.add(Diagonal.getInstance());
         figuras.add(Centro.getInstance());
+        timer = new Timer(10);
     }
 
     public static void setCantFilas(int cantFilas) {
@@ -86,11 +83,11 @@ public class Partida extends Observable {
         this.pozo = pozo;
     }
     
-    public static void setTimer(int segundos) {
-        Partida.timer.setTiempo(segundos);
+    public void setTimer(int segundos) {
+        timer.setTiempo(segundos);
     }
 
-    public static Timer getTimer(){
+    public Timer getTimer(){
         return timer;
     }
     
@@ -275,11 +272,11 @@ public class Partida extends Observable {
     }
     
     public void siguienteTurno() {
+        System.out.println("Siguiente turno: ");
         IBolilla bolilla = this.bolillero.sacarBolilla();
         anunciarBolilla(bolilla);
         jugadoresPendientes = new ArrayList<>(jugadores);
     }
-    
     
     public void anunciarBolilla(IBolilla bolilla) {        
         IJugador ganador = null;
@@ -292,8 +289,8 @@ public class Partida extends Observable {
         notifyObservers(crearHash("bolilla", bolilla));
         if (ganador != null) {
             finalizar(ganador, false);
-        }else{
-            SwingUtilities.invokeLater(timer);
+        } else {
+            timer.start();
         }
     }
     
@@ -310,7 +307,7 @@ public class Partida extends Observable {
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));
             jugador.mostrar();
-            if(jugadores.size() > 1){
+            if (jugadores.size() > 1) {
                setChanged();
                notifyObservers(crearHash("abandono", getPozo()));
             } else {
@@ -321,7 +318,7 @@ public class Partida extends Observable {
             siguienteTurno();
         }
     }
-    
+        
     public boolean hayJugadoresPendientes() {
         return !jugadoresPendientes.isEmpty();
     }

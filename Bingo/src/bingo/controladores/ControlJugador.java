@@ -6,7 +6,6 @@ import bingo.interfaces.IJugador;
 import bingo.modelo.Bingo;
 import bingo.modelo.Partida;
 import bingo.modelo.entidades.Jugador;
-import bingo.modelo.entidades.Timer;
 import bingo.modelo.exceptions.AccesoDenegadoException;
 import bingo.modelo.exceptions.CantidadCartonesInvalidaException;
 import bingo.modelo.exceptions.DemasiadosCartonesException;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  * @author maurocarrero/fernandogonzalez
@@ -151,13 +149,11 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             vista.mostrarMensaje("");
         }
         vista.mostrarPanelContinuar();
-        Timer timer = modelo.getPartidaInstance().getTimer();
-        timer.addObserver(this);           
     }
     
     public void continuarParticipando(boolean continuar){
        Partida partida = modelo.getPartidaInstance();
-       setNuevaBolilla(false);       
+       setNuevaBolilla(false);
        partida.continuarParticipando(continuar, jugador);
        
        if (!continuar) {
@@ -166,9 +162,8 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
            if (!isNuevaBolilla()) {
                vista.ocultarPanelContinuar();
                vista.mostrarMensaje("Esperando ...");
-           }           
+           }
        }
-       modelo.getPartidaInstance().getTimer().deleteObserver(this);
     }
     
     public void actualizarTimer(int timer){
@@ -202,11 +197,17 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             IBolilla bolilla = (IBolilla)evento.get("bolilla");
             setNuevaBolilla(true);
             marcarCasillero(bolilla);
+            modelo.getPartidaInstance().getTimer().addObserver(this);
         }
         if (evento.containsKey("timer")) {
             int timer = (int)(evento.get("timer"));
-            System.out.println(timer);
-            actualizarTimer(timer);
+            System.out.println("Timer " + this.jugador + ": " + timer);
+            if (timer == 0) {
+                modelo.getPartidaInstance().getTimer().deleteObserver(this);
+                continuarParticipando(false);
+            } else {
+                actualizarTimer(timer);
+            }
         }        
         if (evento.containsKey("ganador")) {
             IJugador ganador = (IJugador)evento.get("ganador");

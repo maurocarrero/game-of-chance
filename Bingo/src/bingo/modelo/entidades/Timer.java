@@ -6,6 +6,7 @@
 
 package bingo.modelo.entidades;
 
+import bingo.modelo.Partida;
 import java.util.HashMap;
 import java.util.Observable;
 
@@ -17,6 +18,7 @@ public class Timer extends Observable implements Runnable {
 
     private int tiempo = 0;
     private static Timer instance;
+    private Thread thread = null;
     
     public Timer(int segundos){
         this.tiempo = segundos;
@@ -29,26 +31,31 @@ public class Timer extends Observable implements Runnable {
         return instance;
     }
     
-    public Timer(){
-        
-    }
+    public Timer(){}
        
     @Override
     public void run() {
+        System.out.println("Observers: " + this.countObservers());
+        int cont = tiempo;
         try {
-            while(tiempo >= 0){
+            while (!Thread.currentThread().isInterrupted() && cont >= 0){
                 setChanged();
-                notifyObservers(crearHash("timer", tiempo));
+                notifyObservers(crearHash("timer", cont));
+                System.out.println("Timer " + cont);
                 Thread.sleep(1000);
-                tiempo = tiempo -1;
+                cont--;
             }
-            
-        }catch(InterruptedException e){
-            e.printStackTrace();
+        } catch(InterruptedException e){
+            System.out.println(e.getMessage());
         }
     }
     
-     private HashMap crearHash(String clave, Object valor){
+    public void start() {
+        thread = new Thread(this);
+        thread.start();
+    }
+    
+    private HashMap crearHash(String clave, Object valor){
         HashMap<String, Object> evento = new HashMap();
         evento.put(clave, valor);
         return evento;

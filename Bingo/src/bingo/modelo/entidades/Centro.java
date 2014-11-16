@@ -29,6 +29,13 @@ public class Centro extends Figura {
     @Override
     public boolean condicional(Carton c){
         int centro = (c.getCantFilas() -1) / 2;
+        
+        /**   ELIMINAR OUTPUT  **/
+        if (c.getCantAciertos() == 1 && c.getPintados()[centro][centro]) {
+            System.out.println("Centro!");
+        }
+        /*************/
+        
         return c.getCantAciertos() == 1 && c.getPintados()[centro][centro];
     }
     
