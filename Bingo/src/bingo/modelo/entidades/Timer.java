@@ -18,10 +18,14 @@ public class Timer extends Observable implements Runnable {
     private int tiempo = 0;
     private int cont = 0;
     
+    
+    
     public Timer(int segundos){
         this.tiempo = (segundos > 120) ? segundos : 20;
     }
-        
+    
+    
+    
     @Override
     public void run() {
         cont = tiempo;
@@ -32,10 +36,12 @@ public class Timer extends Observable implements Runnable {
                 Thread.sleep(1000);
                 cont--;
             }
-        } catch(InterruptedException e){
+        } catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
     }
+    
+    
     
     public static Timer start(int segundos) {
         Timer timer = new Timer(segundos);
@@ -43,14 +49,18 @@ public class Timer extends Observable implements Runnable {
         return timer;
     }
     
+    
+    
     private HashMap crearHash(String clave, Object valor){
         HashMap<String, Object> evento = new HashMap();
         evento.put(clave, valor);
         return evento;
     }
     
+    
+    
     public void abandonar() {
         cont = 0;
     }
-    
+
 }
