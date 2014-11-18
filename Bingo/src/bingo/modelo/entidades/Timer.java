@@ -6,7 +6,6 @@
 
 package bingo.modelo.entidades;
 
-import bingo.modelo.Partida;
 import java.util.HashMap;
 import java.util.Observable;
 
@@ -17,36 +16,19 @@ import java.util.Observable;
 public class Timer extends Observable implements Runnable {
 
     private int tiempo = 0;
-    private static Timer instance;
-    private Thread thread = null;
-    private volatile boolean done = false;
+    private int cont = 0;
     
     public Timer(int segundos){
-        this.tiempo = segundos;
+        this.tiempo = (segundos > 120) ? segundos : 20;
     }
-    
-    public static Timer getInstance() {
-        if (instance == null) {
-            instance = new Timer();
-        }
-        return instance;
-    }
-    
-    public Timer(){}
-       
-    public void resetThread() {
-        done = true;
-    }
-    
+        
     @Override
-    public synchronized void run() {
-        System.out.println("Observers: " + this.countObservers());
-        int cont = tiempo;
+    public void run() {
+        cont = tiempo;
         try {
-            while (!done && cont >= 0){
+            while (!Thread.currentThread().isInterrupted() && cont >= 0) {
                 setChanged();
                 notifyObservers(crearHash("timer", cont));
-                System.out.println("Timer " + cont);
                 Thread.sleep(1000);
                 cont--;
             }
@@ -55,16 +37,10 @@ public class Timer extends Observable implements Runnable {
         }
     }
     
-    public void start() {
-        if (thread == null) {
-            thread = new Thread(this);
-            thread.start();
-        } else {
-            resetThread();
-            setTiempo(10);
-            thread.start();
-        }
-        
+    public static Timer start(int segundos) {
+        Timer timer = new Timer(segundos);
+        (new Thread(timer)).start();
+        return timer;
     }
     
     private HashMap crearHash(String clave, Object valor){
@@ -73,12 +49,8 @@ public class Timer extends Observable implements Runnable {
         return evento;
     }
     
-    public int getTiempo(){
-        return tiempo;
-    }
-    
-    public void setTiempo(int segundos){
-        tiempo = segundos;
+    public void abandonar() {
+        cont = 0;
     }
     
 }

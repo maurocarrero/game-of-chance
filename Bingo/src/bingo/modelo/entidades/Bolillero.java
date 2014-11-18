@@ -19,7 +19,7 @@ public class Bolillero {
         for (int i = 1; i <= cantBolillas; i++) {
             this.bolillas.add(new Bolilla(i));
         }
-        //Collections.shuffle(this.bolillas);
+        Collections.shuffle(this.bolillas);
     }
     
     public IBolilla sacarBolilla() {

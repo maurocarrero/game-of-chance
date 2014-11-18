@@ -27,11 +27,13 @@ public class Partida extends Observable {
     private static Partida instance;
     
     // VALORES POR DEFECTO
-    private static int cantFilas = 3;
+    private static int cantFilas = 2;
     private static int cantColumnas = 2;
     private static int cantMaxCartones = 2;
-    private static int cantJugadores = 3;    
+    private static int cantJugadores = 2;
     private static double valorCarton = 10;
+    
+    private static Timer timer = null;
     
     private int cantCartonesRequeridos;
     private Bolillero bolillero;
@@ -45,9 +47,6 @@ public class Partida extends Observable {
         
     //Figuras
     private static List<Figura> figuras = new ArrayList();
-    
-    //Timer
-    private Timer timer;
 
     private Partida() {
         jugadores = new ArrayList();
@@ -55,8 +54,7 @@ public class Partida extends Observable {
         figuras.add(CartonLleno.getInstance());
         figuras.add(Linea.getInstance());
         figuras.add(Diagonal.getInstance());
-        figuras.add(Centro.getInstance());
-        timer = new Timer(10);
+        figuras.add(Centro.getInstance());     
     }
 
     public static void setCantFilas(int cantFilas) {
@@ -81,16 +79,7 @@ public class Partida extends Observable {
 
     public void setPozo(double pozo) {
         this.pozo = pozo;
-    }
-    
-    public void setTimer(int segundos) {
-        timer.setTiempo(segundos);
-    }
-
-    public Timer getTimer(){
-        return timer;
-    }
-    
+    }    
     
     public static int getCantFilas() {
         return cantFilas;
@@ -189,8 +178,7 @@ public class Partida extends Observable {
      * @return 
      */
     public double borrarJugador(IJugador jugador){
-        System.out.println(jugador);
-        System.out.println(jugador.getCartones());
+        System.out.println("Cartones de" + jugador + ": " + jugador.getCartones());
         if (jugador.getCartones() != null) {
             for (ICarton c : jugador.getCartones()) {
                 bolillero.borrarBolillas(c);
@@ -225,8 +213,7 @@ public class Partida extends Observable {
         int cantTotalNumeros = cantNumerosPorCarton * cantCartonesRequeridos;
         this.bolillero = new Bolillero(cantTotalNumeros);
     }
-    
-    
+
     
     private void construirCartones() {
         this.cartones = new ArrayList();
@@ -282,21 +269,30 @@ public class Partida extends Observable {
         jugadoresPendientes = new ArrayList<>(jugadores);
     }
     
-    public void anunciarBolilla(IBolilla bolilla) {        
+    public void anunciarBolilla(IBolilla bolilla) {
         IJugador ganador = null;
         for (IJugador jugador : this.jugadores) {
             if (jugador.buscarBolilla(bolilla, figuras)) {
                 ganador = jugador;
             }
         }
-        setChanged();
-        notifyObservers(crearHash("bolilla", bolilla));
         if (ganador != null) {
-            finalizar(ganador, false);
+            finalizar(ganador, false, bolilla);
         } else {
-            timer.start();
+            if (timer != null) {
+                timer.abandonar();
+            }
+            timer = Timer.start(10);
+            setChanged();
+            notifyObservers(crearHash("bolilla", bolilla));
         }
     }
+    
+    
+    public static Timer getTimer() {
+        return timer;
+    }
+    
     
     public void eliminarJugadorPendiente(IJugador jugador) {
         for (int i = 0; i < jugadoresPendientes.size(); i++) {
@@ -323,7 +319,7 @@ public class Partida extends Observable {
                 if (jugadores.size() > 0) {
                     IJugador ganador = jugadores.get(0);
                     if (ganador != null) {
-                        finalizar(jugadores.get(0), true);
+                        finalizar(jugadores.get(0), true, null);
                     }
                 }
             }
@@ -341,7 +337,11 @@ public class Partida extends Observable {
         this.pozo -= monto;
     }
     
-    private void finalizar(IJugador ganador, boolean porAbandono) {
+    private void finalizar(IJugador ganador, boolean porAbandono, IBolilla ultimaBolilla) {
+        if (ultimaBolilla != null) {
+            setChanged();
+            notifyObservers(crearHash("bolilla", ultimaBolilla));
+        }
         for (IJugador jugador : jugadores) {
             jugador.debitarDoble(valorCarton);
             jugador.resetearCartones();
@@ -349,6 +349,7 @@ public class Partida extends Observable {
         ganador.acreditar(pozo);
         mostrarEstadoJugadores();
         resetearPozo();
+        Partida.getTimer().abandonar();
         setChanged();
         notifyObservers(crearHash("ganador", ganador));
     }

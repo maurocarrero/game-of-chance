@@ -34,6 +34,7 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
     private VistaJugador vista;
     
     private boolean nuevaBolilla = false;
+    private boolean continuar = false;
     
     public ControlJugador(VistaJugador vista, Bingo modelo) {
         this.vista = vista;
@@ -151,13 +152,21 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
         vista.mostrarPanelContinuar();
     }
     
+    private boolean cotinuaJugando() {
+        return continuar;
+    }
+    
     public void continuarParticipando(boolean continuar, boolean perdieronTodos){
        Partida partida = modelo.getPartidaInstance();
        setNuevaBolilla(false);
+       this.continuar = continuar;
        
        if (perdieronTodos) {
            partida.perdieronTodos();
        } else {
+           if (continuar) {
+              modelo.getPartidaInstance().getTimer().deleteObserver(this);
+           }
            partida.continuarParticipando(continuar, jugador);
        }
        
@@ -203,24 +212,22 @@ public class ControlJugador extends Controlador implements ActionListener, Obser
             IBolilla bolilla = (IBolilla)evento.get("bolilla");
             setNuevaBolilla(true);
             marcarCasillero(bolilla);
-            modelo.getPartidaInstance().getTimer().addObserver(this);
+            Partida.getTimer().addObserver(this);
         }
         if (evento.containsKey("timer")) {
             int timer = (int)(evento.get("timer"));
             System.out.println("Timer " + this.jugador + ": " + timer);
             
             if (timer == 0) {
-
                 int cantJugadoresPendientes = modelo.getPartida().getJugadoresPendientes().size();
                 int cantJugadores = modelo.getPartida().getJugadores().size();
                 boolean perdieronTodos = false;
 
                 if (cantJugadoresPendientes == cantJugadores) {
                     perdieronTodos = true;
-                    System.out.println("Perdieron todos!");   
                 }
-                modelo.getPartidaInstance().getTimer().deleteObserver(this);
-                continuarParticipando(false, perdieronTodos);                
+                Partida.getTimer().deleteObserver(this);
+                continuarParticipando(continuar, perdieronTodos);
             } else {
                 actualizarTimer(timer);
             }
