@@ -6,21 +6,25 @@
 
 package bingo.modelo.entidades;
 
+import bingo.common.RObservable;
+import bingo.interfaces.ITimer;
+import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author zorro
  */
-public class Timer extends Observable implements Runnable {
+public class Timer extends RObservable implements ITimer {
 
     private int tiempo = 0;
     private int cont = 0;
     
     
     
-    public Timer(int segundos){
+    public Timer(int segundos) throws RemoteException {
         this.tiempo = (segundos > 120) ? segundos : 20;
     }
     
@@ -31,7 +35,7 @@ public class Timer extends Observable implements Runnable {
         cont = tiempo;
         try {
             while (!Thread.currentThread().isInterrupted() && cont >= 0) {
-                setChanged();
+                // setChanged();
                 notifyObservers(crearHash("timer", cont));
                 Thread.sleep(1000);
                 cont--;
@@ -43,10 +47,9 @@ public class Timer extends Observable implements Runnable {
     
     
     
-    public static Timer start(int segundos) {
-        Timer timer = new Timer(segundos);
-        (new Thread(timer)).start();
-        return timer;
+    @Override
+    public void start() {
+        (new Thread(this)).start();
     }
     
     

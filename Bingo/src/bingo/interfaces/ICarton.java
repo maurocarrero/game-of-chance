@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.interfaces;
 
-import bingo.modelo.entidades.Figura;
 import java.util.List;
 
 /**
@@ -13,18 +8,24 @@ import java.util.List;
  */
 public interface ICarton {
     
-    public void poblar(List<IBolilla> bolillas);
+    void poblar(List<IBolilla> bolillas);
     
-    public int[][] getNumeros();
+    int[][] getNumeros();
 
-    public int getCantFilas();
+    int getCantFilas();
 
-    public int getCantColumnas();    
+    int getCantColumnas();    
     
-    public void buscarBolilla(IBolilla bolilla);
+    void buscarBolilla(IBolilla bolilla);
     
-    public boolean tieneBolilla(IBolilla bolilla);
+    boolean tieneBolilla(IBolilla bolilla);
 
-    public boolean tieneFiguras(List<Figura> figuras);
+    boolean tieneFiguras(List<IFigura> figuras);
+    
+    int getCantCasilleros();
+
+    int getCantAciertos();
+    
+    boolean[][] getPintados();
     
 }

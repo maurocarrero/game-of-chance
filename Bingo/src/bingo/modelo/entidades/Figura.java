@@ -6,13 +6,15 @@
 
 package bingo.modelo.entidades;
 
+import bingo.interfaces.IFigura;
+
 /**
  *
  * @author zorro
  */
-public abstract class Figura {
+public abstract class Figura implements IFigura {
     
-    private String nombre;
+    private final String nombre;
     private boolean activa;
 
     public Figura(String nombre) {
@@ -20,18 +22,19 @@ public abstract class Figura {
         this.activa = false;
     }
 
+    @Override
     public String getNombre() {
         return nombre;
     }
 
+    @Override
     public boolean isActiva() {
         return activa;
     }
 
+    @Override
     public void setActiva(boolean activa) {
         this.activa = activa;
     }
-    
-    public abstract boolean condicional(Carton c);
     
 }

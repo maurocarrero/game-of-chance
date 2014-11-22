@@ -46,6 +46,6 @@ public interface IJugador {
     
     public void mostrar();
 
-    public boolean buscarBolilla(IBolilla bolilla, List<Figura> figuras);
+    public boolean buscarBolilla(IBolilla bolilla, List<IFigura> figuras);
     
 }

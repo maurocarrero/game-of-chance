@@ -6,11 +6,14 @@
 
 package bingo.modelo.entidades;
 
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IFigura;
+
 /**
  *
  * @author zorro
  */
-public class Linea extends Figura {
+public class Linea extends Figura implements IFigura {
 
      private static Linea instance;
     
@@ -27,7 +30,7 @@ public class Linea extends Figura {
     }
     
     @Override
-    public boolean condicional(Carton c){
+    public boolean condicional(ICarton c){
         boolean acierto = false; 
         boolean verFilas = c.getCantAciertos() == c.getCantFilas();
         boolean verColumnas = c.getCantAciertos() == c.getCantColumnas();
@@ -43,7 +46,7 @@ public class Linea extends Figura {
     }
     
     //Lineal por Fila
-    private boolean recorrerFilas(Carton c) {
+    private boolean recorrerFilas(ICarton c) {
         int cantPintados = 0;
          for (int x = 0; x < c.getCantFilas(); x++) {
             for (int y = 0; y < c.getCantColumnas(); y++) {
@@ -59,7 +62,7 @@ public class Linea extends Figura {
     }
     
     //Lineal por Columna
-    private boolean recorrerColumnas(Carton c) {
+    private boolean recorrerColumnas(ICarton c) {
         int cantPintados = 0;
          for (int x = 0; x < c.getCantColumnas(); x++) {
             for (int y = 0; y < c.getCantFilas(); y++) {

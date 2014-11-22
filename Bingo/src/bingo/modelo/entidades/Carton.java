@@ -6,6 +6,7 @@ package bingo.modelo.entidades;
 
 import bingo.interfaces.IBolilla;
 import bingo.interfaces.ICarton;
+import bingo.interfaces.IFigura;
 import java.util.List;
 
 /**
@@ -100,8 +101,8 @@ public class Carton implements ICarton {
     
     @Override
     //Condicional para tener Figuras
-    public boolean tieneFiguras(List<Figura> figuras) {        
-        for(Figura fig : figuras){
+    public boolean tieneFiguras(List<IFigura> figuras) {
+        for(IFigura fig : figuras){
             if(fig.isActiva()){
                 if(fig.condicional(this)) return true;                
             }            

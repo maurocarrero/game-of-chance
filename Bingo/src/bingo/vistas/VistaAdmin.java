@@ -3,7 +3,6 @@ package bingo.vistas;
 
 import bingo.controladores.ControlAdmin;
 import java.util.List;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 

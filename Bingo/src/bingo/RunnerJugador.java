@@ -7,9 +7,14 @@
 package bingo;
 
 import bingo.controladores.ControlJugador;
+import bingo.interfaces.IBingo;
+import bingo.interfaces.IPartida;
 import bingo.modelo.Bingo;
 import bingo.modelo.Partida;
 import bingo.vistas.VistaJugador;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,14 +23,18 @@ import bingo.vistas.VistaJugador;
 public class RunnerJugador {
     
      public static void main(String[] args) {
-         Bingo modelo = Bingo.getInstance();
-         Partida partida = modelo.getPartidaInstance();
+         IBingo modelo = Bingo.getInstance();
+         IPartida partida = modelo.getPartida();
          if (!partida.isEnCurso()) {
-            VistaJugador nuevaVista = new VistaJugador();
-            ControlJugador control = new ControlJugador(nuevaVista, modelo);
-            nuevaVista.setControlador(control);
-            partida.addObserver(control);
-            nuevaVista.ejecutar();
+             try {
+                 VistaJugador nuevaVista = new VistaJugador();
+                 ControlJugador control = new ControlJugador(nuevaVista, modelo);
+                 nuevaVista.setControlador(control);
+                 partida.addObserver(control);
+                 nuevaVista.ejecutar();
+             } catch (RemoteException ex) {
+                 Logger.getLogger(RunnerJugador.class.getName()).log(Level.SEVERE, null, ex);
+             }
         }
      }
     

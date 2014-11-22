@@ -6,11 +6,14 @@
 
 package bingo.modelo.entidades;
 
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IFigura;
+
 /**
  *
  * @author zorro
  */
-public class Diagonal extends Figura {
+public class Diagonal extends Figura implements IFigura {
 
      private static Diagonal instance;
     
@@ -27,7 +30,7 @@ public class Diagonal extends Figura {
     }
     
     @Override
-    public boolean condicional(Carton c){
+    public boolean condicional(ICarton c){
         if(c.getCantAciertos() == c.getCantColumnas()){
             if(diagonalHaciaDerecha(c)) System.out.println("diagonal derecha");
             if(diagonalHaciaIzquierda(c)) System.out.println("diagonal izquierda");
@@ -37,7 +40,7 @@ public class Diagonal extends Figura {
     }
     
     //Figura Diagonal Hacia la derecha "\"
-    public boolean diagonalHaciaDerecha(Carton c){
+    public boolean diagonalHaciaDerecha(ICarton c){
         int cantPintados = 0;
         for (int x = 0; x < c.getCantColumnas(); x++) {
             if (c.getPintados()[x][x]) {
@@ -48,7 +51,7 @@ public class Diagonal extends Figura {
     }
     
     //Figura Diagonal Hacia la izquierda "/"
-    public boolean diagonalHaciaIzquierda(Carton c){       
+    public boolean diagonalHaciaIzquierda(ICarton c){       
         int cantPintados = 0;
         for (int x = c.getCantColumnas()-1 ; x > 0; x--) {
             if (c.getPintados()[x][x]) {

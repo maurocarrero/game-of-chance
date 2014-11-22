@@ -6,11 +6,14 @@
 
 package bingo.modelo.entidades;
 
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IFigura;
+
 /**
  *
  * @author zorro
  */
-public class CartonLleno extends Figura {
+public class CartonLleno extends Figura implements IFigura {
 
     private static CartonLleno instance;
     
@@ -27,7 +30,7 @@ public class CartonLleno extends Figura {
     }
     
     @Override
-    public boolean condicional(Carton c){
+    public boolean condicional(ICarton c){
         return c.getCantAciertos() == c.getCantCasilleros();
     }
 }

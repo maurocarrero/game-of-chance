@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package bingo.modelo.entidades;
+
+import bingo.interfaces.ICarton;
+import bingo.interfaces.IFigura;
 
 /**
  *
  * @author zorro
  */
-public class Centro extends Figura {
+public class Centro extends Figura implements IFigura {
 
      private static Centro instance;
     
@@ -27,7 +24,7 @@ public class Centro extends Figura {
     }
     
     @Override
-    public boolean condicional(Carton c){
+    public boolean condicional(ICarton c){
         int centro = (c.getCantFilas() -1) / 2;
         
         /**   ELIMINAR OUTPUT  **/

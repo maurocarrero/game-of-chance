@@ -1,6 +1,7 @@
 package bingo.modelo.entidades;
 
 import bingo.interfaces.IBolilla;
+import bingo.interfaces.IBolillero;
 import bingo.interfaces.ICarton;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class Bolillero {
+public class Bolillero implements IBolillero {
 
     private List<IBolilla> bolillas;
 

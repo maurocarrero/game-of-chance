@@ -1,5 +1,8 @@
 package bingo.modelo;
 
+import bingo.interfaces.IBingo;
+import bingo.interfaces.IPartida;
+import bingo.interfaces.IRemoteObserver;
 import bingo.modelo.entidades.Administrador;
 import bingo.modelo.entidades.Jugador;
 import bingo.modelo.entidades.Usuario;
@@ -10,6 +13,8 @@ import bingo.modelo.exceptions.DemasiadosCartonesException;
 import bingo.modelo.exceptions.EstaLogeadoException;
 import bingo.modelo.exceptions.JuegoEnCursoException;
 import bingo.modelo.exceptions.SaldoInsuficienteException;
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -18,7 +23,7 @@ import java.util.Observable;
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class Bingo extends Observable {
+public class Bingo extends Observable implements IBingo, Serializable {
 
     private static Bingo instance;
 
@@ -50,22 +55,21 @@ public class Bingo extends Observable {
     }
     
     
-    public Partida getPartidaInstance() {
-        partida = Partida.getInstance();
-        return partida;
-    }
-    
-    public Partida getPartida(){
+    @Override
+    public IPartida getPartida(){
         return this.partida;
     }
     
+    
+    @Override
     public void ejecutar() {
         partida.iniciar();
     }
     
     
     
-    public static void guardarConfiguracion(int cantFilas, int cantColumnas, 
+    @Override
+    public void guardarConfiguracion(int cantFilas, int cantColumnas, 
             int cantMaxCartones, int cantJugadores, double valorCarton,
             boolean linea, boolean diagonal, boolean centro) 
             throws ConfiguracionNoValidaException {
@@ -85,7 +89,7 @@ public class Bingo extends Observable {
             }            
         }      
         
-        Partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
+        this.partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
                 cantJugadores, valorCarton, linea, diagonal, centro);
     }
     
@@ -102,26 +106,28 @@ public class Bingo extends Observable {
 
     
     
+    @Override
     public void inicioCondicional() {
-        if (getPartidaInstance().getJugadores().size() == Partida.getCantJugadores()) {
-            getPartidaInstance().iniciar();
+        if (this.partida.getJugadores().size() == this.partida.getCantJugadores()) {
+            this.partida.iniciar();
         }
     }
     
     
     
     private boolean demasiadosCartones(int cC) {
-        return cC > Partida.getCantMaxCartones();
+        return cC > this.partida.getCantMaxCartones();
     }
     
     
     
     private double getPrecioCartones(int cantCartones) {
-        return cantCartones * Partida.getValorCarton() * 2;
+        return cantCartones * this.partida.getValorCarton() * 2;
     }
     
     
     
+    @Override
     public boolean loginAdmin(String usuario, char[] password) {
         Administrador aux;
         try {
@@ -144,6 +150,7 @@ public class Bingo extends Observable {
     
     
     
+    @Override
     public Jugador loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
@@ -160,7 +167,7 @@ public class Bingo extends Observable {
         }
 
         // JUEGO ACTIVO
-        if (getPartidaInstance().isEnCurso()) {
+        if (this.partida.isEnCurso()) {
             throw new JuegoEnCursoException();
         }
 
@@ -180,18 +187,34 @@ public class Bingo extends Observable {
             throw new SaldoInsuficienteException();
         }
         
-        getPartidaInstance().addJugador(jugador, cantCartones);
+        this.partida.addJugador(jugador, cantCartones);
         jugador.setLogueado(true);
-        getPartidaInstance().setJuegoActivo(true);
+        this.partida.setJuegoActivo(true);
                 
         return jugador;
         
     }
     
+    @Override
     public void finalizarAplicacion() {
         if (partida != null) {
             partida.finalizarAplicacion();
         }        
         System.exit(0);
+    }
+
+    @Override
+    public void addObserver(IRemoteObserver observer) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deleteObserver(IRemoteObserver observer) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void notifyObservers(Serializable param) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

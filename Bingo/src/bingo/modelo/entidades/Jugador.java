@@ -2,6 +2,7 @@ package bingo.modelo.entidades;
 
 import bingo.interfaces.IBolilla;
 import bingo.interfaces.ICarton;
+import bingo.interfaces.IFigura;
 import bingo.interfaces.IJugador;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class Jugador extends Usuario implements IJugador {
     }
     
     @Override
-    public boolean buscarBolilla(IBolilla bolilla, List<Figura> figuras) {
+    public boolean buscarBolilla(IBolilla bolilla, List<IFigura> figuras) {
         for (ICarton c : this.cartones) {
             c.buscarBolilla(bolilla);
             if (c.tieneFiguras(figuras)) {

@@ -1,14 +1,18 @@
 package bingo.controladores;
 
+import bingo.interfaces.IBingo;
+import bingo.interfaces.IPartida;
 import bingo.modelo.Bingo;
-import bingo.modelo.Partida;
 import bingo.modelo.exceptions.ConfiguracionNoValidaException;
 import bingo.vistas.VistaAdmin;
 import bingo.vistas.VistaJugador;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,15 +23,15 @@ public class ControlAdmin extends Controlador implements ActionListener {
     
     private static ControlAdmin instance;
     
-    private Bingo modelo;
+    private IBingo modelo;
     private VistaAdmin vista;
     
-    private ControlAdmin(VistaAdmin vista, Bingo modelo) {
+    private ControlAdmin(VistaAdmin vista, IBingo modelo) {
         this.modelo = modelo;
         this.vista = vista;
     }
 
-    public static ControlAdmin getInstance(VistaAdmin vista, Bingo modelo) {
+    public static ControlAdmin getInstance(VistaAdmin vista, IBingo modelo) {
         if (instance == null) {
             instance = new ControlAdmin(vista, modelo);
         }
@@ -47,17 +51,17 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void poblarCamposConfiguracion() {
-        List<String> figuras = Partida.getFigurasString();
-        vista.poblarCamposConfiguracion(Partida.getCantFilas(), 
-                Partida.getCantColumnas(),
-                Partida.getCantMaxCartones(),
-                Partida.getCantJugadores(),
-                Partida.getValorCarton(),
+        List<String> figuras = modelo.getPartida().getFigurasString();
+        vista.poblarCamposConfiguracion(modelo.getPartida().getCantFilas(), 
+                modelo.getPartida().getCantColumnas(),
+                modelo.getPartida().getCantMaxCartones(),
+                modelo.getPartida().getCantJugadores(),
+                modelo.getPartida().getValorCarton(),
                 figuras);
     }
     
     private void configurar() {
-        if (!modelo.getPartidaInstance().isJuegoActivo()) {
+        if (!modelo.getPartida().isJuegoActivo()) {
             vista.mostrarPanelConfiguracion();          
             poblarCamposConfiguracion();
         } else {
@@ -67,13 +71,17 @@ public class ControlAdmin extends Controlador implements ActionListener {
     }
     
     private void lanzarNuevaInterfazJugador() {
-        Partida partida = modelo.getPartidaInstance();
+        IPartida partida = modelo.getPartida();
         if (!partida.isEnCurso()) {
-            VistaJugador nuevaVista = new VistaJugador();
-            ControlJugador control = new ControlJugador(nuevaVista, modelo);
-            nuevaVista.setControlador(control);
-            partida.addObserver(control);
-            nuevaVista.ejecutar();
+            try {
+                VistaJugador nuevaVista = new VistaJugador();
+                ControlJugador control = new ControlJugador(nuevaVista, modelo);
+                nuevaVista.setControlador(control);
+                partida.addObserver(control);
+                nuevaVista.ejecutar();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControlAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
@@ -93,7 +101,7 @@ public class ControlAdmin extends Controlador implements ActionListener {
             boolean figuraDiagonal = vista.getChkDiagonal();
             boolean figuraCentro = vista.getChkCentro();
             
-            Bingo.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
+            modelo.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
                     cantJugadores, valorCarton, figuraLinea, figuraDiagonal, figuraCentro);
             
             vista.ocultarPaneles();
