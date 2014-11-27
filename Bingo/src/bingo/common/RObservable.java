@@ -4,8 +4,8 @@
  */
 package bingo.common;
 
-import bingo.interfaces.IRemoteObservable;
-import bingo.interfaces.IRemoteObserver;
+import bingo.common.interfaces.IRemoteObservable;
+import bingo.common.interfaces.IRemoteObserver;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
