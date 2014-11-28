@@ -312,4 +312,19 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             System.out.println(ex.getMessage());
         }
     }
+
+    @Override
+    public void addObserver(IRemoteObserver observer) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteObserver(IRemoteObserver observer) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void notifyObservers(Serializable param) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
