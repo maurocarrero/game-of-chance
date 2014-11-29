@@ -133,10 +133,5 @@ public class Jugador extends Usuario implements IJugador {
     public boolean estaLogueado() throws RemoteException {
         return super.estaLogueado();
     }       
-
-    @Override
-    public boolean equals(Object obj) {
-       return super.equals(obj);
-    }
    
 }

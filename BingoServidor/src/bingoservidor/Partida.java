@@ -210,7 +210,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
                 bolillero.borrarBolillas(c);
             }
         }
-        jugadores.remove(jugador);
+        quitarJugadorDeLaPartida(jugador);
         jugador.setLogueado(false);
         cantCartonesRequeridos -= jugador.getCantCartones();
         return jugador.debitarSimple(valorCarton);
@@ -328,9 +328,20 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     @Override
     public void eliminarJugadorPendiente(IJugador jugador) throws RemoteException {
-        for (int i = 0; i < jugadoresPendientes.size(); i++) {
-            if (jugadoresPendientes.get(i).getUsuario().equals(jugador.getUsuario())) {
-                jugadoresPendientes.remove(i);
+        eliminarJugadorDeColeccion(jugador, this.jugadoresPendientes);
+    }
+    
+    @Override
+    public void quitarJugadorDeLaPartida(IJugador jugador) throws RemoteException {
+        eliminarJugadorDeColeccion(jugador, this.jugadores);
+    }
+    
+    
+    private void eliminarJugadorDeColeccion(IJugador jugador, List<IJugador> lista)
+            throws RemoteException {
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getUsuario().equals(jugador.getUsuario())) {
+                lista.remove(i);
             }
         }
     }
@@ -386,10 +397,11 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         }
         ganador.acreditar(pozo);
         mostrarEstadoJugadores();
-        resetearPozo();
         getContador().cancelar();
-        // setChanged();
         notifyObservers(crearHash("ganador", ganador));
+        resetearPozo();        
+        setJuegoActivo(false);
+        setEnCurso(false);
     }
     
     

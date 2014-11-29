@@ -78,7 +78,9 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     void anunciarBolilla(IBolilla bolilla) throws RemoteException;
     
     void eliminarJugadorPendiente(IJugador jugador) throws RemoteException;
-    
+
+    void quitarJugadorDeLaPartida(IJugador jugador) throws RemoteException;
+        
     void perdieronTodos() throws RemoteException;
     
     void continuarParticipando(Boolean continua, IJugador jugador) throws RemoteException;
