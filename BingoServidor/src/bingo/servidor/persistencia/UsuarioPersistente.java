@@ -3,6 +3,7 @@ package bingo.servidor.persistencia;
 import java.sql.SQLException;
 import bingo.servidor.modelo.entidades.Usuario;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.sql.ResultSet;
 
 public class UsuarioPersistente implements Serializable {
@@ -30,14 +31,14 @@ public class UsuarioPersistente implements Serializable {
     }
 
 
-    public String getInsertSQL() {
+    public String getInsertSQL() throws RemoteException {
 
             return "INSERT INTO Usuario(id,usuario,password,logueado)" + "VALUES("
                             + usuario.getId() + ",'" + usuario.getUsuario() + "','"
                             + usuario.getPassword()+ ",'" + usuario.estaLogueado() + "')";
     }
 
-    public String getUpdateSQL() {
+    public String getUpdateSQL() throws RemoteException {
             return "UPDATE Usuario SET usuario='" + usuario.getUsuario()
                             + "', password='" + usuario.getPassword()
                             + "', logueado='" + usuario.estaLogueado()
@@ -84,7 +85,7 @@ public class UsuarioPersistente implements Serializable {
         return usuario;
     }
 
-    public void guardar() {
+    public void guardar() throws RemoteException {
         if(usuario.getId()==0){
             int id = db.proximoOid();
             this.setId(id);

@@ -1,6 +1,12 @@
 package bingoclientejugador;
 
 import bingo.common.Controlador;
+import bingo.common.exceptions.AccesoDenegadoException;
+import bingo.common.exceptions.CantidadCartonesInvalidaException;
+import bingo.common.exceptions.DemasiadosCartonesException;
+import bingo.common.exceptions.EstaLogeadoException;
+import bingo.common.exceptions.JuegoEnCursoException;
+import bingo.common.exceptions.SaldoInsuficienteException;
 import bingo.common.interfaces.IBingo;
 import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.ICarton;
@@ -8,12 +14,6 @@ import bingo.common.interfaces.IJugador;
 import bingo.common.interfaces.IPartida;
 import bingo.common.interfaces.IRemoteObservable;
 import bingo.common.interfaces.IRemoteObserver;
-import bingo.common.exceptions.AccesoDenegadoException;
-import bingo.common.exceptions.CantidadCartonesInvalidaException;
-import bingo.common.exceptions.DemasiadosCartonesException;
-import bingo.common.exceptions.EstaLogeadoException;
-import bingo.common.exceptions.JuegoEnCursoException;
-import bingo.common.exceptions.SaldoInsuficienteException;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +42,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     private IBingo bingo;
     private IJugador jugador;
     private IRemoteObservable observable;
+    private ControlJugadorObservable controladorObservable;
     
     private boolean nuevaBolilla = false;
     private boolean continuar = false;
@@ -49,6 +50,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     private ControlJugador(String nombreServidor) 
             throws RemoteException {
         this.nombreServidor = nombreServidor;
+        this.controladorObservable = new ControlJugadorObservable();
     }
     
     public static ControlJugador getInstance(VistaJugador vista, String nombreServidor) 
@@ -151,7 +153,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             int[][] numeros = c.getNumeros();
             List<JCasillero> casilleros = vista.dibujarCarton(numeros, c.getCantFilas(), c.getCantColumnas());
             for (JCasillero casillero : casilleros) {
-                addObserver(casillero);
+                this.controladorObservable.addObserver(casillero);
             }
         }
         
@@ -170,7 +172,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     
     
     public void marcarCasillero(IBolilla bolilla) throws RemoteException {
-        notifyObservers(bolilla.getValor());
+        this.controladorObservable.notifyObservers(bolilla.getValor());
         vista.setBolilla(bolilla.getValor());
         if (jugador.tieneBolilla(bolilla)) {
             vista.mostrarMensaje("¡Anotó!");
@@ -192,7 +194,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
        } else {
            if (continuar) {
                try {
-                   bingo.getPartida().getTimer().deleteObserver(this);
+                   bingo.getPartida().getContador().deleteObserver(this);
                } catch (RemoteException ex) {
                    Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
                }
@@ -274,7 +276,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                 setNuevaBolilla(true);
                 marcarCasillero(bolilla);
                 try {
-                    bingo.getPartida().getTimer().addObserver(this);
+                    bingo.getPartida().getContador().addObserver(this);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -291,7 +293,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                         perdieronTodos = true;
                     }
                     try {
-                        bingo.getPartida().getTimer().deleteObserver(this);
+                        bingo.getPartida().getContador().deleteObserver(this);
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -311,20 +313,5 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
         }
-    }
-
-    @Override
-    public void addObserver(IRemoteObserver observer) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void deleteObserver(IRemoteObserver observer) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void notifyObservers(Serializable param) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

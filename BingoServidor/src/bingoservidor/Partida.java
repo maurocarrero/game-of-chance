@@ -3,18 +3,18 @@ package bingoservidor;
 import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.IBolillero;
 import bingo.common.interfaces.ICarton;
+import bingo.common.interfaces.IContador;
 import bingo.common.interfaces.IFigura;
 import bingo.common.interfaces.IJugador;
 import bingo.common.interfaces.IPartida;
 import bingo.common.interfaces.IRemoteObserver;
-import bingo.common.interfaces.ITimer;
 import bingo.servidor.modelo.entidades.Bolillero;
 import bingo.servidor.modelo.entidades.Carton;
 import bingo.servidor.modelo.entidades.CartonLleno;
 import bingo.servidor.modelo.entidades.Centro;
+import bingo.servidor.modelo.entidades.Contador;
 import bingo.servidor.modelo.entidades.Diagonal;
 import bingo.servidor.modelo.entidades.Linea;
-import bingo.servidor.modelo.entidades.Timer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -38,7 +38,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     private static int cantJugadores = 2;
     private static double valorCarton = 10;
     
-    private static ITimer timer = null;
+    private static IContador contador = null;
     
     private int cantCartonesRequeridos;
     private Bolillero bolillero;
@@ -46,6 +46,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     private List<ICarton> cartones;
     private List<IJugador> jugadores = null;
     private List<IJugador> jugadoresPendientes;
+    private ArrayList<IRemoteObserver> observers;   
+    
     private boolean enCurso = false;
     private double pozo = 0d;
     private boolean juegoActivo = false;
@@ -54,7 +56,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     private static List<IFigura> figuras = new ArrayList();
 
     public Partida() throws RemoteException {
-        jugadores = new ArrayList();
+        jugadores = new ArrayList<>();
+        observers = new ArrayList<>();
         figuras = new ArrayList<>();
         figuras.add(CartonLleno.getInstance());
         figuras.add(Linea.getInstance());
@@ -258,7 +261,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         
     }
     
-    private void distribuirCartones() {
+    private void distribuirCartones() throws RemoteException {
         construirBolillero();
         construirCartones();
         
@@ -303,12 +306,12 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         if (ganador != null) {
             finalizar(ganador, false, bolilla);
         } else {
-            if (timer != null) {
-                timer.abandonar();
+            if (contador != null) {
+                contador.cancelar();
             }
             try {
-                timer = new Timer(10);
-                timer.start();
+                contador = new Contador(10);
+                contador.start();
             } catch (RemoteException ex) {
                 Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -318,13 +321,13 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     
     @Override
-    public ITimer getTimer() {
-        return timer;
+    public IContador getContador() {
+        return contador;
     }
     
     
     @Override
-    public void eliminarJugadorPendiente(IJugador jugador) {
+    public void eliminarJugadorPendiente(IJugador jugador) throws RemoteException {
         for (int i = 0; i < jugadoresPendientes.size(); i++) {
             if (jugadoresPendientes.get(i).getUsuario().equals(jugador.getUsuario())) {
                 jugadoresPendientes.remove(i);
@@ -376,7 +379,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             IBolilla ultimaBolilla) throws RemoteException {
         if (ultimaBolilla != null) {
            //  setChanged();
-            notifyObservers(crearHash("bolilla", ultimaBolilla));
+           notifyObservers(crearHash("bolilla", ultimaBolilla));
         }
         for (IJugador jugador : jugadores) {
             jugador.debitarDoble(valorCarton);
@@ -385,13 +388,13 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         ganador.acreditar(pozo);
         mostrarEstadoJugadores();
         resetearPozo();
-        getTimer().abandonar();
+        getContador().cancelar();
         // setChanged();
         notifyObservers(crearHash("ganador", ganador));
     }
     
     
-    private void mostrarEstadoJugadores() {
+    private void mostrarEstadoJugadores() throws RemoteException {
         for (IJugador jugador : jugadores) {
             jugador.mostrar();
         }
@@ -401,27 +404,34 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     public void resetearPozo() {
         this.pozo = 0;
     }
-    
-    
-    @Override
-    public void finalizarAplicacion() throws RemoteException {
-        // setChanged();
-        notifyObservers(crearHash("finalizar_aplicacion", null));
-    }
 
     @Override
+    public void finalizarAplicacion() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+ 
+    @Override
     public void addObserver(IRemoteObserver observer) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(!observers.contains(observer)){
+            observers.add(observer);
+        }
     }
 
     @Override
     public void deleteObserver(IRemoteObserver observer) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(Serializable param) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void notifyObservers(Serializable param) {
+        ArrayList<IRemoteObserver> aux = new ArrayList(observers);
+        for (IRemoteObserver observer : aux){
+            try {
+                observer.update(this, param);
+            } catch (RemoteException ex) {
+                System.out.println(ex.getMessage());
+                observers.remove(observer);
+            }
+        }
     }
-    
 }

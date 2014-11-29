@@ -31,7 +31,7 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     
     int getCantJugadores() throws RemoteException;
     
-    ITimer getTimer() throws RemoteException;
+    IContador getContador() throws RemoteException;
     
     double getValorCarton() throws RemoteException;
     

@@ -11,6 +11,7 @@ import bingo.common.exceptions.DemasiadosCartonesException;
 import bingo.common.exceptions.EstaLogeadoException;
 import bingo.common.exceptions.JuegoEnCursoException;
 import bingo.common.exceptions.SaldoInsuficienteException;
+import bingo.common.interfaces.IJugador;
 import bingo.servidor.modelo.entidades.Administrador;
 import bingo.servidor.modelo.entidades.Jugador;
 import bingo.servidor.modelo.entidades.Usuario;
@@ -157,12 +158,12 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     
     
     @Override
-    public Jugador loginJugador(String usuario, char[] password, int cantCartones) 
+    public IJugador loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
                 SaldoInsuficienteException, EstaLogeadoException, RemoteException {
         
-        Jugador jugador = (Jugador) login (usuario);
+        IJugador jugador = (IJugador) login (usuario);
         
         // ACCESO DENEGADO
         if (jugador == null) {
@@ -211,12 +212,9 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
 
     @Override
     public void addObserver(IRemoteObserver observer) throws RemoteException {
-        System.out.println("Agregando un observer");
-
         if(!observers.contains(observer)){
             observers.add(observer);
         }
-        notifyObservers("Bingo connected.");
     }
 
     @Override
