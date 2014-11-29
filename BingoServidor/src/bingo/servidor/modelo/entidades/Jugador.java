@@ -41,7 +41,7 @@ public class Jugador extends Usuario implements IJugador {
     public double getSaldoPreview(double valorCarton) throws RemoteException {
         return saldo - cantCartones * valorCarton * 2;
     }
-
+    
     @Override
     public List<ICarton> getCartones() throws RemoteException {
         return cartones;
@@ -132,6 +132,11 @@ public class Jugador extends Usuario implements IJugador {
     @Override
     public boolean estaLogueado() throws RemoteException {
         return super.estaLogueado();
-    }   
+    }       
+
+    @Override
+    public boolean equals(Object obj) {
+       return super.equals(obj);
+    }
    
 }

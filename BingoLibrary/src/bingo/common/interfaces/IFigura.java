@@ -1,10 +1,13 @@
 package bingo.common.interfaces;
 
-public interface IFigura {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface IFigura extends Remote{
     
-    String getNombre();
-    boolean isActiva();
-    void setActiva(boolean activa);
-    boolean condicional(ICarton c);
+    String getNombre() throws RemoteException;
+    boolean isActiva() throws RemoteException;
+    void setActiva(boolean activa) throws RemoteException;
+    boolean condicional(ICarton c) throws RemoteException;
     
 }

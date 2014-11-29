@@ -7,13 +7,16 @@ package bingo.servidor.modelo.entidades;
 import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.ICarton;
 import bingo.common.interfaces.IFigura;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 /**
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class Carton implements ICarton {
+public class Carton extends UnicastRemoteObject implements ICarton {
     
     private int[][] numeros;
     private boolean[][] pintados;
@@ -23,7 +26,7 @@ public class Carton implements ICarton {
     private int cantFilas;
     private int cantColumnas;
 
-    public Carton(int cantFilas, int cantColumnas) {
+    public Carton(int cantFilas, int cantColumnas) throws RemoteException{
         this.numeros = new int[cantFilas][cantColumnas];
         this.pintados = new boolean[cantFilas][cantColumnas];
         this.cantFilas = cantFilas;
@@ -33,7 +36,7 @@ public class Carton implements ICarton {
     }
     
     @Override
-    public void poblar(List<IBolilla> bolillas) {
+    public void poblar(List<IBolilla> bolillas) throws RemoteException{
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < cantColumnas; y++) {
                 numeros[x][y] = bolillas.remove(0).getValor();
@@ -47,17 +50,17 @@ public class Carton implements ICarton {
     
     
     @Override
-    public int[][] getNumeros() {
+    public int[][] getNumeros() throws RemoteException{
         return numeros;
     }
 
     @Override
-    public int getCantFilas() {
+    public int getCantFilas() throws RemoteException{
         return cantFilas;
     }
 
     @Override
-    public int getCantColumnas() {
+    public int getCantColumnas() throws RemoteException{
         return cantColumnas;
     }
 
@@ -71,7 +74,7 @@ public class Carton implements ICarton {
     
     
     @Override
-    public void buscarBolilla(IBolilla bolilla) {
+    public void buscarBolilla(IBolilla bolilla) throws RemoteException{
         int valor = bolilla.getValor();
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < this.cantColumnas; y++) {
@@ -83,7 +86,7 @@ public class Carton implements ICarton {
     }
     
     @Override
-    public boolean tieneBolilla(IBolilla bolilla) {
+    public boolean tieneBolilla(IBolilla bolilla) throws RemoteException{
         int valor = bolilla.getValor();
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < this.cantColumnas; y++) {
@@ -101,7 +104,7 @@ public class Carton implements ICarton {
     
     @Override
     //Condicional para tener Figuras
-    public boolean tieneFiguras(List<IFigura> figuras) {
+    public boolean tieneFiguras(List<IFigura> figuras) throws RemoteException{
         for(IFigura fig : figuras){
             if(fig.isActiva()){
                 if(fig.condicional(this)) return true;                

@@ -3,6 +3,8 @@ package bingo.servidor.modelo.entidades;
 import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.IBolillero;
 import bingo.common.interfaces.ICarton;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,11 +13,11 @@ import java.util.List;
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class Bolillero implements IBolillero {
+public class Bolillero extends UnicastRemoteObject implements IBolillero {
 
     private List<IBolilla> bolillas;
 
-    public Bolillero(int cantBolillas) {
+    public Bolillero(int cantBolillas) throws RemoteException {
         bolillas = new ArrayList();
         for (int i = 1; i <= cantBolillas; i++) {
             this.bolillas.add(new Bolilla(i));
@@ -23,22 +25,26 @@ public class Bolillero implements IBolillero {
         Collections.shuffle(this.bolillas);
     }
     
-    public IBolilla sacarBolilla() {
+    @Override
+    public IBolilla sacarBolilla() throws RemoteException{
         if (getSize() > 0) {
             return this.bolillas.remove(0);
         }
         return null;
     }
     
-    public int getSize() {
+    @Override
+    public int getSize() throws RemoteException {
         return this.bolillas.size();
     }
     
-    public List<IBolilla> getListaBolillas() {
+    @Override
+    public List<IBolilla> getListaBolillas() throws RemoteException {
         return new ArrayList<>(this.bolillas);
     }
     
-    public void borrarBolillas(ICarton carton){
+    @Override
+    public void borrarBolillas(ICarton carton) throws RemoteException{
         for (int x = 0; x < carton.getCantFilas(); x++) {
             for (int y = 0; y < carton.getCantColumnas(); y++) {
                 for (int i = 0; i < this.bolillas.size(); i++) {

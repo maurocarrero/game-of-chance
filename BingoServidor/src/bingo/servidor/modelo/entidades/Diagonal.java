@@ -8,6 +8,7 @@ package bingo.servidor.modelo.entidades;
 
 import bingo.common.interfaces.ICarton;
 import bingo.common.interfaces.IFigura;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -17,20 +18,20 @@ public class Diagonal extends Figura implements IFigura {
 
      private static Diagonal instance;
     
-    public static Diagonal getInstance() {
+    public static Diagonal getInstance() throws RemoteException {
         if (instance == null) {
             instance = new Diagonal("diagonal");
         }
         return instance;
     }
     
-    public Diagonal(String nombre) {
+    public Diagonal(String nombre) throws RemoteException {
         super(nombre);
         super.setActiva(false);
     }
     
     @Override
-    public boolean condicional(ICarton c) {
+    public boolean condicional(ICarton c) throws RemoteException {
         if (c.getCantAciertos() == c.getCantColumnas()) {
             if (diagonalHaciaDerecha(c)) {
                 System.out.println("diagonal derecha");
@@ -44,7 +45,7 @@ public class Diagonal extends Figura implements IFigura {
     }
     
     //Figura Diagonal Hacia la derecha "\"
-    public boolean diagonalHaciaDerecha(ICarton c) {
+    public boolean diagonalHaciaDerecha(ICarton c) throws RemoteException {
         int cantPintados = 0;
         for (int x = 0; x < c.getCantColumnas(); x++) {
             if (c.getPintados()[x][x]) {
@@ -55,7 +56,7 @@ public class Diagonal extends Figura implements IFigura {
     }
     
     //Figura Diagonal Hacia la izquierda "/"
-    public boolean diagonalHaciaIzquierda(ICarton c) {       
+    public boolean diagonalHaciaIzquierda(ICarton c) throws RemoteException {       
         int cantPintados = 0;
         for (int x = c.getCantColumnas()-1 ; x > 0; x--) {
             if (c.getPintados()[x][x]) {

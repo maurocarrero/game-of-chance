@@ -4,6 +4,7 @@
  */
 package bingo.common.interfaces;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author maurocarrero/fernandogonzalez
  */
-public interface IJugador extends Remote {
+public interface IJugador extends Remote, Serializable {
     
     public int getCantCartones() throws RemoteException;
 

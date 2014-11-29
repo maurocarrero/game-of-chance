@@ -234,14 +234,14 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     }
     
     
-    private void construirBolillero() {
+    private void construirBolillero() throws RemoteException{
         int cantNumerosPorCarton = cantFilas * cantColumnas;
         int cantTotalNumeros = cantNumerosPorCarton * cantCartonesRequeridos;
         this.bolillero = new Bolillero(cantTotalNumeros);
     }
 
     
-    private void construirCartones() {
+    private void construirCartones() throws RemoteException {
         this.cartones = new ArrayList();
         List<IBolilla> bolillas = bolillero.getListaBolillas();
 
@@ -349,7 +349,6 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             recalcularPozo(borrarJugador(jugador));
             jugador.mostrar();
             if (jugadores.size() > 1) {
-              // setChanged();
                notifyObservers(crearHash("abandono", getPozo()));
             } else {
                 if (jugadores.size() > 0) {

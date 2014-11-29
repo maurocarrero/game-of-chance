@@ -4,12 +4,15 @@
  */
 package bingo.common.interfaces;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author maurocarrero/fernandogonzalez
  */
-public interface IBolilla {
-    
-    public int getValor();
+public interface IBolilla extends Remote{
+     
+    public int getValor() throws RemoteException;
     
 }

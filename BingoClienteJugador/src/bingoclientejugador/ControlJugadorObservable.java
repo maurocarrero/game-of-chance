@@ -18,4 +18,8 @@ public class ControlJugadorObservable extends Observable {
         super();
     }
 
+    public void notificar(int bolilla) {
+        setChanged();
+        notifyObservers(bolilla);
+    }    
 }

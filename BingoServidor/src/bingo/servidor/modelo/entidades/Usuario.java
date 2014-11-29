@@ -72,5 +72,27 @@ public abstract class Usuario extends UnicastRemoteObject implements Serializabl
         persistente.setUsuario(u);
         persistente.eliminar();
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!this.usuario.equals(other.usuario)) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }

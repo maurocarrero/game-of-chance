@@ -164,7 +164,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     public void mostrarInfo() throws RemoteException {
         List<IJugador> restoJugadoresEnJuego = new ArrayList<>(bingo.getPartida().getJugadores());
         restoJugadoresEnJuego.remove(jugador);
-        vista.mostrarInfo(jugador.toString(), bingo.getPartida().getPozo(),
+        vista.mostrarInfo(jugador.getUsuario(), bingo.getPartida().getPozo(),
             jugador.getSaldoPreview(bingo.getPartida().getValorCarton()),
             restoJugadoresEnJuego);
     }  
@@ -172,7 +172,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     
     
     public void marcarCasillero(IBolilla bolilla) throws RemoteException {
-        this.controladorObservable.notifyObservers(bolilla.getValor());
+        this.controladorObservable.notificar(bolilla.getValor());
         vista.setBolilla(bolilla.getValor());
         if (jugador.tieneBolilla(bolilla)) {
             vista.mostrarMensaje("¡Anotó!");
@@ -193,11 +193,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
            partida.perdieronTodos();
        } else {
            if (continuar) {
-               try {
+               /*try {
                    bingo.getPartida().getContador().deleteObserver(this);
                } catch (RemoteException ex) {
                    Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-               }
+               }*/
            }
            partida.continuarParticipando(continuar, jugador);
        }
@@ -251,7 +251,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
         try {
             IRemoteObservable modelo = (IRemoteObservable) Naming.lookup(nombreServidor);
             this.bingo = (IBingo) modelo;
-            modelo.addObserver(this);
+            bingo.getPartida().addObserver(this);
             System.out.println(nombreServidor + " is up.");
         }catch (NotBoundException | MalformedURLException | RemoteException ex) {
             System.out.println(ex.getMessage());
@@ -275,11 +275,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                 IBolilla bolilla = (IBolilla)evento.get("bolilla");
                 setNuevaBolilla(true);
                 marcarCasillero(bolilla);
-                try {
+                /*try {
                     bingo.getPartida().getContador().addObserver(this);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
             }
             if (evento.containsKey("timer")) {
                 int timer = (int)(evento.get("timer"));
@@ -292,11 +292,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                     if (cantJugadoresPendientes == cantJugadores) {
                         perdieronTodos = true;
                     }
-                    try {
+                   /* try {
                         bingo.getPartida().getContador().deleteObserver(this);
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     continuarParticipando(continuar, perdieronTodos);
                 } else {
                     actualizarTimer(timer);

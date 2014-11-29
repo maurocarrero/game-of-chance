@@ -1,31 +1,34 @@
 package bingo.common.interfaces;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
 /**
  *
  * @author maurocarrero/fernandogonzalez
  */
-public interface ICarton {
+public interface ICarton extends Remote, Serializable{
     
-    void poblar(List<IBolilla> bolillas);
+    void poblar(List<IBolilla> bolillas) throws RemoteException;
     
-    int[][] getNumeros();
+    int[][] getNumeros() throws RemoteException;
 
-    int getCantFilas();
+    int getCantFilas() throws RemoteException;
 
-    int getCantColumnas();    
+    int getCantColumnas() throws RemoteException;    
     
-    void buscarBolilla(IBolilla bolilla);
+    void buscarBolilla(IBolilla bolilla) throws RemoteException;
     
-    boolean tieneBolilla(IBolilla bolilla);
+    boolean tieneBolilla(IBolilla bolilla) throws RemoteException;
 
-    boolean tieneFiguras(List<IFigura> figuras);
+    boolean tieneFiguras(List<IFigura> figuras) throws RemoteException;
     
-    int getCantCasilleros();
+    int getCantCasilleros() throws RemoteException;
 
-    int getCantAciertos();
+    int getCantAciertos() throws RemoteException;
     
-    boolean[][] getPintados();
+    boolean[][] getPintados() throws RemoteException;
     
 }

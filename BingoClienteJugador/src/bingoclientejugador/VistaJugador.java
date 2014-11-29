@@ -3,6 +3,8 @@ package bingoclientejugador;
 import bingo.common.Controlador;
 import bingo.common.interfaces.IJugador;
 import java.awt.GridLayout;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 
@@ -91,11 +93,16 @@ public final class VistaJugador extends JFrame {
         pack();
     }
     
-    public void mostrarInfo(String nombreJugador, double pozo, double saldoActual, List<IJugador> jugadores) {
+    public void mostrarInfo(String nombreJugador, double pozo, double saldoActual, List<IJugador> jugadores) throws RemoteException {
         setTitle(nombreJugador);
         lblPozo.setText(pozo + "");
         lblSaldoActual.setText(saldoActual + "");
-        listJugadores.setListData(jugadores.toArray());
+        List<String> jugadoresArray = new ArrayList(); 
+ 
+        for(IJugador j : jugadores){
+            jugadoresArray.add(j.getUsuario());
+        }
+        listJugadores.setListData(jugadoresArray.toArray());
     }
     
     public void actualizarTimer(int timer){
