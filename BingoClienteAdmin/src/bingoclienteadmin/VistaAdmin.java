@@ -19,7 +19,6 @@ public final class VistaAdmin extends JFrame {
         this.setTitle("Bingo - Administrador");
         
         menuConfigurar.setActionCommand("CONFIGURAR");
-        menuCrearInterfaces.setActionCommand("CREAR_INTERFACES");
         menuFinalizar.setActionCommand("FINALIZAR_APLICACION");
 
         btnIngresar.setActionCommand("INGRESAR");
@@ -191,7 +190,6 @@ public final class VistaAdmin extends JFrame {
         menuBar = new javax.swing.JMenuBar();
         mnuAdministrar = new javax.swing.JMenu();
         menuConfigurar = new javax.swing.JMenuItem();
-        menuCrearInterfaces = new javax.swing.JMenuItem();
         menuFinalizar = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
@@ -385,9 +383,6 @@ public final class VistaAdmin extends JFrame {
         menuConfigurar.setText("Configurar");
         mnuAdministrar.add(menuConfigurar);
 
-        menuCrearInterfaces.setText("Crear Interfaces");
-        mnuAdministrar.add(menuCrearInterfaces);
-
         menuFinalizar.setText("Finalizar aplicación");
         mnuAdministrar.add(menuFinalizar);
 
@@ -440,7 +435,6 @@ public final class VistaAdmin extends JFrame {
     private javax.swing.JLabel lblValorCarton;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuConfigurar;
-    private javax.swing.JMenuItem menuCrearInterfaces;
     private javax.swing.JMenuItem menuFinalizar;
     private javax.swing.JMenu mnuAdministrar;
     private javax.swing.JPanel panelConfigurar;
