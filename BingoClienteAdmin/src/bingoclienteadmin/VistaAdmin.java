@@ -152,7 +152,6 @@ public final class VistaAdmin extends JFrame {
         
         // Menu
         menuConfigurar.addActionListener(c);
-        menuCrearInterfaces.addActionListener(c);
         menuFinalizar.addActionListener(c);
     }
 
