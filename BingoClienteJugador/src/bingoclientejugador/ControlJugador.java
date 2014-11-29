@@ -191,13 +191,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
        if (perdieronTodos) {
            partida.perdieronTodos();
        } else {
-           if (continuar) {
-               try {
-                   bingo.getPartida().getContador().deleteObserver(this);
-               } catch (RemoteException ex) {
-                   Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-               }
-           }
+            try {
+                bingo.getPartida().getContador().deleteObserver(this);
+                } catch (RemoteException ex) {
+                Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
+                }
            partida.continuarParticipando(continuar, jugador);
        }
        

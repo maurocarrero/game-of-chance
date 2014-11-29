@@ -88,6 +88,11 @@ public class Contador extends UnicastRemoteObject implements IContador {
     }
     
     @Override
+    public void resetear() throws RemoteException {
+        this.cont = tiempo;
+    }
+    
+    @Override
     public void start() throws RemoteException {
         this.timer.start();
     }

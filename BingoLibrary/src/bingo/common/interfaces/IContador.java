@@ -29,5 +29,6 @@ public interface IContador extends IRemoteObservable, Serializable {
     
     public void start() throws RemoteException;
 
+    public void resetear() throws RemoteException;
     
 }

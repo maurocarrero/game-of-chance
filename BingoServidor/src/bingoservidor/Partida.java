@@ -307,13 +307,14 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             finalizar(ganador, false, bolilla);
         } else {
             if (contador != null) {
-                contador.cancelar();
-            }
-            try {
-                contador = new Contador(10);
-                contador.start();
-            } catch (RemoteException ex) {
-                Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
+                contador.resetear();
+            }else{
+                try {
+                    contador = new Contador(10);
+                    contador.start();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             notifyObservers(crearHash("bolilla", bolilla));
         }
