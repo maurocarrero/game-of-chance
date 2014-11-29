@@ -133,5 +133,6 @@ public class Jugador extends Usuario implements IJugador {
     public boolean estaLogueado() throws RemoteException {
         return super.estaLogueado();
     }       
-   
+ 
+    
 }

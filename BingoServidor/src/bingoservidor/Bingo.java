@@ -1,17 +1,17 @@
 package bingoservidor;
 
-import bingo.common.interfaces.IBingo;
-import bingo.common.interfaces.IPartida;
-import bingo.common.interfaces.IRemoteObservable;
-import bingo.common.interfaces.IRemoteObserver;
 import bingo.common.exceptions.AccesoDenegadoException;
 import bingo.common.exceptions.CantidadCartonesInvalidaException;
 import bingo.common.exceptions.ConfiguracionNoValidaException;
 import bingo.common.exceptions.DemasiadosCartonesException;
-import bingo.common.exceptions.EstaLogeadoException;
+import bingo.common.exceptions.EstaLogueadoException;
 import bingo.common.exceptions.JuegoEnCursoException;
 import bingo.common.exceptions.SaldoInsuficienteException;
+import bingo.common.interfaces.IBingo;
 import bingo.common.interfaces.IJugador;
+import bingo.common.interfaces.IPartida;
+import bingo.common.interfaces.IRemoteObservable;
+import bingo.common.interfaces.IRemoteObserver;
 import bingo.servidor.modelo.entidades.Administrador;
 import bingo.servidor.modelo.entidades.Jugador;
 import bingo.servidor.modelo.entidades.Usuario;
@@ -161,7 +161,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     public IJugador loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
-                SaldoInsuficienteException, EstaLogeadoException, RemoteException {
+                SaldoInsuficienteException, EstaLogueadoException, RemoteException {
         
         IJugador jugador = (IJugador) login (usuario);
         
@@ -186,7 +186,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
             throw new DemasiadosCartonesException();
         }             
         if (jugador.estaLogueado()){
-            throw new EstaLogeadoException("" + jugador.getUsuario());
+            throw new EstaLogueadoException("" + jugador.getUsuario());
         }
         // SALDO INSUFICIENTE
         double precioCartones = getPrecioCartones(cantCartones);

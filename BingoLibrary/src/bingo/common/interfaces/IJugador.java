@@ -55,4 +55,6 @@ public interface IJugador extends Remote, Serializable {
 
     public boolean estaLogueado() throws RemoteException;
     
+    public void desloguear() throws RemoteException;
+    
 }

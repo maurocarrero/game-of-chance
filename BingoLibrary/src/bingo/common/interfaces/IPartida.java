@@ -89,7 +89,7 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     
     void recalcularPozo(double monto) throws RemoteException;
     
-    void resetearPozo() throws RemoteException;
+    void resetear() throws RemoteException;
     
     void finalizarAplicacion() throws RemoteException;
     

@@ -394,14 +394,14 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         for (IJugador jugador : jugadores) {
             jugador.debitarDoble(valorCarton);
             jugador.resetearCartones();
+            jugador.desloguear();
         }
         ganador.acreditar(pozo);
+        ganador.desloguear();
         mostrarEstadoJugadores();
         getContador().cancelar();
         notifyObservers(crearHash("ganador", ganador));
-        resetearPozo();        
-        setJuegoActivo(false);
-        setEnCurso(false);
+        resetear();
     }
     
     
@@ -412,8 +412,15 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     }
     
     @Override
-    public void resetearPozo() {
-        this.pozo = 0;
+    public void resetear() throws RemoteException {
+        cantCartonesRequeridos = 0;
+        pozo = 0;
+        jugadores = new ArrayList<>();
+        jugadoresPendientes = new ArrayList<>();
+        cartones = new ArrayList<>();
+        observers = new ArrayList<>();
+        setJuegoActivo(false);
+        setEnCurso(false);
     }
 
     @Override

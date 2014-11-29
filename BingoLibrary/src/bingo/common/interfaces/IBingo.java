@@ -8,7 +8,7 @@ import bingo.common.exceptions.AccesoDenegadoException;
 import bingo.common.exceptions.CantidadCartonesInvalidaException;
 import bingo.common.exceptions.ConfiguracionNoValidaException;
 import bingo.common.exceptions.DemasiadosCartonesException;
-import bingo.common.exceptions.EstaLogeadoException;
+import bingo.common.exceptions.EstaLogueadoException;
 import bingo.common.exceptions.JuegoEnCursoException;
 import bingo.common.exceptions.SaldoInsuficienteException;
 import java.io.Serializable;
@@ -37,7 +37,7 @@ public interface IBingo extends IRemoteObservable {
     IJugador loginJugador(String usuario, char[] password, int cantCartones) 
             throws AccesoDenegadoException, JuegoEnCursoException,
                 CantidadCartonesInvalidaException, DemasiadosCartonesException, 
-                SaldoInsuficienteException, EstaLogeadoException, RemoteException;
+                SaldoInsuficienteException, EstaLogueadoException, RemoteException;
 
     void finalizarAplicacion() throws RemoteException;
     

@@ -10,9 +10,9 @@ package bingo.common.exceptions;
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class EstaLogeadoException extends Exception{
+public class EstaLogueadoException extends Exception{
     
-    public EstaLogeadoException(String usuario){
-        super("El usuario " + usuario + " ya esta logeado");
+    public EstaLogueadoException(String usuario){
+        super("El usuario " + usuario + " ya esta logueado");
     }    
 }

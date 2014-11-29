@@ -4,7 +4,7 @@ import bingo.common.Controlador;
 import bingo.common.exceptions.AccesoDenegadoException;
 import bingo.common.exceptions.CantidadCartonesInvalidaException;
 import bingo.common.exceptions.DemasiadosCartonesException;
-import bingo.common.exceptions.EstaLogeadoException;
+import bingo.common.exceptions.EstaLogueadoException;
 import bingo.common.exceptions.JuegoEnCursoException;
 import bingo.common.exceptions.SaldoInsuficienteException;
 import bingo.common.interfaces.IBingo;
@@ -93,8 +93,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             JOptionPane.showMessageDialog(null, "Bienvenido " + usuario + "!", 
                     "Exito", JOptionPane.INFORMATION_MESSAGE);
             
-        } catch (AccesoDenegadoException | JuegoEnCursoException | 
-                EstaLogeadoException | CantidadCartonesInvalidaException ex) {
+        } catch (AccesoDenegadoException | JuegoEnCursoException | EstaLogueadoException | CantidadCartonesInvalidaException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", 
                     JOptionPane.ERROR_MESSAGE);
         } catch (DemasiadosCartonesException ex) {
@@ -193,11 +192,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
            partida.perdieronTodos();
        } else {
            if (continuar) {
-               /*try {
+               try {
                    bingo.getPartida().getContador().deleteObserver(this);
                } catch (RemoteException ex) {
                    Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-               }*/
+               }
            }
            partida.continuarParticipando(continuar, jugador);
        }
@@ -275,11 +274,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                 IBolilla bolilla = (IBolilla)evento.get("bolilla");
                 setNuevaBolilla(true);
                 marcarCasillero(bolilla);
-                /*try {
+                try {
                     bingo.getPartida().getContador().addObserver(this);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             }
             if (evento.containsKey("timer")) {
                 int timer = (int)(evento.get("timer"));
@@ -292,11 +291,11 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                     if (cantJugadoresPendientes == cantJugadores) {
                         perdieronTodos = true;
                     }
-                   /* try {
+                    try {
                         bingo.getPartida().getContador().deleteObserver(this);
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    }
                     continuarParticipando(continuar, perdieronTodos);
                 } else {
                     actualizarTimer(timer);
