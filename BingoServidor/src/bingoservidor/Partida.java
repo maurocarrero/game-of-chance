@@ -349,7 +349,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     @Override
     public void perdieronTodos() throws RemoteException  {
-        finalizarAplicacion();
+        notifyObservers(crearHash("perdieron_todos", ""));
+        resetear();
     }
     
     @Override
@@ -389,7 +390,6 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     private void finalizar(IJugador ganador, boolean porAbandono, 
             IBolilla ultimaBolilla) throws RemoteException {
         if (ultimaBolilla != null) {
-           //  setChanged();
            notifyObservers(crearHash("bolilla", ultimaBolilla));
         }
         for (IJugador jugador : jugadores) {
@@ -426,7 +426,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
 
     @Override
     public void finalizarAplicacion() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        resetear();
+        notifyObservers(crearHash("finalizar_aplicacion", pozo));
     }
  
     @Override

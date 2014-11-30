@@ -4,7 +4,6 @@
  */
 package bingo.servidor.modelo.entidades;
 
-import bingo.servidor.persistencia.UsuarioPersistente;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -20,8 +19,8 @@ public abstract class Usuario extends UnicastRemoteObject implements Serializabl
     private String password;
     private Boolean logueado = false;
     
-    private UsuarioPersistente persistente = new UsuarioPersistente();
-
+    public Usuario() throws RemoteException {}
+    
     public Usuario(String usuario, String password) throws RemoteException {
         this.usuario = usuario;
         this.password = password;
@@ -68,16 +67,6 @@ public abstract class Usuario extends UnicastRemoteObject implements Serializabl
         this.password = password;
     }
     
-    public void guardar(Usuario u) throws RemoteException {
-        persistente.setUsuario(u);
-        persistente.guardar();        
-    }
-    
-    public void eliminar(Usuario u){
-        persistente.setUsuario(u);
-        persistente.eliminar();
-    }
-
     @Override
     public int hashCode() {
         int hash = 5;

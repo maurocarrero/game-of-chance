@@ -304,11 +304,18 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                 finJuego(ganador, 0);
             }
             if (evento.containsKey("finalizar_aplicacion")) {
-                vista.dispose();
-                System.exit(0);
+                finalizar();
+            }
+            if (evento.containsKey("perdieron_todos")) {
+                finalizar();
             }
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    
+    private void finalizar() {
+        vista.dispose();
+        System.exit(0);
     }
 }

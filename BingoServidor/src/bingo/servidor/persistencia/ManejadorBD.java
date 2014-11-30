@@ -1,10 +1,12 @@
 package bingo.servidor.persistencia;
 
 import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ManejadorBD implements Serializable {    
+public class ManejadorBD implements Serializable, Remote {    
 
     private Connection conexion;
 
@@ -17,63 +19,44 @@ public class ManejadorBD implements Serializable {
             return instancia;
     }
 
-    public void conectar(String url) {
-            try {
-
-                    conexion = DriverManager.getConnection(url);
-
-            } catch (SQLException e1) {
-                    System.out.println("Error de conexi�n.:" + e1.getMessage());
-            }
+    public void conectar(String url)  throws RemoteException {
+        try {
+             conexion = DriverManager.getConnection(url);
+        } catch (SQLException e1) {
+              System.out.println("Error de conexión.:" + e1.getMessage());
+        }
     }
 
-    public void desconectar() {
+    public void desconectar()  throws RemoteException {
             try {
-                    conexion.close();
+                 conexion.close();
             } catch (SQLException e) {
-                    System.out.println("Error al cerrar la conexi�n.");
+                 System.out.println("Error al cerrar la conexión.");
             }
     }
 
-    public void ejecutar(String sql) {
+    public void ejecutar(String sql) throws RemoteException {
             try {
-                    Statement st = conexion.createStatement();
-                    st.executeUpdate(sql);
-                    st.close();
+                 Statement st = conexion.createStatement();
+                 st.executeUpdate(sql);
+                 st.close();
             } catch (SQLException e) {
-                    System.out.println("Error al ejecutar sql.\n" + e.getMessage());
+                 System.out.println("Error al ejecutar sql.\n" + e.getMessage());
             }
     }
 
-    public ResultSet obtenerResultSet(String sql) {
+    public ResultSet obtenerResultSet(String sql) throws RemoteException {
             ResultSet rs = null;
             try {
-                    Statement st = conexion.createStatement();
-                    rs = st.executeQuery(sql);
+                Statement st = conexion.createStatement();
+                rs = st.executeQuery(sql);
             } catch (SQLException e) {
-                    System.out.println("Error al ejecutar sql.\n" + e.getMessage());
+                System.out.println("Error al ejecutar sql.\n" + e.getMessage());
             }
             return rs;
     }
-
-    public int proximoOid() {
-            int oid=-1;
-            try {
-                    String sql = "SELECT valor FROM Parametros WHERE nombre='oid'";
-                    ResultSet rs = this.obtenerResultSet(sql);
-                    if (rs.next()) {
-                            oid=rs.getInt("valor");
-                    }
-                    rs.close();
-                    oid++;
-                    this.ejecutar("UPDATE Parametros set valor=" + oid + " WHERE nombre='oid'");
-            } catch (SQLException e) {
-                    System.out.println("Error al obtener el proximo oid." + e.getMessage());
-            }
-            return oid;
-    }    
     
-    public void leer(Persistente b) {
+    public void leer(Persistente b) throws RemoteException {
             try {
                     ResultSet rs = this.obtenerResultSet(b.getSelectSQL());
                     if (rs.next()) {
@@ -84,18 +67,19 @@ public class ManejadorBD implements Serializable {
             }
     }
 
-    public ArrayList obtenerTodos(Persistente b) {
+    public ArrayList obtenerTodos(Persistente b) throws RemoteException {
             ArrayList ret = new ArrayList();
             try {
-                    ResultSet rs = this.obtenerResultSet(b.getSelectSQL());
-                    while (rs.next()) {
-                            Persistente aux=b.getNuevo();
-                            aux.leerDesdeResultSet(rs);
-                            ret.add(aux.getObjeto());
-                    }
+                ResultSet rs = this.obtenerResultSet(b.getSelectSQL());
+                while (rs.next()) {
+                    Persistente aux = b.getNuevo();
+                    aux.leerDesdeResultSet(rs);
+                    ret.add(aux.getObjeto());
+                }
             } catch (SQLException e) {
                     System.out.println("Error al obtener objetos.\n" + e.getMessage());
             }
             return ret;
     }
 }
+

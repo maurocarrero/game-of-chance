@@ -1,19 +1,23 @@
 package bingo.servidor.persistencia;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
-public interface Persistente {
+public interface Persistente extends Remote {
 
-
-    public abstract String getInsertSQL();
-    public abstract String getUpdateSQL();
-    public abstract String getDeleteSQL();
-    public abstract String getSelectSQL();
-    public abstract void leerDesdeResultSet(ResultSet rs);
-    public abstract Persistente getNuevo();
-    public abstract Object getObjeto();
-    public abstract int getOid();
-    public abstract void  setOid(int oid);
+    public abstract String getInsertSQL() throws RemoteException;
+    
+    public abstract String getUpdateSQL() throws RemoteException;
+    
+    public abstract String getDeleteSQL() throws RemoteException;
+    
+    public abstract String getSelectSQL() throws RemoteException;
+    
+    public abstract void leerDesdeResultSet(ResultSet rs) throws RemoteException;
+    
+    public abstract Persistente getNuevo() throws RemoteException;
+    
+    public abstract Object getObjeto() throws RemoteException;
 
 }

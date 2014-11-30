@@ -23,7 +23,7 @@ public class Contador extends UnicastRemoteObject implements IContador {
         this.tiempo = (segundos > 120) ? segundos : 20;
         this.cont = this.tiempo;
         this.observers = new ArrayList<>();
-        this.timer = new Timer(this);
+        this.timer = Timer.getInstance(this);
     }
 
     @Override

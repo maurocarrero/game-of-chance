@@ -13,8 +13,12 @@ import bingo.common.interfaces.IPartida;
 import bingo.common.interfaces.IRemoteObservable;
 import bingo.common.interfaces.IRemoteObserver;
 import bingo.servidor.modelo.entidades.Administrador;
-import bingo.servidor.modelo.entidades.Jugador;
 import bingo.servidor.modelo.entidades.Usuario;
+import bingo.servidor.persistencia.AdminPersistente;
+import bingo.servidor.persistencia.JugadorPersistente;
+import bingo.servidor.persistencia.ManejadorBD;
+import bingo.servidor.persistencia.PartidaPersistente;
+import bingo.servidor.persistencia.Persistente;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -35,23 +39,37 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     
     private ArrayList<IRemoteObserver> observers = null;
     
+    private ManejadorBD db = null;
+    
     public Bingo() throws RemoteException {
-        usuariosTest = new ArrayList();
 
-        usuariosTest.add(new Administrador("mcarrero", "mcarrero"));
-        usuariosTest.add(new Administrador("fgonzalez", "fgonzalez"));
-
-        usuariosTest.add(new Jugador("j1", "j1", 0, 1200));
-        usuariosTest.add(new Jugador("j2", "j2", 0, 2700));
-        usuariosTest.add(new Jugador("j3", "j3", 0, 4200));
-        usuariosTest.add(new Jugador("j4", "j4", 0, 7000));
-        usuariosTest.add(new Jugador("j5", "j5", 0, 30));
+        String url = "jdbc:mysql://localhost/bingo?user=bingo&password=bingo";
         
+        this.db = ManejadorBD.getInstancia();
+        this.db.conectar(url);
         this.partida = new Partida();
         this.observers = new ArrayList<>();
+        this.usuariosTest = new ArrayList<>();
+        
+        obtenerTodosLosUsuarios();
+        // obtenerConfiguracion();
     }
-      
     
+    private void obtenerTodosLosUsuarios() throws RemoteException {        
+        agregarUsuarios(this.db.obtenerTodos((Persistente) new JugadorPersistente()));
+        agregarUsuarios(this.db.obtenerTodos((Persistente) new AdminPersistente()));
+    }
+    
+    private void obtenerConfiguracion() throws RemoteException {
+        this.db.obtenerTodos((Persistente) new PartidaPersistente());
+    }
+    
+    private void agregarUsuarios(ArrayList usuarios) {
+        for (Object p : usuarios) {
+            usuariosTest.add((Usuario) p);
+        }
+    }
+        
     @Override
     public IPartida getPartida() throws RemoteException {
         return this.partida;
@@ -207,6 +225,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
         if (partida != null) {
             partida.finalizarAplicacion();
         }        
+        this.db.desconectar();
         System.exit(0);
     }
 
@@ -234,4 +253,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
             }
         }
     }
+    
+    
+    
 }

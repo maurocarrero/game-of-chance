@@ -1,6 +1,5 @@
 package bingo.servidor.modelo.entidades;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 
 /**
@@ -9,6 +8,8 @@ import java.rmi.RemoteException;
  */
 public class Administrador extends Usuario {
 
+    public Administrador() throws RemoteException {}
+    
     public Administrador(String usuario, String password) throws RemoteException{
         super(usuario, password);
     }

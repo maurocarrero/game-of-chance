@@ -1,10 +1,10 @@
 package bingoclienteadmin;
 
 import bingo.common.Controlador;
+import bingo.common.exceptions.ConfiguracionNoValidaException;
 import bingo.common.interfaces.IBingo;
 import bingo.common.interfaces.IRemoteObservable;
 import bingo.common.interfaces.IRemoteObserver;
-import bingo.common.exceptions.ConfiguracionNoValidaException;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
