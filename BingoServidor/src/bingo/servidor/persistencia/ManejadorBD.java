@@ -30,6 +30,7 @@ public class ManejadorBD implements Serializable, Remote {
     public void desconectar()  throws RemoteException {
             try {
                  conexion.close();
+                 System.out.println("Conexión cerrada correctamente.");
             } catch (SQLException e) {
                  System.out.println("Error al cerrar la conexión.");
             }

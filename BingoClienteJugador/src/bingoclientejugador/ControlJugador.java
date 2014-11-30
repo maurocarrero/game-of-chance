@@ -20,9 +20,11 @@ import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +48,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     
     private boolean nuevaBolilla = false;
     private boolean continuar = false;
+  
     
     private ControlJugador(String nombreServidor) 
             throws RemoteException {
@@ -68,6 +71,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     
     private void ingresar() throws RemoteException {
         try {
+            registrar();
             
             String usuario = vista.getUsuario();
             char[] password = vista.getPassword();
@@ -111,6 +115,9 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             vista.limpiarCampos();
         } catch (ClassCastException ex) {
             JOptionPane.showMessageDialog(null, "Debe crear un perfil de Jugador para jugar.", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "No se ha podido establecer la conexión con el servidor.", "Error", 
                     JOptionPane.ERROR_MESSAGE);
         }
         
@@ -241,7 +248,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     }
     
     public boolean registrar(){
-        if(System.getSecurityManager()==null){
+        if(System.getSecurityManager() == null){
                System.setSecurityManager(new RMISecurityManager());
         }
         System.out.println("Registrando jugador...");
@@ -251,6 +258,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             bingo.getPartida().addObserver(this);
             System.out.println(nombreServidor + " is up.");
         }catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            vista.mostrarMensaje("No se ha podido establecer la conexión con el servidor.");
             System.out.println(ex.getMessage());
             return false;
         }
@@ -304,18 +312,18 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
                 finJuego(ganador, 0);
             }
             if (evento.containsKey("finalizar_aplicacion")) {
-                finalizar();
+                exit();
             }
             if (evento.containsKey("perdieron_todos")) {
-                finalizar();
+                exit();
             }
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
         }
     }
+
     
-    private void finalizar() {
-        vista.dispose();
+    public void exit() throws RemoteException {        
         System.exit(0);
     }
 }

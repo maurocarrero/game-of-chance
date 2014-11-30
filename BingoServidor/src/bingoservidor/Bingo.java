@@ -25,6 +25,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -222,13 +224,20 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     
     @Override
     public void finalizarAplicacion() throws RemoteException {
-        if (partida != null) {
-            partida.finalizarAplicacion();
-        }        
-        this.db.desconectar();
+        try {
+            if (partida != null) {
+                partida.finalizarAplicacion();
+            }
+            this.db.desconectar();
+            System.out.println("BOOM!");
+        } catch (RemoteException ex) {
+            System.out.println("Acá: " + ex.getMessage());
+        }
+        
         System.exit(0);
     }
 
+    
     @Override
     public void addObserver(IRemoteObserver observer) throws RemoteException {
         if(!observers.contains(observer)){

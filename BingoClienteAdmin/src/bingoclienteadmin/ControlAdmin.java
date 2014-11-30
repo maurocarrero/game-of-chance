@@ -4,7 +4,6 @@ import bingo.common.Controlador;
 import bingo.common.exceptions.ConfiguracionNoValidaException;
 import bingo.common.interfaces.IBingo;
 import bingo.common.interfaces.IRemoteObservable;
-import bingo.common.interfaces.IRemoteObserver;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,14 +13,17 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class ControlAdmin extends Controlador implements ActionListener, IRemoteObserver, Serializable {
+public class ControlAdmin extends Controlador implements ActionListener, Serializable {
     
     private static ControlAdmin instance;
     
@@ -79,27 +81,7 @@ public class ControlAdmin extends Controlador implements ActionListener, IRemote
         }
         
     }
-    
-   /* private void lanzarNuevaInterfazJugador() throws RemoteException {
-        IPartida partida = bingo.getPartida();
-        if (!partida.isEnCurso()) {
-            try {
-                VistaJugador nuevaVista = new VistaJugador();
-                ControlJugador control = new ControlJugador(nuevaVista, bingo);
-                nuevaVista.setControlador(control);
-                partida.addObserver(control);
-                nuevaVista.ejecutar();
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControlAdmin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }*/
-    
-   /*private void crearInterfaces() throws RemoteException  {
-        vista.mostrarCrearInterfaces();
-        lanzarNuevaInterfazJugador();
-    }*/
-    
+       
     private void guardarConfiguracion() throws RemoteException  {
         try {
             int cantFilas = Integer.parseInt(vista.getCantFilas());
@@ -111,14 +93,9 @@ public class ControlAdmin extends Controlador implements ActionListener, IRemote
             boolean figuraDiagonal = vista.getChkDiagonal();
             boolean figuraCentro = vista.getChkCentro();
             
-            System.out.println("ControlAdmin getCantJugadores(): " + bingo.getPartida().getCantJugadores());
-
-            
             bingo.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
                     cantJugadores, valorCarton, figuraLinea, figuraDiagonal, figuraCentro);
-                        
-            System.out.println("ControlAdmin getCantJugadores(): " + bingo.getPartida().getCantJugadores());
-            
+           
             vista.ocultarPaneles();
             vista.mostrarInfo("Configuración guardada", "Exito");
             
@@ -131,7 +108,20 @@ public class ControlAdmin extends Controlador implements ActionListener, IRemote
 
     private void finalizarAplicacion() throws RemoteException  {
         vista.dispose();
-        bingo.finalizarAplicacion();
+        new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    bingo.finalizarAplicacion();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControlAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        }.start();
+        
+        exit();
     }
     
     @Override
@@ -164,7 +154,6 @@ public class ControlAdmin extends Controlador implements ActionListener, IRemote
         try {
             IRemoteObservable modelo = (IRemoteObservable) Naming.lookup(nombreServidor);
             this.bingo = (IBingo) modelo;
-            modelo.addObserver(this);
             System.out.println(nombreServidor + " is up.");
             
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
@@ -173,11 +162,17 @@ public class ControlAdmin extends Controlador implements ActionListener, IRemote
         }
         return true;
     }
-
-    @Override
-    public void update(IRemoteObservable origen, Serializable param) throws RemoteException {
-        this.bingo = (IBingo) origen;
-        System.out.println("Configuración nueva: " + this.bingo.getPartida().getCantJugadores());
+    
+    public void exit() throws RemoteException {
+        try{
+            Naming.unbind(nombreServidor);
+            UnicastRemoteObject.unexportObject(this, true);
+            System.out.println("Desconectando de Bingo server.");
+        }
+        catch(RemoteException | NotBoundException | MalformedURLException ex){
+            System.out.println("Algo salí mal con la desconexión RMI");
+        }
+        System.exit(0);
     }
     
 }

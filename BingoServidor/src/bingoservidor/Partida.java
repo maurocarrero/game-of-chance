@@ -426,8 +426,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
 
     @Override
     public void finalizarAplicacion() throws RemoteException {
-        resetear();
         notifyObservers(crearHash("finalizar_aplicacion", pozo));
+        resetear();
     }
  
     @Override

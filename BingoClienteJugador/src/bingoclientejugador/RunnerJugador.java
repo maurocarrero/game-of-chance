@@ -28,6 +28,7 @@ public class RunnerJugador {
                 vistaAdmin.ejecutar();
             } else {
                 System.out.println("No se pudo conectar al servidor.");
+                System.exit(0);
             };
          } catch (RemoteException ex) {
              Logger.getLogger(RunnerJugador.class.getName()).log(Level.SEVERE, null, ex);
