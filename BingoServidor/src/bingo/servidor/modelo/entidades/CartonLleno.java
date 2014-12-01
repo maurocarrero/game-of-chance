@@ -27,7 +27,6 @@ public class CartonLleno extends Figura implements IFigura {
     
     public CartonLleno(String nombre) throws RemoteException {
         super(nombre);
-        super.setActiva(true);
     }
     
     @Override

@@ -1,5 +1,9 @@
 package bingo.servidor.persistencia;
 
+import bingo.common.interfaces.IFigura;
+import bingo.servidor.modelo.entidades.Centro;
+import bingo.servidor.modelo.entidades.Diagonal;
+import bingo.servidor.modelo.entidades.Linea;
 import bingoservidor.Partida;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -22,7 +26,7 @@ public class PartidaPersistente implements Serializable, Persistente {
         return partida;
     }
 
-    public void setUsuario(Partida partida) {
+    public void setPartida(Partida partida) {
         this.partida = partida;
     }
 
@@ -32,9 +36,9 @@ public class PartidaPersistente implements Serializable, Persistente {
            + "'CANT_FILAS', '" + partida.getCantFilas() + "','" 
            + "'CANT_COLUMNAS', '" + partida.getCantColumnas() + "','" 
            + "'CANT_JUGADORES', '" + partida.getCantJugadores() + "','" 
-           + "'CANT_MAX_CARTONES', '" + partida.getCantMaxCartones() + "');";
+           + "'CANT_MAX_CARTONES', '" + partida.getCantMaxCartones() + "');";           
     }
-
+    
     @Override
     public String getUpdateSQL() throws RemoteException {
             return "UPDATE config SET "
@@ -75,7 +79,15 @@ public class PartidaPersistente implements Serializable, Persistente {
             if (clave.equals("VALOR_CARTON")) {
                 partida.setValorCarton(Double.parseDouble(valor));
             }
-            
+            if (clave.equals("FIGURA_LINEA") && Boolean.parseBoolean(valor)) {
+                partida.getFiguras().add(Linea.getInstance());
+            }
+            if (clave.equals("FIGURA_DIAGONAL") && Boolean.parseBoolean(valor)) {
+                partida.getFiguras().add(Diagonal.getInstance());
+            }
+            if (clave.equals("FIGURA_CENTRO") && Boolean.parseBoolean(valor)) {
+                partida.getFiguras().add(Centro.getInstance());
+            }
         } catch (SQLException e) {
 
         }

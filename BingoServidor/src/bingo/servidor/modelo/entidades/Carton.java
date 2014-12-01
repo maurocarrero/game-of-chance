@@ -106,10 +106,8 @@ public class Carton extends UnicastRemoteObject implements ICarton {
     //Condicional para tener Figuras
     public boolean tieneFiguras(List<IFigura> figuras) throws RemoteException{
         for(IFigura fig : figuras){
-            if(fig.isActiva()){
                 if(fig.condicional(this)) return true;                
-            }            
-        }         
+            }                    
         return false;
     }
     

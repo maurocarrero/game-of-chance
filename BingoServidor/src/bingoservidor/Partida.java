@@ -15,6 +15,7 @@ import bingo.servidor.modelo.entidades.Centro;
 import bingo.servidor.modelo.entidades.Contador;
 import bingo.servidor.modelo.entidades.Diagonal;
 import bingo.servidor.modelo.entidades.Linea;
+import bingo.servidor.persistencia.PartidaPersistente;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -54,15 +55,12 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         
     //Figuras
     private static List<IFigura> figuras = new ArrayList();
-
+    
     public Partida() throws RemoteException {
         jugadores = new ArrayList<>();
         observers = new ArrayList<>();
         figuras = new ArrayList<>();
         figuras.add(CartonLleno.getInstance());
-        figuras.add(Linea.getInstance());
-        figuras.add(Diagonal.getInstance());
-        figuras.add(Centro.getInstance());
     }
 
     @Override
@@ -138,16 +136,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     @Override
     public List<IFigura> getFiguras() throws RemoteException {
         return figuras;
-    }
-
-    @Override
-    public List<String> getFigurasString() throws RemoteException {
-        List<String> listaString = new ArrayList<>();
-        for(IFigura fig : figuras){
-            listaString.add(fig.getNombre() + "#" + fig.isActiva() + "");
-        }
-        return listaString;
-    }
+    }   
     
     @Override
     public double getPozo() throws RemoteException {
@@ -190,11 +179,9 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
-        Linea.getInstance().setActiva(linea);
-        Diagonal.getInstance().setActiva(diagonal);
-        Centro.getInstance().setActiva(centro);
-        
-        System.out.println("Partida getCantJugadores(): " + getCantJugadores());
+        if(linea && !getFiguras().contains(Linea.getInstance())) getFiguras().add(Linea.getInstance());
+        if(centro && !getFiguras().contains(Centro.getInstance())) getFiguras().add(Centro.getInstance());
+        if(diagonal && !getFiguras().contains(Diagonal.getInstance())) getFiguras().add(Diagonal.getInstance());
     }
     
     @Override

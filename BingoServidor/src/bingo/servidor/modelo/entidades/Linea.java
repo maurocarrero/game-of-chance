@@ -27,7 +27,6 @@ public class Linea extends Figura implements IFigura {
     
     public Linea(String nombre) throws RemoteException {
         super(nombre);
-        super.setActiva(false);
     }
     
     @Override

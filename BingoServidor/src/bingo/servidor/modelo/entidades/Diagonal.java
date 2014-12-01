@@ -27,7 +27,6 @@ public class Diagonal extends Figura implements IFigura {
     
     public Diagonal(String nombre) throws RemoteException {
         super(nombre);
-        super.setActiva(false);
     }
     
     @Override

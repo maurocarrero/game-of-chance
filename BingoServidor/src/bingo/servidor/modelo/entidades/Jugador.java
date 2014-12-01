@@ -4,7 +4,6 @@ import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.ICarton;
 import bingo.common.interfaces.IFigura;
 import bingo.common.interfaces.IJugador;
-import bingo.servidor.persistencia.JugadorPersistente;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,6 @@ public class Jugador extends Usuario implements IJugador {
     private double saldo;
     
     private List<ICarton> cartones;
-    
-    private JugadorPersistente persistente = new JugadorPersistente();
     
     public Jugador() throws RemoteException {
         this.cartones = new ArrayList<>();

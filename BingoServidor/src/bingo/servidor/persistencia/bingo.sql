@@ -8,18 +8,18 @@ sudo /usr/local/mysql/support-files/mysql.server stop
 sudo /usr/local/mysql/support-files/mysql.server restart
  */ 
 
-CREATE DATABASE bingo
+CREATE DATABASE bingo;
 
 
 CREATE USER 'bingo'@'localhost' IDENTIFIED BY 'bingo';
 
 GRANT ALL PRIVILEGES ON bingo.* TO 'bingo'@'localhost';
 
-FLUSH PRIVILEGES
+FLUSH PRIVILEGES;
 
 
 
-USE bingo
+USE bingo;
 
 CREATE TABLE usuarios (
      id MEDIUMINT NOT NULL AUTO_INCREMENT,
@@ -50,4 +50,8 @@ INSERT INTO config VALUES
     ("CANT_COLUMNAS", "2"),
     ("CANT_MAX_CARTONES", "2"),
     ("CANT_JUGADORES", "2"),
-    ("VALOR_CARTON", "10.0");
+    ("VALOR_CARTON", "10.0"),
+    ("FIGURA_CARTON_LLENO", "true"),
+    ("FIGURA_DIAGONAL", "true"),
+    ("FIGURA_LINEA", "true"),
+    ("FIGURA_CENTRO", "true");

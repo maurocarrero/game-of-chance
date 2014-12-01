@@ -43,8 +43,6 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     
     List<IFigura> getFiguras() throws RemoteException;
     
-    List<String> getFigurasString() throws RemoteException;
-    
     double getPozo() throws RemoteException;
     
     boolean isEnCurso() throws RemoteException;

@@ -21,7 +21,6 @@ public class Centro extends Figura implements IFigura {
     
     public Centro(String nombre) throws RemoteException{
         super(nombre);
-        super.setActiva(false);
     }
     
     @Override

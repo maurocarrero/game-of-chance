@@ -1,6 +1,8 @@
 package bingoclienteadmin;
 
 
+import bingo.common.interfaces.IFigura;
+import java.rmi.RemoteException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -103,22 +105,21 @@ public final class VistaAdmin extends JFrame {
     
     public void poblarCamposConfiguracion(int cantFilas, int cantColumnas, 
             int cantMaxCartones, int cantJugadores, double valorCarton,
-            List<String> figuras) {
+            List<IFigura> figuras) throws RemoteException{
         txtCantFilas.setText("" + cantFilas);
         txtCantColumnas.setText("" + cantColumnas);
         txtCantMaxCartones.setText("" + cantMaxCartones);
         txtCantJugadores.setText("" + cantJugadores);
         txtValorCarton.setText("" + valorCarton);
-        for(String str : figuras){
-            String[] nombreActivo = str.split("#");
-            if (nombreActivo[0].equals("linea")) {
-                chkLinea.setSelected(Boolean.parseBoolean(nombreActivo[1]));
+        for(IFigura f : figuras){
+            if (f.getNombre().equals("linea")) {
+                chkLinea.setSelected(true);
             }
-            if (nombreActivo[0].equals("diagonal")) {
-                chkDiagonal.setSelected(Boolean.parseBoolean(nombreActivo[1]));
+            if (f.getNombre().equals("diagonal")) {
+                chkDiagonal.setSelected(true);
             }
-            if (nombreActivo[0].equals("centro")) {
-                chkCentro.setSelected(Boolean.parseBoolean(nombreActivo[1]));
+            if (f.getNombre().equals("centro")) {
+                chkCentro.setSelected(true);
             }
         }
     }

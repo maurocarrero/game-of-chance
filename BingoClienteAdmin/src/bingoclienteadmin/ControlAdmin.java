@@ -3,7 +3,9 @@ package bingoclienteadmin;
 import bingo.common.Controlador;
 import bingo.common.exceptions.ConfiguracionNoValidaException;
 import bingo.common.interfaces.IBingo;
+import bingo.common.interfaces.IFigura;
 import bingo.common.interfaces.IRemoteObservable;
+import bingo.common.interfaces.IRemoteObserver;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +25,7 @@ import javax.swing.JOptionPane;
  *
  * @author maurocarrero/fernandogonzalez
  */
-public class ControlAdmin extends Controlador implements ActionListener, Serializable {
+public class ControlAdmin extends Controlador implements ActionListener, Serializable, IRemoteObserver {
     
     private static ControlAdmin instance;
     
@@ -62,13 +64,17 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
     }
     
     private void poblarCamposConfiguracion() throws RemoteException {
-        List<String> figuras = bingo.getPartida().getFigurasString();
+        List<IFigura> figuras = bingo.getPartida().getFiguras();
         vista.poblarCamposConfiguracion(bingo.getPartida().getCantFilas(), 
                 bingo.getPartida().getCantColumnas(),
                 bingo.getPartida().getCantMaxCartones(),
                 bingo.getPartida().getCantJugadores(),
                 bingo.getPartida().getValorCarton(),
                 figuras);
+        //PRUEBA
+        for(IFigura f : figuras){
+            System.out.println(f.getNombre());
+        }
     }
     
     private void configurar() throws RemoteException {
@@ -154,6 +160,7 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
         try {
             IRemoteObservable modelo = (IRemoteObservable) Naming.lookup(nombreServidor);
             this.bingo = (IBingo) modelo;
+            this.bingo.addObserver(this);
             System.out.println(nombreServidor + " is up.");
             
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
@@ -173,6 +180,12 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
             System.out.println("Algo salí mal con la desconexión RMI");
         }
         System.exit(0);
+    }
+
+    @Override
+    public void update(IRemoteObservable origen, Serializable param) throws RemoteException {
+        this.bingo = (IBingo)origen;
+        System.out.println(this.bingo.getPartida().getFiguras().size());
     }
     
 }

@@ -17,26 +17,14 @@ import java.rmi.server.UnicastRemoteObject;
 public abstract class Figura extends UnicastRemoteObject implements IFigura {
     
     private final String nombre;
-    private boolean activa;
 
     public Figura(String nombre) throws RemoteException {
-        this.nombre = nombre;
-        this.activa = false;
+        this.nombre = nombre;        
     }
 
     @Override
     public String getNombre() throws RemoteException {
         return nombre;
-    }
-
-    @Override
-    public boolean isActiva() throws RemoteException {
-        return activa;
-    }
-
-    @Override
-    public void setActiva(boolean activa) throws RemoteException {
-        this.activa = activa;
-    }
+    }  
     
 }

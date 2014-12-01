@@ -6,8 +6,6 @@ import java.rmi.RemoteException;
 public interface IFigura extends Remote{
     
     String getNombre() throws RemoteException;
-    boolean isActiva() throws RemoteException;
-    void setActiva(boolean activa) throws RemoteException;
     boolean condicional(ICarton c) throws RemoteException;
     
 }

@@ -25,8 +25,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -54,7 +52,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
         this.usuariosTest = new ArrayList<>();
         
         obtenerTodosLosUsuarios();
-        // obtenerConfiguracion();
+        obtenerConfiguracion();
     }
     
     private void obtenerTodosLosUsuarios() throws RemoteException {        
@@ -63,7 +61,8 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     }
     
     private void obtenerConfiguracion() throws RemoteException {
-        this.db.obtenerTodos((Persistente) new PartidaPersistente());
+        this.db.obtenerTodos((Persistente) new PartidaPersistente((Partida)getPartida()));
+        notifyObservers(crearHash("BINGO", this));
     }
     
     private void agregarUsuarios(ArrayList usuarios) {
