@@ -5,6 +5,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ManejadorBD implements Serializable, Remote {    
 
@@ -81,6 +83,13 @@ public class ManejadorBD implements Serializable, Remote {
                     System.out.println("Error al obtener objetos.\n" + e.getMessage());
             }
             return ret;
+    }
+
+    public void modificar(Persistente p) throws RemoteException {
+        String[] updates = p.getUpdateSQL().split("#");
+        for(String str : updates){
+            ejecutar(str);
+        }      
     }
 }
 

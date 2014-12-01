@@ -54,7 +54,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     private boolean juegoActivo = false;
         
     //Figuras
-    private static List<IFigura> figuras = new ArrayList();
+    private List<IFigura> figuras;
     
     public Partida() throws RemoteException {
         jugadores = new ArrayList<>();
@@ -62,7 +62,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         figuras = new ArrayList<>();
         figuras.add(CartonLleno.getInstance());
     }
-
+    
     @Override
     public void setCantFilas(int cantFilas) throws RemoteException  {
         Partida.cantFilas = cantFilas;
@@ -174,14 +174,17 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     public void guardarConfiguracion(int cF, int cC, int cMC, 
             int cJ, double vC, boolean linea, boolean diagonal, boolean centro)
                 throws RemoteException {
+        this.figuras = new ArrayList<>();
+        figuras.add(CartonLleno.getInstance());
         setCantFilas(cF);
         setCantColumnas(cC);
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
-        if(linea && !getFiguras().contains(Linea.getInstance())) getFiguras().add(Linea.getInstance());
-        if(centro && !getFiguras().contains(Centro.getInstance())) getFiguras().add(Centro.getInstance());
-        if(diagonal && !getFiguras().contains(Diagonal.getInstance())) getFiguras().add(Diagonal.getInstance());
+        if(linea) getFiguras().add(Linea.getInstance());
+        if(centro) getFiguras().add(Centro.getInstance());
+        if(diagonal) getFiguras().add(Diagonal.getInstance());
+        
     }
     
     @Override

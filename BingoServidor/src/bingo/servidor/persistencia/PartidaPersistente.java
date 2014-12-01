@@ -5,12 +5,12 @@ import bingo.servidor.modelo.entidades.Centro;
 import bingo.servidor.modelo.entidades.Diagonal;
 import bingo.servidor.modelo.entidades.Linea;
 import bingoservidor.Partida;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class PartidaPersistente implements Serializable, Persistente {
+public class PartidaPersistente implements Persistente {
 
     private Partida partida;
     private ManejadorBD db = ManejadorBD.getInstancia();
@@ -41,9 +41,39 @@ public class PartidaPersistente implements Serializable, Persistente {
     
     @Override
     public String getUpdateSQL() throws RemoteException {
-            return "UPDATE config SET "
-                + "valor='" + partida.getCantColumnas()
-                + "' WHERE clave='CANT_COLUMNAS';";
+                
+        String sql = "";
+        
+            sql = "UPDATE config SET valor='" + partida.getCantFilas()
+                + "' WHERE clave='CANT_FILAS';#"
+                + "UPDATE config SET valor='" + partida.getCantColumnas()
+                + "' WHERE clave='CANT_COLUMNAS';#" 
+                + "UPDATE config SET valor='" + partida.getCantMaxCartones()
+                + "' WHERE clave='CANT_MAX_CARTONES';#"
+                + "UPDATE config SET valor='" + partida.getCantJugadores()
+                + "' WHERE clave='CANT_JUGADORES';#"
+                + "UPDATE config SET valor='" + partida.getValorCarton()
+                + "' WHERE clave='VALOR_CARTON';#";
+            
+            if(this.partida.getFiguras().contains(Linea.getInstance())){
+                sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_LINEA';#";
+            }else{
+                sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_LINEA';#";
+            }
+            
+            if(this.partida.getFiguras().contains(Diagonal.getInstance())){
+                sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_DIAGONAL';#";
+            }else{
+                sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_DIAGONAL';#";
+            }
+            
+             if(this.partida.getFiguras().contains(Centro.getInstance())){
+                sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_CENTRO';#";
+            }else{
+                 sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_CENTRO';";
+             }
+
+        return sql;     
     }
 
     //TODO
@@ -104,7 +134,7 @@ public class PartidaPersistente implements Serializable, Persistente {
 
     @Override
     public Persistente getNuevo() throws RemoteException {
-        return new PartidaPersistente(new Partida());
+        return new PartidaPersistente(partida);
     }
 
 }

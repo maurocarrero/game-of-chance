@@ -61,10 +61,18 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     }
     
     private void obtenerConfiguracion() throws RemoteException {
-        this.db.obtenerTodos((Persistente) new PartidaPersistente((Partida)getPartida()));
+        this.db.obtenerTodos((Persistente) new PartidaPersistente((Partida) getPartida()));
         notifyObservers(crearHash("BINGO", this));
     }
     
+    private void guardarConfiguracionEnBase() throws RemoteException {
+        PartidaPersistente partidaPersistente = new PartidaPersistente((Partida) getPartida());
+        this.db.modificar(partidaPersistente);
+    }
+    
+    private void actualizarUsuario() throws RemoteException {
+        
+    }
     private void agregarUsuarios(ArrayList usuarios) {
         for (Object p : usuarios) {
             usuariosTest.add((Usuario) p);
@@ -112,6 +120,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
         this.partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
                 cantJugadores, valorCarton, linea, diagonal, centro);
         
+        guardarConfiguracionEnBase();
         notifyObservers(crearHash("BINGO", this));
     }
     
