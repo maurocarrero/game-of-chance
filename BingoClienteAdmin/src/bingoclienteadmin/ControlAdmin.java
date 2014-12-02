@@ -70,6 +70,7 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
                 bingo.getPartida().getCantMaxCartones(),
                 bingo.getPartida().getCantJugadores(),
                 bingo.getPartida().getValorCarton(),
+                bingo.getPartida().getTiempo(),
                 figuras);
         //PRUEBA
         for(IFigura f : figuras){
@@ -95,12 +96,13 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
             int cantMaxCartones = Integer.parseInt(vista.getCantMaxCartones());
             int cantJugadores = Integer.parseInt(vista.getCantJugadores());
             double valorCarton = Double.parseDouble(vista.getValorCarton());
+            int tiempo = Integer.parseInt(vista.getTiempo());
             boolean figuraLinea = vista.getChkLinea();
             boolean figuraDiagonal = vista.getChkDiagonal();
             boolean figuraCentro = vista.getChkCentro();
             
             bingo.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
-                    cantJugadores, valorCarton, figuraLinea, figuraDiagonal, figuraCentro);
+                    cantJugadores, valorCarton, tiempo, figuraLinea, figuraDiagonal, figuraCentro);
            
             vista.ocultarPaneles();
             vista.mostrarInfo("Configuración guardada", "Exito");

@@ -57,4 +57,6 @@ public interface IJugador extends Remote, Serializable {
     
     public void desloguear() throws RemoteException;
     
+    public void actualizarSaldoBD() throws RemoteException;
+    
 }

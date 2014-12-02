@@ -40,11 +40,7 @@ public class JugadorPersistente implements Serializable, Persistente {
 
     @Override
     public String getUpdateSQL() throws RemoteException {
-            return "UPDATE usuarios SET usuario='" + jugador.getUsuario()
-                + "', password='" + jugador.getPassword()
-                + "', saldo='" + jugador.getSaldo()
-                + "', tipo=2'"
-                + "' WHERE id=" + jugador.getId();
+        return "UPDATE usuarios SET saldo ='" + jugador.getSaldo() + "' WHERE id=" + jugador.getId();
     }
 
     @Override

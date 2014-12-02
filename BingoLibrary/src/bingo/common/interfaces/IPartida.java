@@ -23,6 +23,10 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     
     void setPozo(double pozo) throws RemoteException;
     
+    public void setTiempo(int tiempo) throws RemoteException;
+    
+    public int getTiempo() throws RemoteException;
+    
     int getCantFilas() throws RemoteException;
     
     int getCantColumnas() throws RemoteException;
@@ -56,7 +60,7 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     void setJuegoActivo(boolean juegoActivo) throws RemoteException;
     
     void guardarConfiguracion(int cF, int cC, int cMC, 
-            int cJ, double vC, boolean linea, boolean diagonal, boolean centro)
+            int cJ, double vC, int tiempo, boolean linea, boolean diagonal, boolean centro)
              throws RemoteException;
     
     List<IJugador> getJugadores() throws RemoteException;

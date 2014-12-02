@@ -15,6 +15,7 @@ import bingo.servidor.modelo.entidades.Centro;
 import bingo.servidor.modelo.entidades.Contador;
 import bingo.servidor.modelo.entidades.Diagonal;
 import bingo.servidor.modelo.entidades.Linea;
+import bingo.servidor.persistencia.ManejadorBD;
 import bingo.servidor.persistencia.PartidaPersistente;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -38,6 +39,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     private static int cantMaxCartones = 2;
     private static int cantJugadores = 2;
     private static double valorCarton = 10;
+    private static int tiempo = 15;
     
     private static IContador contador = null;
     
@@ -91,7 +93,17 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     @Override
     public void setPozo(double pozo) throws RemoteException  {
         this.pozo = pozo;
-    }    
+    }
+    
+    @Override
+    public void setTiempo(int tiempo) throws RemoteException {
+        this.tiempo = tiempo;
+    }
+    
+    @Override
+    public int getTiempo() throws RemoteException {
+        return this.tiempo;
+    }
     
     @Override
     public int getCantFilas() throws RemoteException  {
@@ -169,10 +181,15 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         this.juegoActivo = juegoActivo;
     }
 
+    private void guardarConfiguracionEnBase() throws RemoteException {
+        PartidaPersistente partidaPersistente = new PartidaPersistente(this);
+        ManejadorBD db = ManejadorBD.getInstancia();
+        db.modificar(partidaPersistente);
+    }
     
     @Override
     public void guardarConfiguracion(int cF, int cC, int cMC, 
-            int cJ, double vC, boolean linea, boolean diagonal, boolean centro)
+            int cJ, double vC, int tiempo, boolean linea, boolean diagonal, boolean centro)
                 throws RemoteException {
         this.figuras = new ArrayList<>();
         figuras.add(CartonLleno.getInstance());
@@ -181,10 +198,11 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         setCantMaxCartones(cMC);
         setCantJugadores(cJ);
         setValorCarton(vC);
+        setTiempo(tiempo);
         if(linea) getFiguras().add(Linea.getInstance());
         if(centro) getFiguras().add(Centro.getInstance());
         if(diagonal) getFiguras().add(Diagonal.getInstance());
-        
+        guardarConfiguracionEnBase();
     }
     
     @Override
@@ -294,13 +312,13 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             }
         }
         if (ganador != null) {
-            finalizar(ganador, false, bolilla);
+            finalizar(ganador, bolilla);
         } else {
             if (contador != null) {
                 contador.resetear();
             }else{
                 try {
-                    contador = new Contador(10);
+                    contador = new Contador(this.tiempo);
                     contador.start();
                 } catch (RemoteException ex) {
                     Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
@@ -349,15 +367,16 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         eliminarJugadorPendiente(jugador);
         System.out.println("jugador: " + jugador);
         if (!continua) {
-            recalcularPozo(borrarJugador(jugador));
+            recalcularPozo(borrarJugador(jugador));           
             jugador.mostrar();
+            jugador.actualizarSaldoBD();
             if (jugadores.size() > 1) {
                notifyObservers(crearHash("abandono", getPozo()));
             } else {
                 if (jugadores.size() > 0) {
                     IJugador ganador = jugadores.get(0);
                     if (ganador != null) {
-                        finalizar(jugadores.get(0), true, null);
+                        finalizar(jugadores.get(0), null);
                     }
                 }
             }
@@ -377,8 +396,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         this.pozo -= monto;
     }
     
-    private void finalizar(IJugador ganador, boolean porAbandono, 
-            IBolilla ultimaBolilla) throws RemoteException {
+    private void finalizar(IJugador ganador, IBolilla ultimaBolilla) throws RemoteException {
         if (ultimaBolilla != null) {
            notifyObservers(crearHash("bolilla", ultimaBolilla));
         }
@@ -386,11 +404,13 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             jugador.debitarDoble(valorCarton);
             jugador.resetearCartones();
             jugador.desloguear();
+            jugador.actualizarSaldoBD();
         }
         ganador.acreditar(pozo);
         ganador.desloguear();
         mostrarEstadoJugadores();
         getContador().cancelar();
+        ganador.actualizarSaldoBD();
         notifyObservers(crearHash("ganador", ganador));
         resetear();
     }

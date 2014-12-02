@@ -25,7 +25,7 @@ public interface IBingo extends IRemoteObservable {
     void ejecutar() throws RemoteException;
        
     void guardarConfiguracion(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton,
+            int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,
             boolean linea, boolean diagonal, boolean centro) 
             throws ConfiguracionNoValidaException, RemoteException ;
     

@@ -63,16 +63,8 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     private void obtenerConfiguracion() throws RemoteException {
         this.db.obtenerTodos((Persistente) new PartidaPersistente((Partida) getPartida()));
         notifyObservers(crearHash("BINGO", this));
-    }
+    }  
     
-    private void guardarConfiguracionEnBase() throws RemoteException {
-        PartidaPersistente partidaPersistente = new PartidaPersistente((Partida) getPartida());
-        this.db.modificar(partidaPersistente);
-    }
-    
-    private void actualizarUsuario() throws RemoteException {
-        
-    }
     private void agregarUsuarios(ArrayList usuarios) {
         for (Object p : usuarios) {
             usuariosTest.add((Usuario) p);
@@ -94,14 +86,14 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     
     @Override
     public void guardarConfiguracion(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton,
+            int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,
             boolean linea, boolean diagonal, boolean centro) 
             throws ConfiguracionNoValidaException, RemoteException {
         
         // VALIDACIONES
         if (cantFilas < 1 || cantFilas > 10 || cantColumnas < 2 || 
                 cantColumnas > 10 || cantMaxCartones < 2 || cantJugadores < 2 || 
-                valorCarton < 1) {
+                valorCarton < 1 || tiempo < 10) {
             throw new ConfiguracionNoValidaException();
         }
         // VALIDACIONES FIGURAS
@@ -118,9 +110,8 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
         }      
         
         this.partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
-                cantJugadores, valorCarton, linea, diagonal, centro);
-        
-        guardarConfiguracionEnBase();
+                cantJugadores, valorCarton, tiempo, linea, diagonal, centro);
+
         notifyObservers(crearHash("BINGO", this));
     }
     

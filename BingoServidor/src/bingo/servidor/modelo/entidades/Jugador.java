@@ -4,6 +4,8 @@ import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.ICarton;
 import bingo.common.interfaces.IFigura;
 import bingo.common.interfaces.IJugador;
+import bingo.servidor.persistencia.JugadorPersistente;
+import bingo.servidor.persistencia.ManejadorBD;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,5 +144,11 @@ public class Jugador extends Usuario implements IJugador {
         this.saldo = saldo;
     }
  
+    @Override
+    public void actualizarSaldoBD() throws RemoteException {
+        ManejadorBD db = ManejadorBD.getInstancia();
+        JugadorPersistente jugadorPersistente = new JugadorPersistente(this);
+        db.modificar(jugadorPersistente);
+    }
     
 }

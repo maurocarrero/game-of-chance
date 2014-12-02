@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  * Interfaz para Administradores
@@ -74,8 +75,10 @@ public final class VistaAdmin extends JFrame {
     public boolean getChkLinea() {
         return chkLinea.isSelected();
     }
-    
-    
+
+    public String getTiempo() {
+        return txtTiempo.getText();
+    }  
     
     public void mostrarPanelConfiguracion() {
         ocultarPaneles();
@@ -104,13 +107,14 @@ public final class VistaAdmin extends JFrame {
     }
     
     public void poblarCamposConfiguracion(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton,
+            int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,
             List<IFigura> figuras) throws RemoteException{
         txtCantFilas.setText("" + cantFilas);
         txtCantColumnas.setText("" + cantColumnas);
         txtCantMaxCartones.setText("" + cantMaxCartones);
         txtCantJugadores.setText("" + cantJugadores);
         txtValorCarton.setText("" + valorCarton);
+        txtTiempo.setText("" + tiempo);
         for(IFigura f : figuras){
             if (f.getNombre().equals("linea")) {
                 chkLinea.setSelected(true);
@@ -185,6 +189,8 @@ public final class VistaAdmin extends JFrame {
         chkDiagonal = new javax.swing.JCheckBox();
         chkCentro = new javax.swing.JCheckBox();
         chkCartonLleno = new javax.swing.JCheckBox();
+        lblTiempo = new javax.swing.JLabel();
+        txtTiempo = new javax.swing.JTextField();
         panelCrearInterfaces = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -290,6 +296,9 @@ public final class VistaAdmin extends JFrame {
         chkCartonLleno.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         chkCartonLleno.setEnabled(false);
 
+        lblTiempo.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblTiempo.setText("Valor del tiempo en segundos: ");
+
         javax.swing.GroupLayout panelConfigurarLayout = new javax.swing.GroupLayout(panelConfigurar);
         panelConfigurar.setLayout(panelConfigurarLayout);
         panelConfigurarLayout.setHorizontalGroup(
@@ -304,21 +313,23 @@ public final class VistaAdmin extends JFrame {
                             .addComponent(lblCantFilas)
                             .addComponent(lblCantColumnas)
                             .addComponent(lblCantCartones)
-                            .addComponent(lblValorCarton)
                             .addComponent(lblCantJugadores)
                             .addComponent(chkLinea)
                             .addComponent(chkDiagonal)
                             .addComponent(chkCentro)
-                            .addComponent(chkCartonLleno))
+                            .addComponent(chkCartonLleno)
+                            .addComponent(lblTiempo)
+                            .addComponent(lblValorCarton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                 .addComponent(txtCantColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCantFilas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                            .addComponent(txtCantJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtValorCarton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTiempo))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         panelConfigurarLayout.setVerticalGroup(
             panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,18 +356,24 @@ public final class VistaAdmin extends JFrame {
                 .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(chkLinea)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTiempo)
+                    .addComponent(txtTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addComponent(chkLinea)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkDiagonal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkCentro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkCartonLleno)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAceptar)
                 .addGap(11, 11, 11))
         );
+
+        lblTiempo.getAccessibleContext().setAccessibleName("lblTiempo");
 
         jLabel4.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel4.setText("Crear Interfaces de usuario");
@@ -432,6 +449,7 @@ public final class VistaAdmin extends JFrame {
     private javax.swing.JLabel lblCantColumnas;
     private javax.swing.JLabel lblCantFilas;
     private javax.swing.JLabel lblCantJugadores;
+    private javax.swing.JLabel lblTiempo;
     private javax.swing.JLabel lblValorCarton;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuConfigurar;
@@ -445,6 +463,7 @@ public final class VistaAdmin extends JFrame {
     private javax.swing.JTextField txtCantJugadores;
     private javax.swing.JTextField txtCantMaxCartones;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtTiempo;
     private javax.swing.JTextField txtUsuario;
     private javax.swing.JTextField txtValorCarton;
     // End of variables declaration//GEN-END:variables
