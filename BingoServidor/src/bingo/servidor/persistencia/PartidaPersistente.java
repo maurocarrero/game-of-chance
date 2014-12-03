@@ -53,7 +53,9 @@ public class PartidaPersistente implements Persistente {
                 + "UPDATE config SET valor='" + partida.getCantJugadores()
                 + "' WHERE clave='CANT_JUGADORES';#"
                 + "UPDATE config SET valor='" + partida.getValorCarton()
-                + "' WHERE clave='VALOR_CARTON';#";
+                + "' WHERE clave='VALOR_CARTON';#"
+                + "UPDATE config SET valor='" + partida.getTiempo()
+                + "' WHERE clave='TIEMPO';#";
             
             if(this.partida.getFiguras().contains(Linea.getInstance())){
                 sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_LINEA';#";
@@ -108,6 +110,9 @@ public class PartidaPersistente implements Persistente {
             }
             if (clave.equals("VALOR_CARTON")) {
                 partida.setValorCarton(Double.parseDouble(valor));
+            }
+            if (clave.equals("TIEMPO")) {
+                partida.setTiempo(Integer.parseInt(valor));
             }
             if (clave.equals("FIGURA_LINEA") && Boolean.parseBoolean(valor)) {
                 partida.getFiguras().add(Linea.getInstance());

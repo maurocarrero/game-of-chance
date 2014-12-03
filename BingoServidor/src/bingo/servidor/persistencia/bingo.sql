@@ -51,6 +51,7 @@ INSERT INTO config VALUES
     ("CANT_MAX_CARTONES", "2"),
     ("CANT_JUGADORES", "2"),
     ("VALOR_CARTON", "10.0"),
+    ("TIEMPO","15"),
     ("FIGURA_CARTON_LLENO", "true"),
     ("FIGURA_DIAGONAL", "true"),
     ("FIGURA_LINEA", "true"),
