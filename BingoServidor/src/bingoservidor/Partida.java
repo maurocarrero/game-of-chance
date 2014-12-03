@@ -34,12 +34,12 @@ import java.util.logging.Logger;
 public class Partida extends UnicastRemoteObject implements IPartida {
 
     // VALORES POR DEFECTO
-    private static int cantFilas = 2;
-    private static int cantColumnas = 2;
-    private static int cantMaxCartones = 2;
-    private static int cantJugadores = 2;
-    private static double valorCarton = 10;
-    private static int tiempo = 15;
+    private static int cantFilas = 0;
+    private static int cantColumnas = 0;
+    private static int cantMaxCartones = 0;
+    private static int cantJugadores = 0;
+    private static double valorCarton = 0;
+    private static int tiempo = 0;
     
     private static IContador contador = null;
     
@@ -199,9 +199,15 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         setCantJugadores(cJ);
         setValorCarton(vC);
         setTiempo(tiempo);
-        if(linea) getFiguras().add(Linea.getInstance());
-        if(centro) getFiguras().add(Centro.getInstance());
-        if(diagonal) getFiguras().add(Diagonal.getInstance());
+        if (linea) {
+            getFiguras().add(Linea.getInstance());
+        }
+        if (centro) {
+            getFiguras().add(Centro.getInstance());
+        }
+        if (diagonal) {
+            getFiguras().add(Diagonal.getInstance());
+        }
         guardarConfiguracionEnBase();
     }
     
@@ -212,15 +218,12 @@ public class Partida extends UnicastRemoteObject implements IPartida {
 
     @Override
     public double borrarJugador(IJugador jugador) throws RemoteException {
-        System.out.println("Cartones de" + jugador + ": " + jugador.getCartones());
         if (jugador.getCartones() != null) {
             for (ICarton c : jugador.getCartones()) {
                 bolillero.borrarBolillas(c);
             }
         }
         quitarJugadorDeLaPartida(jugador);
-        jugador.setLogueado(false);
-        cantCartonesRequeridos -= jugador.getCantCartones();
         return jugador.debitarSimple(valorCarton);
     }    
     
@@ -343,6 +346,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     @Override
     public void quitarJugadorDeLaPartida(IJugador jugador) throws RemoteException {
         eliminarJugadorDeColeccion(jugador, this.jugadores);
+        jugador.setLogueado(false);
+        cantCartonesRequeridos -= jugador.getCantCartones();
     }
     
     
@@ -361,11 +366,22 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         resetear();
     }
     
+    public void salidaForzosa(IJugador jugador) throws RemoteException {
+        if (enCurso) {
+            continuarParticipando(false, jugador);
+        } else {
+            if (juegoActivo && jugadores.size() == 1) {
+                setEnCurso(false);
+            }
+            borrarJugador(jugador);
+        }
+        
+    }
+    
     @Override
     public void continuarParticipando(Boolean continua, IJugador jugador) 
             throws RemoteException {
         eliminarJugadorPendiente(jugador);
-        System.out.println("jugador: " + jugador);
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));           
             jugador.mostrar();

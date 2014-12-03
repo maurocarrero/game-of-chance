@@ -17,14 +17,13 @@ import bingo.common.interfaces.IRemoteObserver;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,17 +48,33 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     private boolean nuevaBolilla = false;
     private boolean continuar = false;
   
+    private WindowAdapter windowAdapter = new WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            try {
+                if (bingo.getPartida().getContador() != null) {
+                    bingo.getPartida().getContador().deleteObserver(instance);
+                }
+                bingo.getPartida().deleteObserver(instance);
+                bingo.getPartida().quitarJugadorDeLaPartida(jugador);                
+            } catch(RemoteException ex) {
+                System.out.println(ex.getMessage());
+            }            
+            System.exit(0);
+        }
+    };
     
-    private ControlJugador(String nombreServidor) 
+    private ControlJugador(String nombreServidor, VistaJugador vista) 
             throws RemoteException {
         this.nombreServidor = nombreServidor;
         this.controladorObservable = new ControlJugadorObservable();
+        vista.addWindowListener(windowAdapter);
     }
     
     public static ControlJugador getInstance(VistaJugador vista, String nombreServidor) 
             throws RemoteException {
         if (instance == null) {
-            instance = new ControlJugador(nombreServidor);
+            instance = new ControlJugador(nombreServidor, vista);
             setVista(vista);
         }
         return instance;
@@ -321,7 +336,6 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             System.out.println(ex.getMessage());
         }
     }
-
     
     public void exit() throws RemoteException {        
         System.exit(0);

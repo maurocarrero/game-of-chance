@@ -20,6 +20,7 @@ public final class VistaJugador extends JFrame {
      */
     public VistaJugador() {
         initComponents();
+        
         btnIngresar.setActionCommand("INGRESAR");
         txtUsuario.setActionCommand("INGRESAR");
         txtPassword.setActionCommand("INGRESAR");
@@ -28,7 +29,7 @@ public final class VistaJugador extends JFrame {
         btnNO.setActionCommand("NO_CONTINUAR");
         btnSI.setActionCommand("SI_CONTINUAR");
         ocultarPaneles();
-        pack();        
+        pack();
     }
     
     public String getUsuario(){

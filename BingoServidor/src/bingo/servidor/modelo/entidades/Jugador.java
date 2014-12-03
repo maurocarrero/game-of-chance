@@ -126,7 +126,7 @@ public class Jugador extends Usuario implements IJugador {
     @Override
     public void resetearCartones() throws RemoteException {
         this.cantCartones = 0;
-        this.cartones = null;
+        this.cartones = new ArrayList<>();
     }
     
     @Override
