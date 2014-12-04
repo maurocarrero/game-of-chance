@@ -46,17 +46,20 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     private ControlJugadorObservable controladorObservable;
     
     private boolean nuevaBolilla = false;
-    private boolean continuar = false;
   
     private WindowAdapter windowAdapter = new WindowAdapter() {
         @Override
         public void windowClosing(java.awt.event.WindowEvent e) {
             try {
-                if (bingo.getPartida().getContador() != null) {
-                    bingo.getPartida().getContador().deleteObserver(instance);
+                if (bingo.getPartida() != null) {
+                    if (bingo.getPartida().getContador() != null) {
+                        bingo.getPartida().getContador().deleteObserver(instance);
+                    }
+                    bingo.getPartida().deleteObserver(instance);
+                    if (jugador != null) {
+                        bingo.getPartida().salidaForzosa(jugador);
+                    }
                 }
-                bingo.getPartida().deleteObserver(instance);
-                bingo.getPartida().quitarJugadorDeLaPartida(jugador);                
             } catch(RemoteException ex) {
                 System.out.println(ex.getMessage());
             }            
@@ -208,16 +211,15 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     public void continuarParticipando(boolean continuar, boolean perdieronTodos) throws RemoteException {
        IPartida partida = bingo.getPartida();
        setNuevaBolilla(false);
-       this.continuar = continuar;
        
        if (perdieronTodos) {
            partida.perdieronTodos();
        } else {
             try {
                 bingo.getPartida().getContador().deleteObserver(this);
-                } catch (RemoteException ex) {
+            } catch (RemoteException ex) {
                 Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            }
            partida.continuarParticipando(continuar, jugador);
        }
        
@@ -311,19 +313,20 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
 
                     if (cantJugadoresPendientes == cantJugadores) {
                         perdieronTodos = true;
+                    } else {
+                        try {
+                            bingo.getPartida().getContador().deleteObserver(this);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                    try {
-                        bingo.getPartida().getContador().deleteObserver(this);
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(ControlJugador.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    continuarParticipando(continuar, perdieronTodos);
+                    continuarParticipando(false, perdieronTodos);
                 } else {
                     actualizarTimer(timer);
                 }
             }        
             if (evento.containsKey("ganador")) {
-                IJugador ganador = (IJugador)evento.get("ganador");
+                IJugador ganador = (IJugador) evento.get("ganador");
                 finJuego(ganador, 0);
             }
             if (evento.containsKey("finalizar_aplicacion")) {
@@ -337,7 +340,7 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
         }
     }
     
-    public void exit() throws RemoteException {        
+    public void exit() throws RemoteException {   
         System.exit(0);
     }
 }

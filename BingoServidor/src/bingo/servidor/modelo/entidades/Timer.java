@@ -18,19 +18,11 @@ import java.util.logging.Logger;
 public class Timer implements Runnable {
 
     private IContador contador;
-    private static Timer instance;
     
-    private Timer(Contador contador) throws RemoteException {
+    public Timer(Contador contador) throws RemoteException {
         this.contador = contador;
     }
-    
-    public static Timer getInstance(Contador contador) throws RemoteException {
-        if (instance == null) {
-            instance = new Timer(contador);
-        }
-        return instance;
-    }
-    
+        
     @Override
     public void run() {
         try {

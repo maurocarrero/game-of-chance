@@ -318,8 +318,11 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             finalizar(ganador, bolilla);
         } else {
             if (contador != null) {
+                System.out.println("Contador es distinto de NULL");
                 contador.resetear();
-            }else{
+            } else {
+                System.out.println("Contador es NULL");
+                System.out.println("tiempo: " + this.tiempo);
                 try {
                     contador = new Contador(this.tiempo);
                     contador.start();
@@ -366,6 +369,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         resetear();
     }
     
+    @Override
     public void salidaForzosa(IJugador jugador) throws RemoteException {
         if (enCurso) {
             continuarParticipando(false, jugador);
@@ -385,6 +389,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         if (!continua) {
             recalcularPozo(borrarJugador(jugador));           
             jugador.mostrar();
+            jugador.resetearCartones();
+            jugador.desloguear();            
             jugador.actualizarSaldoBD();
             if (jugadores.size() > 1) {
                notifyObservers(crearHash("abandono", getPozo()));
@@ -448,6 +454,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         observers = new ArrayList<>();
         setJuegoActivo(false);
         setEnCurso(false);
+        contador = null;
     }
 
     @Override

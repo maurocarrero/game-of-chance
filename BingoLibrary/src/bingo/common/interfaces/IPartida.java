@@ -95,6 +95,8 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     
     void finalizarAplicacion() throws RemoteException;
     
+    public void salidaForzosa(IJugador jugador) throws RemoteException;
+    
     @Override
     void deleteObserver(IRemoteObserver obs) throws RemoteException;
 

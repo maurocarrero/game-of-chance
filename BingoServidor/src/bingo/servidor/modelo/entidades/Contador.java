@@ -20,10 +20,10 @@ public class Contador extends UnicastRemoteObject implements IContador {
     private ArrayList<IRemoteObserver> observers;
     
     public Contador(int segundos) throws RemoteException {
-        this.tiempo = (segundos > 120) ? segundos : 10;
+        this.tiempo = (segundos <= 120) ? segundos : 10;
         this.cont = this.tiempo;
         this.observers = new ArrayList<>();
-        this.timer = Timer.getInstance(this);
+        this.timer = new Timer(this);
     }
 
     @Override

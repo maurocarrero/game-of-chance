@@ -125,6 +125,7 @@ public final class VistaJugador extends JFrame {
     
     public void abandonarPartida() {
         dispose();
+        System.exit(0);
     }
     
     public void mostrarMensaje(String msg) {
