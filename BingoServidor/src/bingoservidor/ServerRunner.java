@@ -29,7 +29,7 @@ public class ServerRunner {
             System.out.println("OK!!!");
             
         } catch (RemoteException | MalformedURLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Server Runner Exception: " + e.getMessage());
         }
     }
     

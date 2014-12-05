@@ -48,7 +48,7 @@ public interface IJugador extends Remote, Serializable {
     
     public void mostrar() throws RemoteException;;
 
-    public boolean buscarBolilla(IBolilla bolilla, List<IFigura> figuras)
+    public boolean anotarBolilla(IBolilla bolilla, List<IFigura> figuras)
             throws RemoteException;
 
     public boolean validate(char[] password) throws RemoteException;

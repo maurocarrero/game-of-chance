@@ -19,7 +19,7 @@ public interface ICarton extends Remote, Serializable{
 
     int getCantColumnas() throws RemoteException;    
     
-    void buscarBolilla(IBolilla bolilla) throws RemoteException;
+    void anotarBolilla(IBolilla bolilla) throws RemoteException;
     
     boolean tieneBolilla(IBolilla bolilla) throws RemoteException;
 

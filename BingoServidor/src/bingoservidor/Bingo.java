@@ -169,7 +169,6 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
              return true;
              
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
             return false;
         }    
     }
@@ -228,9 +227,8 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
                 partida.finalizarAplicacion();
             }
             this.db.desconectar();
-            System.out.println("BOOM!");
         } catch (RemoteException ex) {
-            System.out.println("Acá: " + ex.getMessage());
+            System.out.println("Bingo RemoteException: " + ex.getMessage());
         }
         
         System.exit(0);
@@ -256,7 +254,6 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
             try {
                 observer.update(this, param);
             } catch (RemoteException ex) {
-                System.out.println(ex.getMessage());
                 observers.remove(observer);
             }
         }

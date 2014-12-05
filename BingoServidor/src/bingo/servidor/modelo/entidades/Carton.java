@@ -64,34 +64,37 @@ public class Carton extends UnicastRemoteObject implements ICarton {
         return cantColumnas;
     }
 
+    @Override
     public int getCantCasilleros() {
         return cantCasilleros;
     }
 
+
+    @Override
     public int getCantAciertos() {
         return cantAciertos;
     }
     
     
     @Override
-    public void buscarBolilla(IBolilla bolilla) throws RemoteException{
+    public void anotarBolilla(IBolilla bolilla) throws RemoteException{
         int valor = bolilla.getValor();
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < this.cantColumnas; y++) {
                 if (numeros[x][y] == valor) {
                     this.cantAciertos++;
+                    pintados[x][y] = true;
                 }
             }
         }
     }
     
     @Override
-    public boolean tieneBolilla(IBolilla bolilla) throws RemoteException{
+    public boolean tieneBolilla(IBolilla bolilla) throws RemoteException {
         int valor = bolilla.getValor();
         for (int x = 0; x < this.cantFilas; x++) {
             for (int y = 0; y < this.cantColumnas; y++) {
                 if (numeros[x][y] == valor) {
-                    pintados[x][y] = true;
                     return true;
                 }
             }
@@ -104,10 +107,12 @@ public class Carton extends UnicastRemoteObject implements ICarton {
     
     @Override
     //Condicional para tener Figuras
-    public boolean tieneFiguras(List<IFigura> figuras) throws RemoteException{
+    public boolean tieneFiguras(List<IFigura> figuras) throws RemoteException {
         for(IFigura fig : figuras){
-                if(fig.condicional(this)) return true;                
-            }                    
+            if(fig.condicional(this)) {
+                return true;
+            }
+        }           
         return false;
     }
     

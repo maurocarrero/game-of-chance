@@ -69,10 +69,10 @@ public class Jugador extends Usuario implements IJugador {
     }
     
     @Override
-    public boolean buscarBolilla(IBolilla bolilla, List<IFigura> figuras) 
+    public boolean anotarBolilla(IBolilla bolilla, List<IFigura> figuras) 
             throws RemoteException {
         for (ICarton c : this.cartones) {
-            c.buscarBolilla(bolilla);
+            c.anotarBolilla(bolilla);
             if (c.tieneFiguras(figuras)) {
                 return true;
             }
@@ -82,14 +82,14 @@ public class Jugador extends Usuario implements IJugador {
     
     @Override
     public boolean tieneBolilla(IBolilla bolilla) throws RemoteException {
-        boolean tiene = false;
         for (ICarton c : this.cartones) {
             if (c.tieneBolilla(bolilla)) {
-                tiene = true;
+                return true;
             }
         }
-        return tiene;
+        return false;
     }
+    
 
     @Override
     public void acreditar(double credito) throws RemoteException {
@@ -150,5 +150,6 @@ public class Jugador extends Usuario implements IJugador {
         JugadorPersistente jugadorPersistente = new JugadorPersistente(this);
         db.modificar(jugadorPersistente);
     }
+
     
 }

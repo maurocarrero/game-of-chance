@@ -32,12 +32,6 @@ public class Diagonal extends Figura implements IFigura {
     @Override
     public boolean condicional(ICarton c) throws RemoteException {
         if (c.getCantAciertos() == c.getCantColumnas()) {
-            if (diagonalHaciaDerecha(c)) {
-                System.out.println("diagonal derecha");
-            }
-            if (diagonalHaciaIzquierda(c)) {
-                System.out.println("diagonal izquierda");
-            }
             return diagonalHaciaDerecha(c) || diagonalHaciaIzquierda(c);
         }
         return false;
@@ -57,10 +51,11 @@ public class Diagonal extends Figura implements IFigura {
     //Figura Diagonal Hacia la izquierda "/"
     public boolean diagonalHaciaIzquierda(ICarton c) throws RemoteException {       
         int cantPintados = 0;
-        for (int x = c.getCantColumnas()-1 ; x > 0; x--) {
-            if (c.getPintados()[x][x]) {
+        int cantColumnas = c.getCantColumnas();
+        for (int x = 0, y = cantColumnas - 1; x < cantColumnas && y >= 0; x++, y--) {
+            if (c.getPintados()[y][x]) {
                 cantPintados ++;
-            }
+            }           
         }
         return cantPintados == c.getCantAciertos();        
     }

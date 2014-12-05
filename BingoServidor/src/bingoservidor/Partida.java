@@ -300,7 +300,6 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     @Override
     public void siguienteTurno() throws RemoteException  {
-        System.out.println("Siguiente turno: ");
         IBolilla bolilla = this.bolillero.sacarBolilla();
         anunciarBolilla(bolilla);
         jugadoresPendientes = new ArrayList<>(jugadores);
@@ -310,7 +309,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     public void anunciarBolilla(IBolilla bolilla) throws RemoteException {
         IJugador ganador = null;
         for (IJugador jugador : this.jugadores) {
-            if (jugador.buscarBolilla(bolilla, figuras)) {
+            if (jugador.anotarBolilla(bolilla, figuras)) {
                 ganador = jugador;
             }
         }
@@ -318,11 +317,8 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             finalizar(ganador, bolilla);
         } else {
             if (contador != null) {
-                System.out.println("Contador es distinto de NULL");
                 contador.resetear();
             } else {
-                System.out.println("Contador es NULL");
-                System.out.println("tiempo: " + this.tiempo);
                 try {
                     contador = new Contador(this.tiempo);
                     contador.start();
@@ -482,7 +478,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             try {
                 observer.update(this, param);
             } catch (RemoteException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Partida RemoteException: " + ex.getMessage());
                 observers.remove(observer);
             }
         }

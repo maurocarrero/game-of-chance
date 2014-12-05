@@ -70,7 +70,6 @@ public class Contador extends UnicastRemoteObject implements IContador {
             try {
                 observer.update(this, param);
             } catch (RemoteException ex) {
-                System.out.println(ex.getMessage());
                 observers.remove(observer);
             }
         }
@@ -78,7 +77,6 @@ public class Contador extends UnicastRemoteObject implements IContador {
 
     @Override
     public void notificar() throws RemoteException {
-        System.out.println("Cont: " + cont);
         this.notifyObservers(crearHash("timer", cont));
     }
     
