@@ -1,6 +1,7 @@
 package bingoclientejugador;
 
 import bingo.common.Controlador;
+import bingo.common.interfaces.IFigura;
 import bingo.common.interfaces.IJugador;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
@@ -60,7 +61,7 @@ public final class VistaJugador extends JFrame {
         panelCartones.setVisible(false);
         panelInfo.setVisible(false);
         panelMensaje.setVisible(false);
-        lblTimer.setVisible(false);
+        panelTimerFiguras.setVisible(false);
     }
     
     
@@ -70,7 +71,7 @@ public final class VistaJugador extends JFrame {
     
     public void mostrarPanelContinuar() {
         panelContinuarJugando.setVisible(true);
-        lblTimer.setVisible(true);
+        panelTimerFiguras.setVisible(true);
         pack();
     }
    
@@ -94,20 +95,35 @@ public final class VistaJugador extends JFrame {
         pack();
     }
     
-    public void mostrarInfo(String nombreJugador, double pozo, double saldoActual, List<IJugador> jugadores) throws RemoteException {
+    public void mostrarInfo(String nombreJugador, double pozo, double saldoActual, 
+            List<IJugador> jugadores, List<IFigura> figuras) throws RemoteException {
         setTitle(nombreJugador);
         lblPozo.setText(pozo + "");
         lblSaldoActual.setText(saldoActual + "");
-        List<String> jugadoresArray = new ArrayList(); 
  
-        for(IJugador j : jugadores){
+        // JUGADORES
+        List<String> jugadoresArray = new ArrayList(); 
+        for(IJugador j : jugadores) {
             jugadoresArray.add(j.getUsuario());
         }
         listJugadores.setListData(jugadoresArray.toArray());
+        
+        // FIGURAS
+        List<String> figurasArray = new ArrayList();
+        for(IFigura f :figuras) {
+            figurasArray.add(f.getNombre());
+        }
+        listFiguras.setListData(figurasArray.toArray());
+        
     }
     
     public void actualizarTimer(int timer){
-        lblTimer.setText(timer + "");
+        StringBuilder buff = new StringBuilder();
+        buff.append("<html>");
+        buff.append("<h1 style=\"font-family: Yuanti SC; font-size: 48px;");
+        buff.append(String.format(" font-weight: bold;\">%s</h1>", timer));
+        buff.append("</html>");
+        lblTimer.setText(buff.toString());
     }
     
     public void actualizarPozo(double pozo){
@@ -184,7 +200,6 @@ public final class VistaJugador extends JFrame {
         lblBolilla = new javax.swing.JLabel();
         panelMensaje = new javax.swing.JPanel();
         lblMensaje = new javax.swing.JLabel();
-        lblTimer = new javax.swing.JLabel();
         panelLoginJugador = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -193,6 +208,12 @@ public final class VistaJugador extends JFrame {
         btnIngresar = new javax.swing.JButton();
         lblCantCartones = new javax.swing.JLabel();
         txtCantCartones = new javax.swing.JTextField();
+        panelTimerFiguras = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listFiguras = new javax.swing.JList();
+        lblJugadoresName1 = new javax.swing.JLabel();
+        lblTimer = new javax.swing.JLabel();
+        lblJugadoresName2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -209,16 +230,16 @@ public final class VistaJugador extends JFrame {
         panelContinuarJugando.setLayout(panelContinuarJugandoLayout);
         panelContinuarJugandoLayout.setHorizontalGroup(
             panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelContinuarJugandoLayout.createSequentialGroup()
-                .addGroup(panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblContinuarJugando, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                    .addGroup(panelContinuarJugandoLayout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(btnSI, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(btnNO, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContinuarJugandoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblContinuarJugando)
+                .addGap(37, 37, 37))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContinuarJugandoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(btnSI, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnNO, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47))
         );
         panelContinuarJugandoLayout.setVerticalGroup(
             panelContinuarJugandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,11 +257,11 @@ public final class VistaJugador extends JFrame {
         panelCartones.setLayout(panelCartonesLayout);
         panelCartonesLayout.setHorizontalGroup(
             panelCartonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 711, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelCartonesLayout.setVerticalGroup(
             panelCartonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGap(0, 37, Short.MAX_VALUE)
         );
 
         lblPozoName.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
@@ -265,6 +286,7 @@ public final class VistaJugador extends JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(listJugadores);
+        listJugadores.getAccessibleContext().setAccessibleName("listjugadores");
 
         jLabel4.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         jLabel4.setText("Bolilla sorteada:");
@@ -333,22 +355,13 @@ public final class VistaJugador extends JFrame {
         lblMensaje.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
         lblMensaje.setText("Esperando inicio del juego...");
 
-        lblTimer.setFont(new java.awt.Font("Al Nile", 1, 18)); // NOI18N
-        lblTimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTimer.setText("Timer");
-
         javax.swing.GroupLayout panelMensajeLayout = new javax.swing.GroupLayout(panelMensaje);
         panelMensaje.setLayout(panelMensajeLayout);
         panelMensajeLayout.setHorizontalGroup(
             panelMensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMensajeLayout.createSequentialGroup()
-                .addGroup(panelMensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMensajeLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblMensaje))
-                    .addGroup(panelMensajeLayout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(lblTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(lblMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMensajeLayout.setVerticalGroup(
@@ -356,9 +369,7 @@ public final class VistaJugador extends JFrame {
             .addGroup(panelMensajeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
@@ -422,6 +433,57 @@ public final class VistaJugador extends JFrame {
                 .addGap(34, 34, 34))
         );
 
+        listFiguras.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        listFiguras.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(listFiguras);
+        listFiguras.getAccessibleContext().setAccessibleName("listFiguras");
+
+        lblJugadoresName1.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        lblJugadoresName1.setText("Tiempo restante:");
+
+        lblTimer.setFont(new java.awt.Font("Al Nile", 1, 18)); // NOI18N
+        lblTimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTimer.setText("Timer");
+
+        lblJugadoresName2.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        lblJugadoresName2.setText("Figuras habilitadas:");
+
+        javax.swing.GroupLayout panelTimerFigurasLayout = new javax.swing.GroupLayout(panelTimerFiguras);
+        panelTimerFiguras.setLayout(panelTimerFigurasLayout);
+        panelTimerFigurasLayout.setHorizontalGroup(
+            panelTimerFigurasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTimerFigurasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelTimerFigurasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(panelTimerFigurasLayout.createSequentialGroup()
+                        .addGroup(panelTimerFigurasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblJugadoresName2)
+                            .addGroup(panelTimerFigurasLayout.createSequentialGroup()
+                                .addComponent(lblJugadoresName1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 9, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        panelTimerFigurasLayout.setVerticalGroup(
+            panelTimerFigurasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTimerFigurasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelTimerFigurasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblJugadoresName1)
+                    .addComponent(lblTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblJugadoresName2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -429,16 +491,19 @@ public final class VistaJugador extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelCartones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelContinuarJugando, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(panelCartones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(panelTimerFiguras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(panelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -446,15 +511,17 @@ public final class VistaJugador extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelTimerFiguras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelContinuarJugando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelCartones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelLoginJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -468,22 +535,27 @@ public final class VistaJugador extends JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblBolilla;
     private javax.swing.JLabel lblCantCartones;
     private javax.swing.JLabel lblContinuarJugando;
     private javax.swing.JLabel lblJugadoresName;
+    private javax.swing.JLabel lblJugadoresName1;
+    private javax.swing.JLabel lblJugadoresName2;
     private javax.swing.JLabel lblMensaje;
     private javax.swing.JLabel lblPozo;
     private javax.swing.JLabel lblPozoName;
     private javax.swing.JLabel lblSaldoActual;
     private javax.swing.JLabel lblSaldoName;
     private javax.swing.JLabel lblTimer;
+    private javax.swing.JList listFiguras;
     private javax.swing.JList listJugadores;
     private javax.swing.JPanel panelCartones;
     private javax.swing.JPanel panelContinuarJugando;
     private javax.swing.JPanel panelInfo;
     private javax.swing.JPanel panelLoginJugador;
     private javax.swing.JPanel panelMensaje;
+    private javax.swing.JPanel panelTimerFiguras;
     private javax.swing.JTextField txtCantCartones;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;

@@ -10,6 +10,7 @@ import bingo.common.exceptions.SaldoInsuficienteException;
 import bingo.common.interfaces.IBingo;
 import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.ICarton;
+import bingo.common.interfaces.IFigura;
 import bingo.common.interfaces.IJugador;
 import bingo.common.interfaces.IPartida;
 import bingo.common.interfaces.IRemoteObservable;
@@ -188,9 +189,13 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
     public void mostrarInfo() throws RemoteException {
         List<IJugador> restoJugadoresEnJuego = new ArrayList<>(bingo.getPartida().getJugadores());
         restoJugadoresEnJuego.remove(jugador);
+        
+        List<IFigura> figuras = bingo.getPartida().getFiguras();
+        System.out.println(figuras);
+        
         vista.mostrarInfo(jugador.getUsuario(), bingo.getPartida().getPozo(),
             jugador.getSaldoPreview(bingo.getPartida().getValorCarton()),
-            restoJugadoresEnJuego);
+            restoJugadoresEnJuego, figuras);
     }  
     
     

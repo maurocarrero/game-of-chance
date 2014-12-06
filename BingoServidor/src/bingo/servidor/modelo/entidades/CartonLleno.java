@@ -20,7 +20,7 @@ public class CartonLleno extends Figura implements IFigura {
     
     public static CartonLleno getInstance() throws RemoteException {
         if (instance == null) {
-            instance = new CartonLleno("cartonLleno");
+            instance = new CartonLleno("carton lleno");
         }
         return instance;
     }
