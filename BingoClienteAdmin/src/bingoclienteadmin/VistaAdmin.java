@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 /**
  * Interfaz para Administradores
@@ -87,11 +86,6 @@ public final class VistaAdmin extends JFrame {
 
     }
     
-    public void mostrarCrearInterfaces() {
-        ocultarPaneles();
-        panelCrearInterfaces.setVisible(true);
-    }
-    
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -101,7 +95,6 @@ public final class VistaAdmin extends JFrame {
     }
     
     public void ocultarPaneles() {
-        panelCrearInterfaces.setVisible(false);
         panelConfigurar.setVisible(false);
         panelLogin.setVisible(false);
     }
@@ -154,7 +147,8 @@ public final class VistaAdmin extends JFrame {
         txtCantMaxCartones.addActionListener(c);
         txtValorCarton.addActionListener(c);
         btnAceptar.addActionListener(c);
-        
+
+
         // Menu
         menuConfigurar.addActionListener(c);
         menuFinalizar.addActionListener(c);
@@ -189,10 +183,8 @@ public final class VistaAdmin extends JFrame {
         chkDiagonal = new javax.swing.JCheckBox();
         chkCentro = new javax.swing.JCheckBox();
         chkCartonLleno = new javax.swing.JCheckBox();
-        lblTiempo = new javax.swing.JLabel();
+        lblValorCarton1 = new javax.swing.JLabel();
         txtTiempo = new javax.swing.JTextField();
-        panelCrearInterfaces = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         mnuAdministrar = new javax.swing.JMenu();
         menuConfigurar = new javax.swing.JMenuItem();
@@ -230,8 +222,8 @@ public final class VistaAdmin extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
-                .addContainerGap(98, Short.MAX_VALUE))
+                            .addComponent(txtPassword))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +236,7 @@ public final class VistaAdmin extends JFrame {
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
@@ -296,8 +288,11 @@ public final class VistaAdmin extends JFrame {
         chkCartonLleno.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         chkCartonLleno.setEnabled(false);
 
-        lblTiempo.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        lblTiempo.setText("Valor del tiempo en segundos: ");
+        lblValorCarton1.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
+        lblValorCarton1.setText("Valor del tiempo en segundos:");
+
+        txtTiempo.setFont(new java.awt.Font("Yuanti SC", 0, 18)); // NOI18N
+        txtTiempo.setPreferredSize(new java.awt.Dimension(10, 25));
 
         javax.swing.GroupLayout panelConfigurarLayout = new javax.swing.GroupLayout(panelConfigurar);
         panelConfigurar.setLayout(panelConfigurarLayout);
@@ -314,12 +309,13 @@ public final class VistaAdmin extends JFrame {
                             .addComponent(lblCantColumnas)
                             .addComponent(lblCantCartones)
                             .addComponent(lblCantJugadores)
-                            .addComponent(chkLinea)
-                            .addComponent(chkDiagonal)
-                            .addComponent(chkCentro)
-                            .addComponent(chkCartonLleno)
-                            .addComponent(lblTiempo)
-                            .addComponent(lblValorCarton))
+                            .addComponent(lblValorCarton)
+                            .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblValorCarton1)
+                                .addComponent(chkLinea)
+                                .addComponent(chkCartonLleno)
+                                .addComponent(chkDiagonal)
+                                .addComponent(chkCentro)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -328,8 +324,8 @@ public final class VistaAdmin extends JFrame {
                             .addComponent(txtCantJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtCantMaxCartones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtValorCarton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtTiempo))))
-                .addContainerGap(19, Short.MAX_VALUE))
+                            .addComponent(txtTiempo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelConfigurarLayout.setVerticalGroup(
             panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,41 +354,19 @@ public final class VistaAdmin extends JFrame {
                     .addComponent(lblValorCarton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTiempo)
-                    .addComponent(txtTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(chkLinea)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(chkDiagonal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(chkCentro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lblValorCarton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkCartonLleno)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkDiagonal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkLinea)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkCentro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAceptar)
                 .addGap(11, 11, 11))
-        );
-
-        lblTiempo.getAccessibleContext().setAccessibleName("lblTiempo");
-
-        jLabel4.setFont(new java.awt.Font("Yuanti SC", 1, 18)); // NOI18N
-        jLabel4.setText("Crear Interfaces de usuario");
-
-        javax.swing.GroupLayout panelCrearInterfacesLayout = new javax.swing.GroupLayout(panelCrearInterfaces);
-        panelCrearInterfaces.setLayout(panelCrearInterfacesLayout);
-        panelCrearInterfacesLayout.setHorizontalGroup(
-            panelCrearInterfacesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCrearInterfacesLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jLabel4)
-                .addContainerGap(246, Short.MAX_VALUE))
-        );
-        panelCrearInterfacesLayout.setVerticalGroup(
-            panelCrearInterfacesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCrearInterfacesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addContainerGap(224, Short.MAX_VALUE))
         );
 
         mnuAdministrar.setText("Administrar");
@@ -413,21 +387,14 @@ public final class VistaAdmin extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelCrearInterfaces, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panelConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -443,20 +410,18 @@ public final class VistaAdmin extends JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblCantCartones;
     private javax.swing.JLabel lblCantColumnas;
     private javax.swing.JLabel lblCantFilas;
     private javax.swing.JLabel lblCantJugadores;
-    private javax.swing.JLabel lblTiempo;
     private javax.swing.JLabel lblValorCarton;
+    private javax.swing.JLabel lblValorCarton1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuConfigurar;
     private javax.swing.JMenuItem menuFinalizar;
     private javax.swing.JMenu mnuAdministrar;
     private javax.swing.JPanel panelConfigurar;
-    private javax.swing.JPanel panelCrearInterfaces;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JTextField txtCantColumnas;
     private javax.swing.JTextField txtCantFilas;
