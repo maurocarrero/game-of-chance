@@ -361,6 +361,12 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     @Override
     public void perdieronTodos() throws RemoteException  {
+        for (IJugador jugador : jugadores) {
+            jugador.debitarSimple(valorCarton);
+            jugador.resetearCartones();
+            jugador.desloguear();
+            jugador.actualizarSaldoBD();
+        }
         notifyObservers(crearHash("perdieron_todos", ""));
         resetear();
     }
@@ -478,7 +484,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             try {
                 observer.update(this, param);
             } catch (RemoteException ex) {
-                System.out.println("Partida - RemoteException: " + ex.getMessage());
+                System.out.println("Cliente desconectado de la partida.");
                 observers.remove(observer);
             }
         }
