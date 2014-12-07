@@ -189,7 +189,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     @Override
     public void guardarConfiguracion(int cF, int cC, int cMC, 
-            int cJ, double vC, int tiempo, boolean linea, boolean diagonal, boolean centro)
+            int cJ, double vC, int tiempo, List<String> pFiguras)
                 throws RemoteException {
         this.figuras = new ArrayList<>();
         figuras.add(CartonLleno.getInstance());
@@ -199,13 +199,13 @@ public class Partida extends UnicastRemoteObject implements IPartida {
         setCantJugadores(cJ);
         setValorCarton(vC);
         setTiempo(tiempo);
-        if (linea) {
+        if (pFiguras.contains("linea")) {
             getFiguras().add(Linea.getInstance());
         }
-        if (centro) {
+        if (pFiguras.contains("centro")) {
             getFiguras().add(Centro.getInstance());
         }
-        if (diagonal) {
+        if (pFiguras.contains("diagonal")) {
             getFiguras().add(Diagonal.getInstance());
         }
         guardarConfiguracionEnBase();

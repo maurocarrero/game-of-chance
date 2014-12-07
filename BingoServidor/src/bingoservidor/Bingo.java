@@ -86,8 +86,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     
     @Override
     public void guardarConfiguracion(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,
-            boolean linea, boolean diagonal, boolean centro) 
+            int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,List<String> figuras) 
             throws ConfiguracionNoValidaException, RemoteException {
         
         // VALIDACIONES
@@ -95,22 +94,10 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
                 cantColumnas > 10 || cantMaxCartones < 2 || cantJugadores < 2 || 
                 valorCarton < 1 || tiempo < 10) {
             throw new ConfiguracionNoValidaException();
-        }
-        // VALIDACIONES FIGURAS
-        if (cantFilas != cantColumnas) {
-            if (diagonal == true || centro == true) {
-                throw new ConfiguracionNoValidaException();
-            }
-        } else {
-            if (centro) {
-                if (cantColumnas %2 == 0 || cantFilas %2 == 0) {
-                    throw new ConfiguracionNoValidaException();
-                }
-            }            
-        }      
+        }       
         
         this.partida.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
-                cantJugadores, valorCarton, tiempo, linea, diagonal, centro);
+                cantJugadores, valorCarton, tiempo, figuras);
 
         notifyObservers(crearHash("BINGO", this));
     }

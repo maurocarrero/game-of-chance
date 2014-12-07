@@ -60,7 +60,7 @@ public interface IPartida extends Remote, IRemoteObservable, Serializable {
     void setJuegoActivo(boolean juegoActivo) throws RemoteException;
     
     void guardarConfiguracion(int cF, int cC, int cMC, 
-            int cJ, double vC, int tiempo, boolean linea, boolean diagonal, boolean centro)
+            int cJ, double vC, int tiempo, List<String> figuras)
              throws RemoteException;
     
     List<IJugador> getJugadores() throws RemoteException;

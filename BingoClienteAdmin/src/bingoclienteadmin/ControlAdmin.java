@@ -16,6 +16,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,10 +73,6 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
                 bingo.getPartida().getValorCarton(),
                 bingo.getPartida().getTiempo(),
                 figuras);
-        //PRUEBA
-        for(IFigura f : figuras){
-            System.out.println(f.getNombre());
-        }
     }
     
     private void configurar() throws RemoteException {
@@ -99,10 +96,37 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
             int tiempo = Integer.parseInt(vista.getTiempo());
             boolean figuraLinea = vista.getChkLinea();
             boolean figuraDiagonal = vista.getChkDiagonal();
-            boolean figuraCentro = vista.getChkCentro();
+            boolean figuraCentro = vista.getChkCentro();           
+            
+             // VALIDACIONES FIGURAS
+            if (cantFilas != cantColumnas) {
+                if (figuraDiagonal || figuraCentro) {
+                    throw new ConfiguracionNoValidaException();
+            }
+            } else {
+                if (figuraCentro) {
+                    if (cantColumnas %2 == 0 || cantFilas %2 == 0) {
+                        throw new ConfiguracionNoValidaException();
+                    }
+                }            
+            }      
+            
+            List<String> figuras = new ArrayList();
+            
+            if(figuraLinea){
+                figuras.add("linea");
+            }
+            
+            if(figuraDiagonal){
+                figuras.add("diagonal");
+            }
+            
+            if(figuraCentro){
+                figuras.add("centro");
+            }
             
             bingo.guardarConfiguracion(cantFilas, cantColumnas, cantMaxCartones, 
-                    cantJugadores, valorCarton, tiempo, figuraLinea, figuraDiagonal, figuraCentro);
+                    cantJugadores, valorCarton, tiempo, figuras);
            
             vista.ocultarPaneles();
             vista.mostrarInfo("Configuración guardada", "Exito");

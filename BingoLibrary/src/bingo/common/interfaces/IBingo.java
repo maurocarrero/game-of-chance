@@ -13,6 +13,7 @@ import bingo.common.exceptions.JuegoEnCursoException;
 import bingo.common.exceptions.SaldoInsuficienteException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  *
@@ -26,7 +27,7 @@ public interface IBingo extends IRemoteObservable {
        
     void guardarConfiguracion(int cantFilas, int cantColumnas, 
             int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,
-            boolean linea, boolean diagonal, boolean centro) 
+            List<String> figuras) 
             throws ConfiguracionNoValidaException, RemoteException ;
     
     void inicioCondicional() throws RemoteException;
