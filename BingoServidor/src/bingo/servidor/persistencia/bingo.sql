@@ -46,8 +46,8 @@ INSERT INTO usuarios (usuario, password, saldo, tipo) VALUES
     ("j5", "j5", 30, 2);
 
 INSERT INTO config VALUES
-    ("CANT_FILAS", "2"),
-    ("CANT_COLUMNAS", "2"),
+    ("CANT_FILAS", "3"),
+    ("CANT_COLUMNAS", "3"),
     ("CANT_MAX_CARTONES", "2"),
     ("CANT_JUGADORES", "2"),
     ("VALOR_CARTON", "10.0"),
