@@ -1,13 +1,12 @@
 package bingo.common.interfaces;
 
-
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- *
- * @author DocenteFI
+ * Interfaz IRemoteObservable
+ * @author maurocarrero/fernandogonzalez
  */
 public interface IRemoteObservable extends Remote {
     

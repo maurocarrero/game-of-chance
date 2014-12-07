@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.common.interfaces;
 
 import java.io.Serializable;
@@ -9,8 +5,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- *
- * @author maurocarrero
+ * Interfaz IRemoteObserver
+ * @author maurocarrero/fernandogonzalez
  */
 public interface IRemoteObserver extends Remote {
     

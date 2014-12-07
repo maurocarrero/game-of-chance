@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.common.interfaces;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
 /**
- *
+ * Interfaz IContador
  * @author Mauro.Carrero
  */
 public interface IContador extends IRemoteObservable, Serializable {

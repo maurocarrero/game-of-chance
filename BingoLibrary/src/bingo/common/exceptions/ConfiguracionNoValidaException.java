@@ -1,7 +1,7 @@
 package bingo.common.exceptions;
 
 /**
- *
+ * Exception Class ConfiguracionNoValidaException
  * @author maurocarrero/fernandogonzalez
  */
 public class ConfiguracionNoValidaException extends Exception {

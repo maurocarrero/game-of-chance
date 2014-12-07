@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingoservidor;
 
 import java.net.MalformedURLException;
@@ -12,8 +8,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 /**
- *
- * @author maurocarrero
+ * Clase ServerRunner
+ * @author maurocarrero/fernandogonzalez
  */
 public class ServerRunner {
     

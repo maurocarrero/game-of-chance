@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.common.interfaces;
 
 import java.io.Serializable;
@@ -10,7 +6,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- *
+ * Interfaz IJugador
  * @author maurocarrero/fernandogonzalez
  */
 public interface IJugador extends Remote, Serializable {

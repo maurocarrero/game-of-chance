@@ -7,6 +7,10 @@ import java.rmi.RemoteException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Clase AdminPersistente
+ * @author maurocarrero/fernandogonzalez
+ */
 public class AdminPersistente implements Serializable, Persistente {
 
     private Administrador admin;
@@ -31,7 +35,6 @@ public class AdminPersistente implements Serializable, Persistente {
         admin.setId(id);
     }
 
-
     @Override
     public String getInsertSQL() throws RemoteException {
         return "INSERT INTO usuarios (usuario, password)" + "VALUES ("
@@ -41,9 +44,9 @@ public class AdminPersistente implements Serializable, Persistente {
 
     @Override
     public String getUpdateSQL() throws RemoteException {
-            return "UPDATE usuarios SET usuario='" + admin.getUsuario()
-                            + "', password='" + admin.getPassword()
-                            + "' WHERE id=" + admin.getId();
+        return "UPDATE usuarios SET usuario='" + admin.getUsuario()
+                        + "', password='" + admin.getPassword()
+                        + "' WHERE id=" + admin.getId();
     }
 
     @Override
@@ -64,7 +67,7 @@ public class AdminPersistente implements Serializable, Persistente {
             admin.setUsuario(rs.getString("usuario"));
             admin.setPassword(rs.getString("password"));
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("AdminPersistente SQLException: " + ex.getMessage());
         }
     }
 

@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Clase Partida
  * @author maurocarrero/fernandogonzalez
  */
 public class Partida extends UnicastRemoteObject implements IPartida {
@@ -97,12 +97,12 @@ public class Partida extends UnicastRemoteObject implements IPartida {
     
     @Override
     public void setTiempo(int tiempo) throws RemoteException {
-        this.tiempo = tiempo;
+        Partida.tiempo = tiempo;
     }
     
     @Override
     public int getTiempo() throws RemoteException {
-        return this.tiempo;
+        return Partida.tiempo;
     }
     
     @Override
@@ -478,7 +478,7 @@ public class Partida extends UnicastRemoteObject implements IPartida {
             try {
                 observer.update(this, param);
             } catch (RemoteException ex) {
-                System.out.println("Partida RemoteException: " + ex.getMessage());
+                System.out.println("Partida - RemoteException: " + ex.getMessage());
                 observers.remove(observer);
             }
         }

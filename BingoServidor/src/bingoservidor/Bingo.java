@@ -86,8 +86,9 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
     
     @Override
     public void guardarConfiguracion(int cantFilas, int cantColumnas, 
-            int cantMaxCartones, int cantJugadores, double valorCarton, int tiempo,List<String> figuras) 
-            throws ConfiguracionNoValidaException, RemoteException {
+            int cantMaxCartones, int cantJugadores, double valorCarton, 
+            int tiempo, List<String> figuras) 
+                throws ConfiguracionNoValidaException, RemoteException {
         
         // VALIDACIONES
         if (cantFilas < 1 || cantFilas > 10 || cantColumnas < 2 || 
@@ -215,7 +216,7 @@ public class Bingo extends UnicastRemoteObject implements IBingo, IRemoteObserva
             }
             this.db.desconectar();
         } catch (RemoteException ex) {
-            System.out.println("Bingo RemoteException: " + ex.getMessage());
+            System.out.println("Bingo - RemoteException: " + ex.getMessage());
         }
         
         System.exit(0);

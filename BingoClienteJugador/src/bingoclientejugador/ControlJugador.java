@@ -33,9 +33,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
+ * Clase ControlJugador
  * @author maurocarrero/fernandogonzalez
  */
-public class ControlJugador extends Controlador implements ActionListener, IRemoteObserver, Serializable {
+public class ControlJugador extends Controlador implements ActionListener, 
+        IRemoteObserver, Serializable {
 
     private static ControlJugador instance;
     private static VistaJugador vista;
@@ -191,7 +193,6 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
         restoJugadoresEnJuego.remove(jugador);
         
         List<IFigura> figuras = bingo.getPartida().getFiguras();
-        System.out.println(figuras);
         
         vista.mostrarInfo(jugador.getUsuario(), bingo.getPartida().getPozo(),
             jugador.getSaldoPreview(bingo.getPartida().getValorCarton()),
@@ -257,7 +258,6 @@ public class ControlJugador extends Controlador implements ActionListener, IRemo
             }
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
-        
         }
     }
 

@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- *
+ * Interfaz ICarton
  * @author maurocarrero/fernandogonzalez
  */
 public interface ICarton extends Remote, Serializable{

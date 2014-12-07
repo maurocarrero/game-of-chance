@@ -5,8 +5,8 @@ import bingo.common.interfaces.IFigura;
 import java.rmi.RemoteException;
 
 /**
- *
- * @author zorro
+ * Clase Centro
+ * @author maurocarrero/fernandogonzalez
  */
 public class Centro extends Figura implements IFigura {
 
@@ -19,20 +19,13 @@ public class Centro extends Figura implements IFigura {
         return instance;
     }
     
-    public Centro(String nombre) throws RemoteException{
+    public Centro(String nombre) throws RemoteException {
         super(nombre);
     }
     
     @Override
     public boolean condicional(ICarton c) throws RemoteException{
         int centro = (c.getCantFilas() -1) / 2;
-        
-        /**   ELIMINAR OUTPUT  **/
-        if (c.getCantAciertos() == 1 && c.getPintados()[centro][centro]) {
-            System.out.println("Centro!");
-        }
-        /*************/
-        
         return c.getCantAciertos() == 1 && c.getPintados()[centro][centro];
     }
     

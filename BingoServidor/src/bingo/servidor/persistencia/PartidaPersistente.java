@@ -1,6 +1,5 @@
 package bingo.servidor.persistencia;
 
-import bingo.common.interfaces.IFigura;
 import bingo.servidor.modelo.entidades.Centro;
 import bingo.servidor.modelo.entidades.Diagonal;
 import bingo.servidor.modelo.entidades.Linea;
@@ -8,8 +7,11 @@ import bingoservidor.Partida;
 import java.rmi.RemoteException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
+/**
+ * Clase PartidaPersistente
+ * @author maurocarrero/fernandogonzalez
+ */
 public class PartidaPersistente implements Persistente {
 
     private Partida partida;
@@ -42,9 +44,7 @@ public class PartidaPersistente implements Persistente {
     @Override
     public String getUpdateSQL() throws RemoteException {
                 
-        String sql = "";
-        
-            sql = "UPDATE config SET valor='" + partida.getCantFilas()
+        String sql = "UPDATE config SET valor='" + partida.getCantFilas()
                 + "' WHERE clave='CANT_FILAS';#"
                 + "UPDATE config SET valor='" + partida.getCantColumnas()
                 + "' WHERE clave='CANT_COLUMNAS';#" 
@@ -57,23 +57,23 @@ public class PartidaPersistente implements Persistente {
                 + "UPDATE config SET valor='" + partida.getTiempo()
                 + "' WHERE clave='TIEMPO';#";
             
-            if(this.partida.getFiguras().contains(Linea.getInstance())){
+            if (this.partida.getFiguras().contains(Linea.getInstance())) {
                 sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_LINEA';#";
-            }else{
+            } else {
                 sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_LINEA';#";
             }
             
-            if(this.partida.getFiguras().contains(Diagonal.getInstance())){
+            if (this.partida.getFiguras().contains(Diagonal.getInstance())) {
                 sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_DIAGONAL';#";
             }else{
                 sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_DIAGONAL';#";
             }
             
-             if(this.partida.getFiguras().contains(Centro.getInstance())){
+            if (this.partida.getFiguras().contains(Centro.getInstance())) {
                 sql += "UPDATE config SET valor='true' WHERE clave='FIGURA_CENTRO';#";
-            }else{
-                 sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_CENTRO';";
-             }
+            } else {
+                sql += "UPDATE config SET valor='false' WHERE clave='FIGURA_CENTRO';";
+            }
 
         return sql;     
     }
@@ -123,8 +123,8 @@ public class PartidaPersistente implements Persistente {
             if (clave.equals("FIGURA_CENTRO") && Boolean.parseBoolean(valor)) {
                 partida.getFiguras().add(Centro.getInstance());
             }
-        } catch (SQLException e) {
-
+        } catch (SQLException ex) {
+            System.out.println("PartidaPersistente - SQLException: " + ex.getMessage());
         }
     }
 

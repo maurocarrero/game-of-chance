@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingoclientejugador;
 
 import java.awt.Color;
@@ -12,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
- *
+ * Class JCarton
  * @author maurocarrero/fernandogonzalez
  */
 public class JCarton extends JPanel {

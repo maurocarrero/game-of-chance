@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- *
+ * Interfaz IPartida
  * @author maurocarrero/fernandogonzalez
  */
 public interface IPartida extends Remote, IRemoteObservable, Serializable {

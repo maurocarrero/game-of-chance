@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
- * @author Mauro.Carrero
+ * Clase Contador
+ * @author maurocarrero/fernandogonzalez
  */
 public class Contador extends UnicastRemoteObject implements IContador {
 

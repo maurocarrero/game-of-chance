@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package bingo.servidor.modelo.entidades;
 
 import bingo.common.interfaces.ICarton;
@@ -11,8 +5,8 @@ import bingo.common.interfaces.IFigura;
 import java.rmi.RemoteException;
 
 /**
- *
- * @author zorro
+ * Clase Linea
+ * @author maurocarrero/fernandogonzalez
  */
 public class Linea extends Figura implements IFigura {
 
@@ -54,9 +48,11 @@ public class Linea extends Figura implements IFigura {
                     cantPintados ++;
                 }
             }
-            //if(cantPintados == cantColumnas && cantPintados == cantAciertos) return true;
-            if(cantPintados == c.getCantAciertos()) return true;
-            else cantPintados = 0;
+            if(cantPintados == c.getCantAciertos()) {
+                return true;
+            } else {
+                cantPintados = 0;
+            }
         }
         return false;
     }
@@ -70,9 +66,9 @@ public class Linea extends Figura implements IFigura {
                     cantPintados ++;
                 }
             }
-            //if(cantPintados == cantFilas && cantPintados == cantAciertos) return true;
-            if(cantPintados == c.getCantFilas()) return true;
-            else{
+            if(cantPintados == c.getCantFilas()) {
+                return true;
+            } else {
                 cantPintados = 0;
             }
         }

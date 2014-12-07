@@ -1,6 +1,5 @@
 package bingoclienteadmin;
 
-
 import bingo.common.interfaces.IFigura;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -12,10 +11,7 @@ import javax.swing.JOptionPane;
  * @author maurocarrero/fernandogonzalez
  */
 public final class VistaAdmin extends JFrame {
-    
-    /**
-     * Creates new form InterfazAdmin
-     */
+
     public VistaAdmin() {
         initComponents();
         this.setTitle("Bingo - Administrador");

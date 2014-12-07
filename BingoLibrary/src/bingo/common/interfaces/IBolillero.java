@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- *
+ * Interfaz IBolillero
  * @author maurocarrero/fernandogonzalez
  */
 public interface IBolillero extends Remote, Serializable {

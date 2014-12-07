@@ -1,19 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.servidor.modelo.entidades;
 
 import bingo.common.interfaces.IBolilla;
 import bingo.common.interfaces.ICarton;
 import bingo.common.interfaces.IFigura;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 /**
- *
+ * Clase Carton
  * @author maurocarrero/fernandogonzalez
  */
 public class Carton extends UnicastRemoteObject implements ICarton {

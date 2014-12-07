@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package bingo.servidor.modelo.entidades;
 
 import bingo.common.interfaces.ICarton;
@@ -11,8 +5,8 @@ import bingo.common.interfaces.IFigura;
 import java.rmi.RemoteException;
 
 /**
- *
- * @author zorro
+ * Clase Diagonal
+ * @author maurocarrero/fernandogonzalez
  */
 public class Diagonal extends Figura implements IFigura {
 

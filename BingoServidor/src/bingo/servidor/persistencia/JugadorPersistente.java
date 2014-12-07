@@ -6,6 +6,10 @@ import java.rmi.RemoteException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Clase JugadorPersistente
+ * @author maurocarrero/fernandogonzalez
+ */
 public class JugadorPersistente implements Serializable, Persistente {
 
     private Jugador jugador;

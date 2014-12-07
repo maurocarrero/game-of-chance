@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package bingo.servidor.modelo.entidades;
 
 import bingo.common.interfaces.IFigura;
@@ -12,8 +6,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- *
- * @author zorro
+ * Clase Figura
+ * @author maurocarrero/fernandogonzalez
  */
 public abstract class Figura extends UnicastRemoteObject implements IFigura, Serializable {
     

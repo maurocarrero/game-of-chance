@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.servidor.modelo.entidades;
 
 import bingo.common.interfaces.IBolilla;
@@ -10,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- *
+ * Clase Bolilla
  * @author maurocarrero/fernandogonzalez
  */
 public class Bolilla extends UnicastRemoteObject implements IBolilla, Serializable {

@@ -5,14 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Bingo
+ * Clase RunnerAdmin
  * @author maurocarrero/fernandogonzalez
  */
 public class RunnerAdmin {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         
         VistaAdmin vistaAdmin = new VistaAdmin();

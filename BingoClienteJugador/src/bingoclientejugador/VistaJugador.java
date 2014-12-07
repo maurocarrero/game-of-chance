@@ -15,10 +15,6 @@ import javax.swing.JFrame;
  */
 public final class VistaJugador extends JFrame {
 
-   
-    /**
-     * Creates new form InterfazJugador
-     */
     public VistaJugador() {
         initComponents();
         

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingo.servidor.modelo.entidades;
 
 import java.io.Serializable;
@@ -10,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- *
+ * Clase Usuario
  * @author maurocarrero/fernandogonzalez
  */
 public abstract class Usuario extends UnicastRemoteObject implements Serializable, Remote {
@@ -87,6 +83,5 @@ public abstract class Usuario extends UnicastRemoteObject implements Serializabl
         }
         return true;
     }
-    
     
 }

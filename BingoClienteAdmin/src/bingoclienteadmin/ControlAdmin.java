@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Clase ControlAdmin
  * @author maurocarrero/fernandogonzalez
  */
 public class ControlAdmin extends Controlador implements ActionListener, Serializable, IRemoteObserver {
@@ -76,7 +76,6 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
     }
     
     private void configurar() throws RemoteException {
-        System.out.println(bingo.getPartida().toString());
         if (!bingo.getPartida().isJuegoActivo()) {
             vista.mostrarPanelConfiguracion();          
             poblarCamposConfiguracion();
@@ -113,15 +112,15 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
             
             List<String> figuras = new ArrayList();
             
-            if(figuraLinea){
+            if (figuraLinea) {
                 figuras.add("linea");
             }
             
-            if(figuraDiagonal){
+            if (figuraDiagonal) {
                 figuras.add("diagonal");
             }
             
-            if(figuraCentro){
+            if (figuraCentro) {
                 figuras.add("centro");
             }
             
@@ -203,7 +202,7 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
             System.out.println("Desconectando de Bingo server.");
         }
         catch(RemoteException | NotBoundException | MalformedURLException ex){
-            System.out.println("Algo salí mal con la desconexión RMI");
+            System.out.println("Algo salío mal con la desconexión RMI");
         }
         System.exit(0);
     }
@@ -211,7 +210,6 @@ public class ControlAdmin extends Controlador implements ActionListener, Seriali
     @Override
     public void update(IRemoteObservable origen, Serializable param) throws RemoteException {
         this.bingo = (IBingo)origen;
-        System.out.println(this.bingo.getPartida().getFiguras().size());
     }
     
 }

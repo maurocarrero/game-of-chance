@@ -4,6 +4,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.ResultSet;
 
+/**
+ * Interfaz Persistente
+ * @author maurocarrero/fernandogonzalez
+ */
 public interface Persistente extends Remote {
 
     public abstract String getInsertSQL() throws RemoteException;

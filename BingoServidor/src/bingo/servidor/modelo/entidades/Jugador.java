@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Clase Jugador
  * @author maurocarrero/fernandogonzalez
  */
 public class Jugador extends Usuario implements IJugador {

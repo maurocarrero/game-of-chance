@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * Clase Bolillero
  * @author maurocarrero/fernandogonzalez
  */
 public class Bolillero extends UnicastRemoteObject implements IBolillero {

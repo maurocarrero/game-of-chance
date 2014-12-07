@@ -1,7 +1,7 @@
 package bingo.common.exceptions;
 
 /**
- *
+ * Exception Class JuegoEnCursoException
  * @author maurocarrero/fernandogonzalez
  */
 public class JuegoEnCursoException extends Exception {

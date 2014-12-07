@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bingoclientejugador;
 
 import java.awt.Color;
@@ -13,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
- *
+ * Class JCasillero
  * @author maurocarrero/fernandogonzalez
  */
 public class JCasillero extends JLabel implements Observer {
